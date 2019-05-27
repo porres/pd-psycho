@@ -46,3 +46,8 @@ This is a Pd library that needs to be loaded with the [declare] object as in:
 ##Objects:
 
 - [roughness]
+- [flunson]
+- [phon]
+- [dbA]
+- [iso226]
+- [iso226b]
