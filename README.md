@@ -6,9 +6,7 @@
 
 This project is still in a very experimental/initial phase.
 
-This is a library of Pd externals that includes some objects that deals with psychoacoustic measures and conversions. This was part of my masters and phd research, when I first started coding and now I'm finally revisiting it and getting it more presentable and out there. 
-
-See code for license
+This is a library of Pd externals that includes some objects that deals with psychoacoustic measures and conversions. This was part of my masters and phd research, when I first started coding and now I'm finally revisiting it and getting it more presentable and out there (this is still quite far). 
 
 --------------------------------------------------------------------------
 
