@@ -1,0 +1,18 @@
+#N canvas 761 82 511 394 10;
+#X obj 190 192 hot;
+#X floatatom 190 138 5 0 0 0 - - -;
+#X floatatom 205 166 5 0 0 0 - - -;
+#X obj 190 258 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 61.759 256;
+#X text 241 165 Hertz;
+#X text 227 138 phon;
+#X obj 108 63 phon2db;
+#X obj 190 223 phon2db 100;
+#X text 271 221 argument (hz);
+#X text 165 53 convert phons to dB \, it takes a Hz value (right inlet
+or argument) and a value in Phons (left inlet), f 35;
+#X connect 0 0 7 0;
+#X connect 0 1 7 1;
+#X connect 1 0 0 0;
+#X connect 2 0 0 1;
+#X connect 7 0 3 0;

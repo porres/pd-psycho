@@ -13,27 +13,9 @@
 #X connect 2 0 3 0;
 #X connect 4 0 2 0;
 #X connect 5 0 2 1;
-#X restore 107 164 pd flunson;
+#X restore 107 141 pd flunson;
 #X text 247 46 A Pd library with some psychoacoustic functions, f
 19;
-#N canvas 456 137 487 399 phon2db 0;
-#X text 165 53 convert phons to dB \, it takes a Phon value (right
-inlet) and a value in hertz (left inlet), f 30;
-#X obj 202 198 hot;
-#X floatatom 217 175 5 0 0 0 - - -;
-#X floatatom 202 153 5 0 0 0 - - -;
-#X obj 202 264 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
-#X text 238 152 Hertz;
-#X text 254 175 phon;
-#X obj 202 229 phon2db;
-#X obj 108 63 phon2db;
-#X connect 1 0 7 0;
-#X connect 1 1 7 1;
-#X connect 2 0 1 1;
-#X connect 3 0 1 0;
-#X connect 7 0 4 0;
-#X restore 107 136 pd phon2db;
 #N canvas 799 341 435 361 db2phon 0;
 #X text 136 49 convert dB to loudness in phons \, it takes a dB value
 (right inlet) and a value in hertz (left inlet), f 33;
@@ -52,7 +34,7 @@ inlet) and a value in hertz (left inlet), f 30;
 #X connect 3 0 1 0;
 #X connect 7 0 4 0;
 #X restore 107 112 pd db2phon;
-#N canvas 414 138 561 375 loudness-measures 0;
+#N canvas 414 138 561 375 loudness-measures 1;
 #X text 102 61 The unit measure of loudess (perceived intensity) is
 phons. Two different frequencies at 60 decibel may have a different
 loudness because the human hearing sensitivity varies with frequency.
@@ -71,7 +53,7 @@ that variation for the average human ear. These can then be used to
 adjust the sound gain.;
 #X text 106 296 The loudness of N = 1 sone is equivalent to 40 phons
 \, which is the loudness of a 1KHz sine wave at 40 dB.;
-#X restore 242 165 pd loudness-measures;
+#X restore 242 139 pd loudness-measures;
 #N canvas 326 153 672 419 iso226b 0;
 #X obj 142 103 iso226;
 #X floatatom 142 67 5 10 100 0 - - -;
@@ -91,4 +73,4 @@ corresponds to the input phon level. This can be used to generate equal
 loudness curves., f 47;
 #X connect 0 0 3 0;
 #X connect 1 0 0 0;
-#X restore 109 192 pd iso226b;
+#X restore 109 169 pd iso226b;

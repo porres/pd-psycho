@@ -7,7 +7,7 @@
 
 //=============================== Amplitude & Loudness ====================================/
 
-//***** Convert Phons/hz to dBA (Barlow's function, Robson/Dadson's data)
+//***** Convert Phons/hz to dB (Barlow's function, Robson/Dadson's data)
 static float throfs(float hz){
     float khz, thr;
     khz = hz/1000;
@@ -146,7 +146,7 @@ void *flunson_new(void){
     return (void *)x;
 }
 
-//************************ Phon / dBA / iso226b ************************/
+//************************ Phon / iso226b ************************/
 typedef struct func{
     t_object x_ob;
     t_outlet *x_outlet;
@@ -157,16 +157,6 @@ static t_class *db2phon_class;
 
 static void *db2phon_new(t_float right){
     t_func *x = (t_func *)pd_new(db2phon_class);
-    inlet_new(&x->x_ob, &x->x_ob.ob_pd, gensym("float"), gensym("right"));
-    x->x_outlet = outlet_new(&x->x_ob, gensym("float"));
-    x->right = right;
-    return (void *)x;
-}
-
-static t_class *phon2db_class;
-
-static void *phon2db_new(t_float right){
-    t_func *x = (t_func *)pd_new(phon2db_class);
     inlet_new(&x->x_ob, &x->x_ob.ob_pd, gensym("float"), gensym("right"));
     x->x_outlet = outlet_new(&x->x_ob, gensym("float"));
     x->right = right;
@@ -189,10 +179,6 @@ static void function_right (t_func *x, float right){
 
 static void phon_left (t_func *x, float left){
     outlet_float(x->x_outlet, phon(left, x->right, 20));
-}
-
-static void dbA_left (t_func *x, float left){
-    outlet_float(x->x_outlet, dbA(left, x->right));
 }
 
 static double phons[11] = {2,10,20,30,40,50,60,70,80,90,100};
@@ -297,10 +283,6 @@ void psycho_setup(void){
     db2phon_class = class_new(gensym("db2phon"), (t_newmethod)db2phon_new, 0, sizeof(t_func), 0, A_DEFFLOAT, 0);
     class_addmethod(db2phon_class,(t_method)function_right,gensym("right"), A_FLOAT, 0);
     class_addfloat(db2phon_class,(t_method)phon_left);
-    
-    phon2db_class = class_new(gensym("phon2db"),(t_newmethod)phon2db_new,0,sizeof(t_func), 0, A_DEFFLOAT, 0);
-    class_addmethod(phon2db_class, (t_method)function_right, gensym("right"), A_FLOAT, 0);
-    class_addfloat(phon2db_class, (t_method)dbA_left);
     
     iso226b_class = class_new(gensym("iso226b"), (t_newmethod)iso226b_new, 0,
                               sizeof(t_func), 0, A_DEFFLOAT, 0);
