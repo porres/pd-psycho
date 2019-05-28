@@ -41,7 +41,7 @@ inlet) and a value in hertz (left inlet), f 30;
 #X floatatom 208 168 5 0 0 0 - - -;
 #X floatatom 193 146 5 0 0 0 - - -;
 #X obj 193 257 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 94.3269 256;
+-228856 -1 -1 0 256;
 #X text 229 145 Hertz;
 #X text 245 168 dB;
 #X obj 193 222 db2phon;
@@ -71,27 +71,7 @@ that variation for the average human ear. These can then be used to
 adjust the sound gain.;
 #X text 106 296 The loudness of N = 1 sone is equivalent to 40 phons
 \, which is the loudness of a 1KHz sine wave at 40 dB.;
-#X restore 242 174 pd loudness-measures;
-#N canvas 326 153 672 419 iso226 0;
-#X obj 142 103 iso226;
-#X floatatom 142 67 5 10 100 0 - - -;
-#X text 180 67 <= phon;
-#X obj 142 145 array set iso226;
-#N canvas 0 22 450 278 (subpatch) 0;
-#X array iso226 29 float 5;
-#A 0 104.237 98.6311 93.1496 87.9086 83.355 78.9644 74.6841 70.8963
-67.4217 63.8909 60.8991 58.1867 55.6596 53.3417 51.6402 50.1276 48.9918
-49.011 50.9719 51.8415 48.5812 45.869 45.0098 46.1007 49.4353 55.0859
-60.763 62.8369 59.2789;
-#X coords 0 125 28 0 250 140 1 0 0;
-#X restore 184 209 graph;
-#X text 271 86 spits a list of 29 values that equally divides the frequency
-spectrum. Each value represents the dB level of that frequency that
-corresponds to the input phon level. This can be used to generate equal
-loudness curves., f 47;
-#X connect 0 0 3 0;
-#X connect 1 0 0 0;
-#X restore 108 192 pd iso226;
+#X restore 242 165 pd loudness-measures;
 #N canvas 326 153 672 419 iso226b 0;
 #X obj 142 103 iso226;
 #X floatatom 142 67 5 10 100 0 - - -;
@@ -111,4 +91,4 @@ corresponds to the input phon level. This can be used to generate equal
 loudness curves., f 47;
 #X connect 0 0 3 0;
 #X connect 1 0 0 0;
-#X restore 108 222 pd iso226b;
+#X restore 109 192 pd iso226b;
