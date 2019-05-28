@@ -23,45 +23,6 @@
 #include <math.h>
 #include "m_pd.h"
 
-static t_class *roughness_class;
-
-typedef enum bool {false, true} bool;
-
-typedef struct roughness{
-    t_object x_ob;
-    t_outlet *x_outlet;
-	//config
-	float curve; //0 = parncutt / 1 = sethares (??????????????)
-	int argc;
-    t_atom *freqs;
-	float *amps;
-	int phonsteps;
-	int loudness;
-	int mean; // (!!!!!!!!!!!!!!!!!!!!!!!!!!!!)
-	int masking;
-}t_roughness;
-
-
-//________FUNCTIONS__________________________________________________________________/
-
-// GET RID OF THESE!!!!
-
-// ************************ min
-static float min(float a, float b){
-  return a < b ? a : b;
-}
-
-// ************************ max
-static float max(float a, float b){
-  return a > b ? a : b;
-}
-
-// ************************ Square
-
-static float sqr(float v){
-    return(v*v);
-}
-
 //!!!!! PSYCHOACOUSTICAL FUNCTIONS !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!/
 
 //=============================== Amplitude & Loudness ====================================/
@@ -78,7 +39,7 @@ static float db2gain(float db){
     return pow(10, (db-100)/20);
 }
 
-// ******* Convert dBA and Hz to Phons (function by Clarence Barlow, data from Robson & Dadson)
+//**** Convert dBA and Hz to Phons (function by Clarence Barlow, data from Robson & Dadson)
 
 static float dbA(float hz, float ph);
 
@@ -99,43 +60,32 @@ static float phon(float hz, float db, int phonsteps)
 	return ph;
 }
 
-//**************** Convert Phons and Hz to dBA (function by Clarence Barlow, data from Robson & Dadson)
-
+//***** Convert Phons and Hz to dBA (function by Clarence Barlow, data from Robson & Dadson)
 static float throfs(float hz){
     float khz, thr;
 	khz = hz/1000;
-	thr = 3.64*exp(-0.8*log(khz))+0.001*sqr(sqr(khz));
+    thr = 3.64*exp(-0.8*log(khz))+0.001 * pow(khz, 4);
 	if(khz <= 15.41)
-        thr = thr-6.5*exp(-0.6*sqr(khz-3.3));
+        thr = thr-6.5*exp(-0.6 * pow(khz-3.3, 2));
 	return(thr);
 }
 
 float e(float a){
-    if (fabs(a) < 80)
-        return(exp(a));
-    else return(0);
+    return (fabs(a) < 80 ? exp(a) : 0);
 }
 
 float bell(float a, float b){
-    if (b != 0)
-        return(e(-sqr(a)/(b*16)));
-    else return(0);
+    return b != 0 ? e(-(a*a)/(b*16)) : 0;
 }
 
 float tanhyp(float x){
     float u = e(x);
     float v = e(-x);
-    if ((u+v) != 0)
-        return((u-v)/(u+v));
-    else
-        return(0);
+    return (u+v) != 0 ? (u-v)/(u+v) : 0;
 }
 
 float hypt(float a, float b){
-    if(b != 0)
-        return (1-tanhyp(a/b));
-    else
-        return (0);
+    return b != 0 ? 1-tanhyp(a/b) : 0;
 }
 
 float trait(int q, float phx){
@@ -151,7 +101,7 @@ float trait(int q, float phx){
     if (q == 9)  rbf =    62-34*bell(phx-63,66) + 39*hypt(phx-113,-162);
     if (q == 10) rbf =   -20+12*bell(phx-66,263) - 64*hypt(phx-153,-24);
     if (q == 11) rbf =    72-57*bell(phx-75,449) + 48*hypt(phx-116,-17);
-    return(rbf);
+    return rbf;
 }
 
 float dd(float h, float p){
@@ -165,121 +115,101 @@ float dd(float h, float p){
 
 // dbA
 static float dbA(float hz, float ph){
-	return(dd (hz, ph) + (throfs(hz) - dd(hz,3)) * (hz/250000));
+	return dd (hz, ph) + (throfs(hz) - dd(hz,3)) * (hz/250000);
 }
 
  // *************** Phons to Sones Conversion
  //    0.30103 = log10(2)
 static float ph2sn(float ph){
-	if (ph >  40)
+	if(ph >  40)
 		return pow(10, (0.30103*(ph-40))/10);
-	else if (ph > 1)
+	else if(ph > 1)
 		return pow(ph/40,2.86);
-	else return 0;
+	else
+        return 0;
 }
 
-/*
- ************************ Sones to Phons Convertion
+/************************ Sones to Phons Convertion
 
 // unused
  
-static float sn2ph(float sn) {
+static float sn2ph(float sn){
     return 40 + 33.22*log10f(sn); // fdgdf
 } */
 
-//==================================== Amplitude Weight Functions ====================================/
+//============== Amplitude Weight Functions ====================================/
 
-/*
- ************************ Vassilakis (Ampweight = 0)
- */
+// ************************ Vassilakis (Ampweight = 0)
 
 static float vassilakis(float a1, float a2) {
-	if (a1==0 || a2==0) return 0; //???
-	float amin = min(a1,a2);
+	if (a1 == 0 || a2 == 0) return 0; // ???
+	float amin = a1 < a2 ? a1 : a2;
 	float x = a1 * a2;
 	float y = 2*amin/(a1+a2);
-	return (pow(x,0.1) * 0.5 * pow(y,3.11)*2);
+	return pow(x,0.1) * 0.5 * pow(y, 3.11) * 2;
 }
 
-//==================================== Frequency to Barks ====================================/
+// ============================== Frequency to Barks ====================================/
 
-//***************** Terhardt
-static float terh(float h){
-	return 13.3*atan(3*h/4000);
-}
-
-// ******************** Traumuller
-static float traun(float h) {
-	float r = ((26.81*h)/(1960 + h)) - 0.53;
-	if (r > 20.1) {
-		r = r + 0.22*(r - 20.1);
-	}
-	return r;
-}
-
-// ****************** Hz to Bk
 static float barks(float hz){
-    if (hz < 219.5)
-        return terh(hz);
-    else
-        return traun(hz);
+    if(hz < 219.5)
+        return 13.3 * atan(3*hz/4000); // Terhardt
+    else{ // Traumuller
+        float r = ((26.81*hz)/(1960 + hz)) - 0.53;
+        if(r > 20.1)
+            r = r + 0.22 * (r - 20.1);
+        return r;
+    }
 }
 
- //====================== Bark to Roughness (Plomp & Levelt) ==========================/
+// =============== Bark to Roughness (Plomp & Levelt's Curve) =====================/
 
-
-// ************************ Parncutt (Curve = 0)
+// Parncutt (Curve = 0)
 static float parncutt(float freq1, float freq2){
-    float r = barks(freq1) - barks(freq2);
-    r = fabs(r);
-//    if (r > 1.2) {
+    float r = fabs(barks(freq1) - barks(freq2));
+//    if (r > 1.2)
 //        r = 0;
-//    } else {
-        r = pow((4*exp(1)*r)/(exp(4*r)), 2);
-//    }
+//    else
+        r = pow((4*exp(1)*r) / exp(4*r), 2);
     return r;
 }
 
-// ************************ Sethares (Curve = 1)
+// Sethares (Curve = 1)
 static float sethares(float freq1, float freq2){
-    float r = barks(freq1) - barks(freq2);
-    r = fabs(r);
-    r = 5.56309 * (exp(r * -3.51) - exp(r * -5.75));
-    return r;
+    float r = fabs(barks(freq1) - barks(freq2));
+    return 5.56309 * (exp(r * -3.51) - exp(r * -5.75));
 }
 
-//******* ************************ ************************ ************************ ************************ ************************/
-//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! ROUGHNESS FUNCTION !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!/
-//*******  ************************ ************************ ************************ ************************ ***********************/
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! ROUGHNESS FUNCTION !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!/
 
-float erb (float Hz) {
+float erb (float Hz){
 	float kHz = Hz/1000;
 	return 11.17 * log((kHz + 0.312) / (kHz + 14.675)) + 43.0;
 }
 
-static float YL (float Hz, float amp) {
+static float YL (float Hz, float amp){
 	float kHz = Hz/1000;
 	float LTh = 3.64*pow(kHz,-0.8)-6.5*exp(-0.6*pow(kHz-3.3,2))+0.001*pow(kHz,4);
 	float dB = rmstodb(amp);
 	return dB-LTh;
 }
 
-static void do_the_masking (int argc, t_atom *freqs, float *amps) {
-	float a[argc];
+static void do_the_masking(int ac, t_atom *freqs, float *amps){
+	float a[ac];
 	float kM = 18;
-	int i,j;
-	for (i=0; i<argc; i++) {
+	int i, j;
+	for(i = 0; i < ac; i++){
 		float Hz = atom_getfloat(&freqs[i]);
 		float kHz = Hz/1000;
-		float LTh = 3.64*pow(kHz,-0.8)-6.5*exp(-0.6*pow(kHz-3.3,2))+0.001*pow(kHz,4);
+		float LTh = 3.64 * pow(kHz, -0.8) -6.5 * exp(-0.6*pow(kHz-3.3, 2)) + 0.001*pow(kHz, 4);
 		float dB = rmstodb(amps[i]);
 		float YL_i = dB-LTh;
 		float sum = 0;
-		for (j=0; j<argc; j++) if (i!=j) { // masker (which doesn't mask itself)
+		for(j = 0; j < ac; j++) if(i != j){ // masker (which doesn't mask itself)
 			float YL_j = amps[j];
 			float pthDif = fabs(erb(atom_getfloat(&freqs[j])) - erb(atom_getfloat(&freqs[i])));
 			// pitch difference in critical bandwidths
-			if (pthDif < 3.) { // (otherwise masking is negligible) // (to save computing time)
+			if(pthDif < 3.){ // (otherwise masking is negligible) // (to save computing time)
 				float PML = YL_j - kM * pthDif; // masking due to one masker
 				// The masking gradient kM is typically about 12 dB per cb
 				// Assumption: "Typical" complex tones in reg 4 have 10 audible harmonics.
@@ -290,127 +220,133 @@ static void do_the_masking (int argc, t_atom *freqs, float *amps) {
 		float AL = fmax(YL_i-ML,0); // level above masked threshold
 		a[i]=dbtorms(AL+LTh);
 	}
-	for (i=0; i<argc; i++) amps[i]=a[i];
-}
-
-static void roughness(t_roughness *x) {
-	int size = x->argc;
-	int i, j;
-	float froughness = 0;
-	float r;
-	float freq_i, freq_j; //frequencies [0,1]
-	float amp_i, amp_j;   //amplitudes  [0,1]
-	float amp[size];
-	
-	//post("using phonsteps=%d loudness=%d",x->phonsteps,x->loudness);
-	//startpost("x->amps = [");
-	
-	for (i=0; i<size; i++) {
-		//startpost("%f%c",x->amps[i],i==size-1?']':',');
-		freq_i = atom_getfloat(x->freqs + i);
-		amp[i] = max(0.00001,x->amps[i]);
-	}
-	if (x->masking) do_the_masking(size,x->freqs,amp);
-	for (i=0; i<size; i++) {
-		// loudness 0 : linear amplitude
-		// loudness 1 : dbtorms(dB-LTh)
-		// loudness 2 : dbtorms(Phon)
-		// loudness 3 : Phon
-		// loudness 4 : Sones
-		if      (x->loudness==1) amp[i] = db2gain(  YL(freq_i,gain2db(amp[i])));
-		else if (x->loudness==2) amp[i] = db2gain(phon(freq_i,gain2db(x->amps[i]),x->phonsteps));
-		else if (x->loudness==3) amp[i] =         phon(freq_i,gain2db(x->amps[i]),x->phonsteps) ;
-		else if (x->loudness==4) amp[i] =   ph2sn(phon(freq_i,gain2db(x->amps[i]),x->phonsteps));
-		else post("only 0,1,2,3,4");
-	}
-
-    //post("");
-	
-	for (i = 0; i < size; i++) {
-		for (j = i + 1; j < size; j++) {
-            freq_i = atom_getfloat(x->freqs + i);
-            freq_j = atom_getfloat(x->freqs + j);
-			amp_i = amp[i];
-			amp_j = amp[j];
-			float ampweight;
-			if (x->mean == 0)                                  //Ampweight = Vassilakis
-				ampweight = vassilakis(amp_i,amp_j);           
-			else
-				ampweight = sqrt(amp_i*amp_j);		      //Ampweight = Barlow	
-			
-			if (x->curve == 0) {                               //Parncutt for Plomp & Levelt
-        		r = parncutt(freq_i, freq_j) * ampweight;
-				froughness += r;
-			} else if (x->curve == 1) {                        //Sethares for Plomp & Levelt
-				r = sethares(freq_i, freq_j) * ampweight;
-				froughness += r;
-			}
-		}
-	}
-	if (froughness!=0 && !isnormal(froughness)) {
-		post("warning: froughness was %f : zeroing",froughness);
-		startpost("x->amps[i] were :");
-		for (i=0; i<size; i++) startpost(" %f",x->amps[i]);
-		post("");
-		startpost("amp[i] were :");
-		for (i=0; i<size; i++) startpost(" %f",amp[i]);
-		post("");
-	    froughness=0;
-	}
-	outlet_float(x->x_outlet, froughness);
+	for(i = 0; i < ac; i++)
+        amps[i]=a[i];
 }
 
 //______END OF FUNCTIONS__________________________________________________________________/
 
 
-// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! OBJECTS !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+// !!!!!!!!!!!!!!!!!!!!!! OBJECTS !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 //************************ ROUGHNESS OBJECT ************************/
 
-// Roughness modelling is Based on the work of Parncutt, Sethares, Vassilakis & Clarence Barlow.
+// model derived from the work of Parncutt, Sethares, Vassilakis & Barlow.
 
-/**
- * Hot inlet
- * Allocate frequency values and execute roughness method.
- */
-static void roughness_freqs(t_roughness *x, t_symbol *s, int argc, t_atom *argv)
-{
+static t_class *roughness_class;
+
+typedef struct roughness{
+    t_object x_ob;
+    t_outlet *x_outlet;
+    float curve; //0 = parncutt / 1 = sethares (??????????????)
+    int ac;
+    t_atom *freqs;
+    float *amps;
+    int phonsteps;
+    int loudness;
+    int mean; // (!!!!!!!!!!!!!!!!!!!!!!!!!!!!)
+    int masking;
+}t_roughness;
+
+static void roughness(t_roughness *x){
+    int size = x->ac;
+    int i, j;
+    float froughness = 0;
+    float r;
+    float freq_i, freq_j; // frequencies [0, 1]
+    float amp_i, amp_j;   // amplitudes  [0, 1]
+    float amp[size];
+    //post("using phonsteps=%d loudness=%d",x->phonsteps,x->loudness);
+    //startpost("x->amps = [");
+    for(i = 0; i < size; i++){ // startpost("%f%c",x->amps[i],i==size-1?']':',');
+        freq_i = atom_getfloat(x->freqs + i);
+        amp[i] = 0.00001 > x->amps[i] ? 0.00001 : x->amps[i];
+    }
+    if(x->masking)
+        do_the_masking(size, x->freqs, amp);
+    for(i = 0; i < size; i++){
+        // loudness 0 : linear amplitude
+        // loudness 1 : dbtorms(dB-LTh)
+        // loudness 2 : dbtorms(Phon)
+        // loudness 3 : Phon
+        // loudness 4 : Sones
+        if (x->loudness == 1)
+            amp[i] = db2gain(  YL(freq_i,gain2db(amp[i])));
+        else if (x->loudness == 2)
+            amp[i] = db2gain(phon(freq_i,gain2db(x->amps[i]), x->phonsteps));
+        else if (x->loudness == 3)
+            amp[i] = phon(freq_i,gain2db(x->amps[i]), x->phonsteps) ;
+        else if (x->loudness == 4)
+            amp[i] = ph2sn(phon(freq_i,gain2db(x->amps[i]), x->phonsteps));
+        else
+            post("loudness mode options: 0, 1, 2, 3 & 4");
+    }
+    for(i = 0; i < size; i++){
+        for(j = i + 1; j < size; j++){
+            freq_i = atom_getfloat(x->freqs + i);
+            freq_j = atom_getfloat(x->freqs + j);
+            amp_i = amp[i];
+            amp_j = amp[j];
+            float ampweight;
+            if(x->mean == 0) // Ampweight = Vassilakis
+                ampweight = vassilakis(amp_i,amp_j);
+            else
+                ampweight = sqrt(amp_i*amp_j); // Ampweight = Barlow
+            if(x->curve == 0){                 // Parncutt for Plomp & Levelt
+                r = parncutt(freq_i, freq_j) * ampweight;
+                froughness += r;
+            }
+            else if(x->curve == 1){            // Sethares for Plomp & Levelt
+                r = sethares(freq_i, freq_j) * ampweight;
+                froughness += r;
+            }
+        }
+    }
+    if(froughness != 0 && !isnormal(froughness)){
+        post("warning: froughness was %f : zeroing", froughness);
+        startpost("x->amps[i] were :");
+        for (i=0; i<size; i++) startpost(" %f", x->amps[i]);
+        post("");
+        startpost("amp[i] were :");
+        for (i=0; i<size; i++) startpost(" %f", amp[i]);
+        post("");
+        froughness = 0;
+    }
+    outlet_float(x->x_outlet, froughness);
+}
+
+static void roughness_freqs(t_roughness *x, t_symbol *s, int ac, t_atom *av){
     // LATER accelerqte x->freqs by making it a float *.
     // LATER see if resizebytes gets any faster
     t_symbol *dummy = s;
     dummy = NULL;
-    if (x->freqs) freebytes(x->freqs,x->argc*sizeof(t_atom));
-    x->freqs = (t_atom *)getbytes(argc * sizeof(t_atom));
-    int i;
-    for (i=0; i<argc; i++) x->freqs[i] = argv[i];
-    x->argc = argc;
-    if (x->amps) {
+    if (x->freqs)
+        freebytes(x->freqs,x->ac*sizeof(t_atom));
+    x->freqs = (t_atom *)getbytes(ac * sizeof(t_atom));
+    for(int i = 0; i < ac; i++)
+        x->freqs[i] = av[i];
+    x->ac = ac;
+    if(x->amps)
         roughness(x);
-    }
 }
 
-/**
- * Cold inlet
- * Allocate amplitude values.
- */
-static void roughness_amps(t_roughness *x, t_symbol *s, int argc, t_atom *argv)
-{
+static void roughness_amps(t_roughness *x, t_symbol *s, int ac, t_atom *av){
     // LATER see if resizebytes gets any faster
     t_symbol *dummy = s;
     dummy = NULL;
-    if (x->amps ) freebytes(x->amps,x->argc*sizeof(float));
-    x->amps = (float *)getbytes(argc * sizeof(float));
-	x->argc = argc;
-	int i;
-    for (i = 0; i < argc;i++) {
-		x->amps[i] = atom_getfloat(argv+i);
-	}
+    if(x->amps)
+        freebytes(x->amps,x->ac*sizeof(float));
+    x->amps = (float *)getbytes(ac * sizeof(float));
+	x->ac = ac;
+    for(int i = 0; i < ac;i++)
+		x->amps[i] = atom_getfloat(av+i);
 }
 
 static void roughness_phonsteps (t_roughness *x, t_float f) { x->phonsteps = f; }
-static void roughness_loudness   (t_roughness *x, t_float f) {
+
+static void roughness_loudness (t_roughness *x, t_float f){
 	int n = (int)f;
-	if (n<0 || n>4) {
+	if(n < 0 || n > 4){
 		pd_error(x,"loudness is supposed to be one of 0,1,2,3,4 but got %f",f);
 	} else x->loudness = f;
 }
@@ -433,49 +369,39 @@ static void roughness_masking (t_roughness *x, t_float f) {
 	} else x->masking = f;
 }
 
-/*
- * New method
- */
-static void *roughness_new(t_symbol *s, int argcount, t_atom *argvec)
-{
+static void *roughness_new(t_symbol *s, int ac, t_atom *av){
     t_roughness *x = (t_roughness *)pd_new(roughness_class);
     t_symbol *dummy = s;
     dummy = NULL;
     inlet_new(&x->x_ob, &x->x_ob.ob_pd, gensym("list"), gensym("amps"));
     x->x_outlet = outlet_new(&x->x_ob, gensym("float"));
-	//these are the valid choices
     x->curve = 0;
     x->phonsteps = 20;
 	x->loudness = 1;
 	x->mean = 0;
 	x->masking = 0;
-    if (argcount == 0 || (argvec[0].a_w.w_float != 0 && argvec[0].a_w.w_float != 1 && argvec[0].a_w.w_float != 2)) {
-		post("Missing valid argument:  roughness [0|1]. Using default: '0 = parncutt'.");
-	} else {
-        x->curve = argvec[0].a_w.w_float;
-    }
-    if (argcount > 1) {
-        post("warning: too many arguments");
-    }
+    if(ac)
+        x->curve = av[0].a_w.w_float;
     return (void *)x;
 }
 
-static void roughness_free (t_roughness *x) {
-    if (x->freqs) freebytes(x->freqs,x->argc*sizeof(t_atom));
-    if (x->amps ) freebytes(x->amps ,x->argc*sizeof(float));
+static void roughness_free (t_roughness *x){
+    if (x->freqs)
+        freebytes(x->freqs,x->ac*sizeof(t_atom));
+    if (x->amps )
+        freebytes(x->amps ,x->ac*sizeof(float));
 }
-
 
 //************************ FLUNSON OBJECT ************************/
 
 t_class *flunson_class;
 
-typedef struct flunson {
+typedef struct flunson{
     t_object x_ob;
     t_outlet *x_outlet;
-	int argc;
+	int ac;
 	float *amps;
-} t_flunson;
+}t_flunson;
 
 void *flunson_new(void){
     t_flunson *x = (t_flunson *)pd_new(flunson_class);
@@ -484,51 +410,50 @@ void *flunson_new(void){
     return (void *)x;
 }
 
-void flunson_freqs(t_flunson *x, t_symbol *s, int argc, t_atom *argv)
-{
+void flunson_freqs(t_flunson *x, t_symbol *s, int ac, t_atom *av){
     t_symbol *dummy = s;
     dummy = NULL;
-    if (argc > x->argc) argc = x->argc; // too many args.
-    t_atom outs[argc];
+    if(ac > x->ac)
+        ac = x->ac; // too many args.
+    t_atom outs[ac];
     int i;
-//  for (i=0; i<argc; i++) SETFLOAT(outs+i,        phon(atom_getfloat(argv+i),        x->amps[i] ) );
-    for (i=0; i<argc; i++) SETFLOAT(outs+i,db2gain(phon(atom_getfloat(argv+i),gain2db(x->amps[i]),20)));
-//  for (i=0; i<argc; i++) SETFLOAT(outs+i,db2gain( dbA(atom_getfloat(argv+i),gain2db(x->amps[i]))));
-    outlet_list(x->x_outlet,&s_list,argc,outs);
+//  for (i=0; i<ac; i++) SETFLOAT(outs+i, phon(atom_getfloat(av+i),        x->amps[i] ) );
+    for(i = 0; i < ac; i++)
+        SETFLOAT(outs+i, db2gain(phon(atom_getfloat(av+i), gain2db(x->amps[i]), 20)));
+//  for (i=0; i<ac; i++) SETFLOAT(outs+i,db2gain( dbA(atom_getfloat(av+i),gain2db(x->amps[i]))));
+    outlet_list(x->x_outlet,&s_list,ac,outs);
 }
 
-void flunson_amps(t_flunson *x, t_symbol *s, int argc, t_atom *argv)
-{
+void flunson_amps(t_flunson *x, t_symbol *s, int ac, t_atom *av){
     t_symbol *dummy = s;
     dummy = NULL;
     // LATER see if resizebytes gets any faster
-    if (x->amps ) freebytes(x->amps,x->argc*sizeof(float));
-    x->amps = (float *)getbytes(argc * sizeof(float));
-	x->argc = argc;
-	int i;
-    for (i = 0; i < argc;i++) {
-		x->amps[i] = atom_getfloat(argv+i);
-	}
+    if(x->amps)
+        freebytes(x->amps, x->ac*sizeof(float));
+    x->amps = (float *)getbytes(ac * sizeof(float));
+	x->ac = ac;
+    for(int i = 0; i < ac; i++)
+		x->amps[i] = atom_getfloat(av+i);
 }
 
-void flunson_free (t_flunson *x) {
-    if (x->amps ) freebytes(x->amps ,x->argc*sizeof(float));
+void flunson_free (t_flunson *x){
+    if(x->amps)
+        freebytes(x->amps, x->ac*sizeof(float));
 }
 
 //************************ Phon / dBA / iso226 / iso226b ************************/
-
 static t_class *phon_class;
 static t_class *dbA_class;
 static t_class *iso226_class; /* not a t_func */
 static t_class *iso226b_class;
-typedef struct func {
+
+typedef struct func{
     t_object x_ob;
     t_outlet *x_outlet;
 	float right;
-} t_func;
+}t_func;
 
-static void *phon_new(t_float right)
-{
+static void *phon_new(t_float right){
     t_func *x = (t_func *)pd_new(phon_class);
     inlet_new(&x->x_ob, &x->x_ob.ob_pd, gensym("float"), gensym("right"));
     x->x_outlet = outlet_new(&x->x_ob, gensym("float"));
@@ -536,8 +461,7 @@ static void *phon_new(t_float right)
     return (void *)x;
 }
 
-static void *dbA_new(t_float right)
-{
+static void *dbA_new(t_float right){
     t_func *x = (t_func *)pd_new(dbA_class);
     inlet_new(&x->x_ob, &x->x_ob.ob_pd, gensym("float"), gensym("right"));
     x->x_outlet = outlet_new(&x->x_ob, gensym("float"));
@@ -545,22 +469,30 @@ static void *dbA_new(t_float right)
     return (void *)x;
 }
 
-static void *iso226b_new(t_float right)
-{
+static void *iso226b_new(t_float right){
     t_func *x = (t_func *)pd_new(iso226b_class);
     inlet_new(&x->x_ob, &x->x_ob.ob_pd, gensym("float"), gensym("right"));
     x->x_outlet = outlet_new(&x->x_ob, gensym("float"));
     x->right = right;
     return (void *)x;
 }
-static void function_right (t_func *x, float right) {x->right = right;}
-static void   phon_left (t_func *x, float left) {outlet_float(x->x_outlet,  phon(left,x->right,20));}
-static void    dbA_left (t_func *x, float left) {outlet_float(x->x_outlet,   dbA(left,x->right));}
 
-typedef struct iso226 {
+static void function_right (t_func *x, float right){
+    x->right = right;
+}
+
+static void phon_left (t_func *x, float left){
+    outlet_float(x->x_outlet,  phon(left,x->right,20));
+}
+
+static void dbA_left (t_func *x, float left){
+    outlet_float(x->x_outlet, dbA(left, x->right));
+}
+
+typedef struct iso226{
         t_object x_ob;
         t_outlet *x_outlet;
-} t_iso226;
+}t_iso226;
 
 static void *iso226_new(void){
     t_func *x = (t_func *)pd_new(iso226_class);
@@ -570,7 +502,7 @@ static void *iso226_new(void){
 
 //float foo(float i) {return 20*pow(2,i/3);}
 //float unf(float f) {return log(f/20)/log(2)*3;}
-static void iso226_float(t_iso226 *x, t_float ph) {
+static void iso226_float(t_iso226 *x, t_float ph){
     t_atom spl[29];
     int i;
     //f = [20 25 31.5 40 50 63 80 100 125 160 200 250 315 400 500 630 800 1000 1250 1600 2000 2500 3150 4000 5000 6300 8000 10000 12500];
@@ -583,21 +515,29 @@ static void iso226_float(t_iso226 *x, t_float ph) {
     float Tf[] = { 78.5,  68.7,  59.5,  51.1,  44.0,  37.5,  31.5,  26.5,  22.1,  17.9,  14.4,
                    11.4,   8.6,   6.2,   4.4,   3.0,   2.2,   2.4,   3.5,   1.7,  -1.3,  -4.2,
                    -6.0,  -5.4,  -1.5,   6.0,  12.6,  13.9,  12.3};
-
-    if ((ph < 0) || (ph > 90)) {pd_error(x,"Phon value out of bounds!"); return;}
+    if(ph < 0 || ph > 90){
+        pd_error(x, "Phon value out of bounds!");
+        return;
+    }
     //Deriving sound pressure level from loudness level (iso226 sect 4.1)
     float Af[29];
-    for (i=0; i<29; i++) Af[i] = 4.47E-3 * (pow(10,0.025*ph) - 1.15) + pow(0.4*pow(10,((Tf[i]+Lu[i])/10)-9 ),af[i]);
-    for (i=0; i<29; i++) SETFLOAT(&spl[i], ((10/af[i]) * log10(Af[i])) - Lu[i] + 94);
-
+    for(i = 0; i < 29; i++)
+        Af[i] = 4.47E-3 * (pow(10,0.025*ph) - 1.15) + pow(0.4*pow(10,((Tf[i]+Lu[i])/10)-9 ), af[i]);
+    for(i = 0; i < 29; i++)
+        SETFLOAT(&spl[i], ((10/af[i]) * log10(Af[i])) - Lu[i] + 94);
     outlet_list(x->x_outlet,&s_list,29,spl);
 }
-static double phons[11]={2,10,20,30,40,50,60,70,80,90,100};
+
+static double phons[11] = {2,10,20,30,40,50,60,70,80,90,100};
+
 static int eqlbandbins[43]= {
       1,  2,  3,  4,  5,  6,  7,  8,  9, 11, 13, 15, 17, 19,
      22, 25, 28, 32, 36, 41, 46, 52, 58, 65, 73, 82, 92,103,
-    116,129,144,161,180,201,225,251,280,312,348,388,433,483,513};
+    116,129,144,161,180,201,225,251,280,312,348,388,433,483,513
+};
+
 static float logfreqs[43];
+
 static float contours[42][11]= {
 { 47.88, 59.68, 68.55, 75.48, 81.71, 87.54, 93.24, 98.84,104.44,109.94,115.31}, // 0
 { 29.04, 41.78, 51.98, 60.18, 67.51, 74.54, 81.34, 87.97, 94.61,101.21,107.74},
@@ -642,7 +582,7 @@ static float contours[42][11]= {
 { 15.60, 23.90, 33.60, 42.70, 51.50, 60.20, 68.70, 77.30, 85.80, 94.00,101.70},
 { 15.60, 23.90, 33.60, 42.70, 51.50, 60.20, 68.70, 77.30, 85.80, 94.00,101.70}};
 
-static void iso226b_left(t_func *x, t_float left) {
+static void iso226b_left(t_func *x, t_float left){
         float freq = left;
         if (freq > 12500) {freq = 12500;}
         if (freq < 20) {freq = 20;}
@@ -650,9 +590,9 @@ static void iso226b_left(t_func *x, t_float left) {
 		float lastfreq = logfreqs[0];
         int i;
         float fprop=0;
-        for (i=1; i<43; i++) {
+        for(i = 1; i < 43; i++){
             float val = logfreqs[i];
-            if(freq >= lastfreq && freq <= val) {
+            if(freq >= lastfreq && freq <= val){
                 fprop = (freq - lastfreq) / (val - lastfreq);
                 break;
             }
@@ -660,59 +600,61 @@ static void iso226b_left(t_func *x, t_float left) {
 		}
 		float contour[11];
 		int j;
-		for (j=0; j<11; j++) contour[j] = (1-fprop) * contours[i-1][j] + fprop * contours[i][j];
-
+		for(j = 0; j < 11; j++) contour[j] = (1-fprop) * contours[i-1][j] + fprop * contours[i][j];
         float db = x->right;
-	    if(db<contour[0]) db=0;
-		else if (db>contour[10]) db=phons[10];
-		else {
-			float prop=0.0;
-			for (j=1; j<11; ++j) {
-				if(db<contour[j]) {
+	    if(db < contour[0])
+            db = 0;
+		else if (db > contour[10])
+            db = phons[10];
+		else{
+			float prop = 0.0;
+			for(j = 1; j < 11; ++j){
+				if(db < contour[j]){
 					prop= (db-contour[j-1])/(contour[j]-contour[j-1]);
 					break;
 				}
-				if(j==10) prop=1.0;
+				if(j == 10)
+                    prop = 1.0;
 			}
-			 outlet_float(x->x_outlet,(1.f-prop)*phons[j-1]+ prop*phons[j]);
-			//printf("prop %f db %f j %d\n",prop,db,j);
+            outlet_float(x->x_outlet, (1.f-prop) * phons[j-1] + prop*phons[j]);
 		}
 }
 
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Setup %%%%%%%%%%%%%%%%%%%%%%%%%
-
 void psycho_setup(void){
     roughness_class = class_new(gensym("roughness"), (t_newmethod)roughness_new, (t_method)roughness_free, sizeof(t_roughness), 0, A_GIMME, 0);
 	class_addlist(roughness_class, roughness_freqs);
 	class_addmethod(roughness_class, (t_method)roughness_amps, gensym("amps"), A_GIMME, 0); 
     class_addmethod(roughness_class, (t_method)roughness_phonsteps, gensym("phonsteps"), A_FLOAT, 0);
-    class_addmethod(roughness_class, (t_method)roughness_loudness,  gensym("loudness"),  A_FLOAT, 0);
-    class_addmethod(roughness_class, (t_method)roughness_mean,      gensym("weight"),    A_FLOAT, 0);
-    class_addmethod(roughness_class, (t_method)roughness_curve,     gensym("curve"),     A_FLOAT, 0);
-    class_addmethod(roughness_class, (t_method)roughness_masking,   gensym("masking"),   A_FLOAT, 0);
-    class_addmethod(roughness_class, (t_method)roughness_masking,   gensym("sones"),     A_FLOAT, 0);
+    class_addmethod(roughness_class, (t_method)roughness_loudness, gensym("loudness"), A_FLOAT, 0);
+    class_addmethod(roughness_class, (t_method)roughness_mean, gensym("weight"), A_FLOAT, 0);
+    class_addmethod(roughness_class, (t_method)roughness_curve, gensym("curve"), A_FLOAT, 0);
+    class_addmethod(roughness_class, (t_method)roughness_masking, gensym("masking"), A_FLOAT, 0);
+    class_addmethod(roughness_class, (t_method)roughness_masking, gensym("sones"), A_FLOAT, 0);
 	
 	flunson_class = class_new(gensym("flunson"), (t_newmethod)flunson_new,
-                              (t_method)flunson_free, sizeof(t_flunson), 0, 0);
+                (t_method)flunson_free, sizeof(t_flunson), 0, 0);
 	class_addlist(flunson_class, flunson_freqs);
 	class_addanything(flunson_class, flunson_amps); // use class_addmethod with gensym("amps")
     
     phon_class = class_new(gensym("phon"), (t_newmethod)phon_new, 0, sizeof(t_func), 0, A_DEFFLOAT, 0);
-    class_addmethod(phon_class,(t_method)function_right,gensym("right"),A_FLOAT,0);
+    class_addmethod(phon_class,(t_method)function_right,gensym("right"), A_FLOAT, 0);
     class_addfloat(phon_class,(t_method)phon_left);
     
-    dbA_class = class_new(gensym("dbA"),(t_newmethod)dbA_new,0,sizeof(t_func),0,A_DEFFLOAT,0);
-    class_addmethod(dbA_class,(t_method)function_right,gensym("right"),A_FLOAT,0);
-    class_addfloat(dbA_class,(t_method)dbA_left);
+    dbA_class = class_new(gensym("dbA"),(t_newmethod)dbA_new,0,sizeof(t_func), 0, A_DEFFLOAT, 0);
+    class_addmethod(dbA_class, (t_method)function_right, gensym("right"), A_FLOAT, 0);
+    class_addfloat(dbA_class, (t_method)dbA_left);
     
-    iso226b_class = class_new(gensym("iso226b"),(t_newmethod)iso226b_new,0,sizeof(t_func),0,A_DEFFLOAT,0);
-    class_addmethod(iso226b_class,(t_method)function_right,gensym("right"),A_FLOAT,0);
+    iso226b_class = class_new(gensym("iso226b"), (t_newmethod)iso226b_new, 0,
+                              sizeof(t_func), 0, A_DEFFLOAT, 0);
+    class_addmethod(iso226b_class, (t_method)function_right, gensym("right"), A_FLOAT, 0);
     class_addfloat(iso226b_class,(t_method)iso226b_left);
     
-    iso226_class = class_new(gensym("iso226"),(t_newmethod)iso226_new,0,sizeof(t_func),0, 0);
+    iso226_class = class_new(gensym("iso226"), (t_newmethod)iso226_new, 0, sizeof(t_func), 0, 0);
     class_addfloat(iso226_class,(t_method)iso226_float);
     
-    post("Psycho library v0.0.1 alpha-0 (unreleased)");
     for(int i = 0; i < 43; i++)
         logfreqs[i] = log(eqlbandbins[i]/512.0*44100.0); // ????????????
+    
+    post("Psycho library v0.0.1 alpha-0 (unreleased)");
 }
