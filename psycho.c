@@ -28,8 +28,8 @@
 //=============================== Amplitude & Loudness ====================================/
 
 // ******* [rmstodb] - Converts Linear Amplitude to dB(A)
-static float gain2db(float amp) {
-    if (amp > 0.00001)
+static float gain2db(float amp){
+    if(amp > 0.00001)
         return 100+20*log10f(amp);
     return 0;
 }
@@ -139,7 +139,6 @@ static float sn2ph(float sn){
 //============== Amplitude Weight Functions ====================================/
 
 // ************************ Vassilakis (Ampweight = 0)
-
 static float vassilakis(float a1, float a2) {
 	if (a1 == 0 || a2 == 0) return 0; // ???
 	float amin = a1 < a2 ? a1 : a2;
@@ -148,8 +147,7 @@ static float vassilakis(float a1, float a2) {
 	return pow(x,0.1) * 0.5 * pow(y, 3.11) * 2;
 }
 
-// ============================== Frequency to Barks ====================================/
-
+// ======================= Frequency to Barks ====================================/
 static float barks(float hz){
     if(hz < 219.5)
         return 13.3 * atan(3*hz/4000); // Terhardt
@@ -162,7 +160,6 @@ static float barks(float hz){
 }
 
 // =============== Bark to Roughness (Plomp & Levelt's Curve) =====================/
-
 static float parncutt(float freq1, float freq2){ // Curve = 0
     float r = fabs(barks(freq1) - barks(freq2));
 //    if (r > 1.2)
@@ -178,7 +175,6 @@ static float sethares(float freq1, float freq2){ // Curve = 1
 }
 
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! ROUGHNESS FUNCTION !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!/
-
 float erb (float Hz){
 	float kHz = Hz/1000;
 	return 11.17 * log((kHz + 0.312) / (kHz + 14.675)) + 43.0;
@@ -223,7 +219,6 @@ static void do_the_masking(int ac, t_atom *freqs, float *amps){
 
 //______END OF FUNCTIONS__________________________________________________________________/
 
-
 // !!!!!!!!!!!!!!!!!!!!!! OBJECTS !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 //************************ ROUGHNESS OBJECT ************************/
@@ -267,7 +262,7 @@ static void roughness(t_roughness *x){
         // loudness 2 : dbtorms(Phon)
         // loudness 3 : Phon
         // loudness 4 : Sones
-        if(x->loudness == 0){
+        if(x->loudness == 0){ // nothing
         }
         else if(x->loudness == 1)
             amp[i] = db2gain(  YL(freq_i,gain2db(amp[i])));
@@ -487,8 +482,8 @@ static void dbA_left (t_func *x, float left){
 }
 
 typedef struct iso226{
-        t_object x_ob;
-        t_outlet *x_outlet;
+    t_object x_ob;
+    t_outlet *x_outlet;
 }t_iso226;
 
 static void *iso226_new(void){
