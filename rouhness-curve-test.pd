@@ -1,10 +1,10 @@
-#N canvas 409 60 1002 662 10;
+#N canvas 438 58 1002 662 10;
 #X declare -lib psycho -path else;
 #X obj 465 25 cnv 15 511 598 empty empty empty 20 12 0 14 -228856 -66577
 0;
 #N canvas 0 22 1387 856 (subpatch) 0;
 #X array Curva 1251 float 0;
-#X coords 0 9.98698 1251 0.902438 512 600 1;
+#X coords 0 0 1251 1 512 600 1;
 #X restore 464 24 graph;
 #N canvas 451 23 279 367 freq-amps 0;
 #X obj 112 59 inlet;
@@ -422,7 +422,7 @@
 #X msg 301 260 phonsteps \$1;
 #X floatatom 301 241 5 4 24 0 - - -;
 #X msg 316 300 loudness \$1;
-#X obj 316 282 hradio 15 1 0 3 empty empty empty 0 -8 0 10 -262144
+#X obj 316 282 hradio 15 1 0 5 empty empty empty 0 -8 0 10 -262144
 -1 -1 0;
 #X msg 340 381 curve \$1;
 #X obj 330 322 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
@@ -440,10 +440,7 @@
 #X obj 113 150 bl.saw~;
 #X obj 113 124 sig~ 300;
 #X obj 365 45 setdsp~ 1;
-#X msg 74 539 curve 0 \, loudness 2 \, weight 1;
 #X msg 88 564 curve 1 \, loudness 0 \, weight 0;
-#X msg 55 514 curve 0 \, loudness 2 \, weight 0;
-#X text 239 513 Porres' model;
 #X obj 113 193 sigmund~ -npts 2048 -hop 1024 -npeak 10 peaks;
 #N canvas 359 210 428 325 Curve 0;
 #X obj 126 49 inlet;
@@ -648,23 +645,23 @@
 #X restore 128 342 pd Curve;
 #X obj 44 239 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856 -1
 -1;
-#N canvas 879 190 493 271 notes 0;
-#X text 46 18 phonstep (defaut is 20 \, reasonalbe is from 10 to 25)
+#N canvas 888 23 523 381 notes 0;
+#X text 70 36 phonstep (defaut is 20 \, reasonalbe is from 10 to 25)
 ;
-#X text 82 137 Clarence's Model: curve 0 \, loudness 2 \, weight 1
+#X text 88 227 Clarence's Model: curve 0 \, loudness 2 \, weight 1
 ;
-#X text 82 154 Vassilakis Model: curve 1 \, loudness 0 \, weight 0
+#X text 88 244 Vassilakis Model: curve 1 \, loudness 0 \, weight 0
 ;
-#X text 82 171 Porres: Curve 0 \, loudness 2 \, weight 0, f 47;
-#X text 46 78 curve: 0 = Parncutt (default) \, 1 = Sethares;
-#X text 46 38 amp/loudness mode: 0 (gain) \, 1 (gain after phon/default)
-\, 2 (sones), f 68;
-#X text 46 58 weight: 0 (vassilakis/default) \, 1 (log mean used by
+#X text 70 172 curve: 0 = Parncutt (default) \, 1 = Sethares;
+#X text 70 152 weight: 0 (vassilakis/default) \, 1 (log mean used by
 Clarence), f 61;
-#X text 82 120 Default: Curve 0 \, loudness 1 \, weight 0, f 47;
-#X text 48 221 Default \, no masking;
+#X text 89 279 Default \, no masking;
+#X text 74 61 loudness mode:;
+#X text 98 81 0 - linear amplitude \; 1 - dbtorms(dB-LTh) \; 2 - dbtorms(Phon)
+\; 3 - Phon \; 4 - Sones (default), f 68;
+#X text 88 210 Porres' model (default): Curve 0 \, loudness 2 \, weight
+0;
 #X restore 242 68 pd notes;
-#X obj 55 491 loadbang;
 #X text 260 539 Barlow's;
 #X text 274 565 Vassilakis';
 #N canvas 293 272 489 363 set-table 0;
@@ -721,39 +718,41 @@ Clarence), f 61;
 #X text 941 627 1200;
 #X obj 111 41 declare -lib psycho -path else;
 #X text 38 219 Do it;
-#X obj 205 371 roughness;
 #X obj 316 448 s \$0-roughness;
 #X obj 74 596 s \$0-roughness;
 #X obj 205 334 r \$0-roughness;
-#X connect 2 0 27 0;
-#X connect 2 1 27 1;
+#X msg 74 539 curve 0 \, loudness 4 \, weight 1;
+#X msg 55 514 curve 0 \, loudness 4 \, weight 0;
+#X obj 205 371 roughness;
+#X text 239 513 Porres' model (default);
+#X connect 2 0 24 0;
+#X connect 2 1 24 1;
 #X connect 3 0 20 0;
-#X connect 4 0 27 0;
-#X connect 5 0 52 0;
+#X connect 4 0 24 0;
+#X connect 5 0 47 0;
 #X connect 6 0 5 0;
-#X connect 7 0 52 0;
+#X connect 7 0 47 0;
 #X connect 8 0 7 0;
-#X connect 9 0 52 0;
+#X connect 9 0 47 0;
 #X connect 10 0 12 0;
 #X connect 11 0 9 0;
-#X connect 12 0 52 0;
-#X connect 13 0 27 1;
+#X connect 12 0 47 0;
+#X connect 13 0 24 1;
 #X connect 14 0 15 0;
-#X connect 15 0 26 0;
-#X connect 16 0 27 0;
+#X connect 15 0 23 0;
+#X connect 16 0 24 0;
 #X connect 17 0 18 0;
-#X connect 18 0 52 0;
-#X connect 19 0 26 0;
+#X connect 18 0 47 0;
+#X connect 19 0 23 0;
 #X connect 20 0 19 0;
-#X connect 22 0 53 0;
-#X connect 23 0 53 0;
-#X connect 24 0 53 0;
-#X connect 26 0 2 1;
-#X connect 27 0 34 0;
-#X connect 27 1 51 0;
-#X connect 27 2 51 1;
-#X connect 28 0 2 0;
-#X connect 30 0 24 0;
-#X connect 51 0 27 2;
-#X connect 51 0 33 0;
-#X connect 54 0 51 0;
+#X connect 22 0 48 0;
+#X connect 23 0 2 1;
+#X connect 24 0 30 0;
+#X connect 24 1 52 0;
+#X connect 24 2 52 1;
+#X connect 25 0 2 0;
+#X connect 49 0 52 0;
+#X connect 50 0 48 0;
+#X connect 51 0 48 0;
+#X connect 52 0 24 2;
+#X connect 52 0 29 0;

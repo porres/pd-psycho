@@ -43,10 +43,9 @@ static float db2gain(float db){
 
 static float dbA(float hz, float ph);
 
-static float phon(float hz, float db, int phonsteps)
+static float phon(float hz, float db, int phonsteps){
 /* NB: 1 dbA (the minimum workable value)
  gives -123.3 Ph @ 20 Hz, -30.0 Ph @ 20000 Hz */
-{
 	float ph,phbt,phtp,lphbt,lphtp; int i;
 	float mb;
 	phbt = -125.95; phtp = 150.00; i = 0;
@@ -67,11 +66,11 @@ static float throfs(float hz){
     thr = 3.64*exp(-0.8*log(khz))+0.001 * pow(khz, 4);
 	if(khz <= 15.41)
         thr = thr-6.5*exp(-0.6 * pow(khz-3.3, 2));
-	return(thr);
+	return thr;
 }
 
 float e(float a){
-    return (fabs(a) < 80 ? exp(a) : 0);
+    return fabs(a) < 80 ? exp(a) : 0;
 }
 
 float bell(float a, float b){
@@ -164,8 +163,7 @@ static float barks(float hz){
 
 // =============== Bark to Roughness (Plomp & Levelt's Curve) =====================/
 
-// Parncutt (Curve = 0)
-static float parncutt(float freq1, float freq2){
+static float parncutt(float freq1, float freq2){ // Curve = 0
     float r = fabs(barks(freq1) - barks(freq2));
 //    if (r > 1.2)
 //        r = 0;
@@ -174,8 +172,7 @@ static float parncutt(float freq1, float freq2){
     return r;
 }
 
-// Sethares (Curve = 1)
-static float sethares(float freq1, float freq2){
+static float sethares(float freq1, float freq2){ // Curve = 1
     float r = fabs(barks(freq1) - barks(freq2));
     return 5.56309 * (exp(r * -3.51) - exp(r * -5.75));
 }
@@ -189,7 +186,7 @@ float erb (float Hz){
 
 static float YL (float Hz, float amp){
 	float kHz = Hz/1000;
-	float LTh = 3.64*pow(kHz,-0.8)-6.5*exp(-0.6*pow(kHz-3.3,2))+0.001*pow(kHz,4);
+	float LTh = 3.64 * pow(kHz,-0.8) - 6.5*exp(-0.6*pow(kHz-3.3, 2)) + 0.001*pow(kHz,4);
 	float dB = rmstodb(amp);
 	return dB-LTh;
 }
@@ -216,12 +213,12 @@ static void do_the_masking(int ac, t_atom *freqs, float *amps){
 				sum += pow(10, (PML / 20.)); // add amplitudes
 			}
 		}
-		float ML = fmax(20.*log10(sum),0); // due to all maskers
-		float AL = fmax(YL_i-ML,0); // level above masked threshold
+		float ML = fmax(20.*log10(sum), 0); // due to all maskers
+		float AL = fmax(YL_i-ML, 0); // level above masked threshold
 		a[i]=dbtorms(AL+LTh);
 	}
 	for(i = 0; i < ac; i++)
-        amps[i]=a[i];
+        amps[i] = a[i];
 }
 
 //______END OF FUNCTIONS__________________________________________________________________/
@@ -238,13 +235,13 @@ static t_class *roughness_class;
 typedef struct roughness{
     t_object x_ob;
     t_outlet *x_outlet;
-    float curve; //0 = parncutt / 1 = sethares (??????????????)
+    float curve; // 0 = parncutt / 1 = sethares
     int ac;
     t_atom *freqs;
     float *amps;
     int phonsteps;
     int loudness;
-    int mean; // (!!!!!!!!!!!!!!!!!!!!!!!!!!!!)
+    int mean;
     int masking;
 }t_roughness;
 
@@ -270,13 +267,15 @@ static void roughness(t_roughness *x){
         // loudness 2 : dbtorms(Phon)
         // loudness 3 : Phon
         // loudness 4 : Sones
-        if (x->loudness == 1)
+        if(x->loudness == 0){
+        }
+        else if(x->loudness == 1)
             amp[i] = db2gain(  YL(freq_i,gain2db(amp[i])));
-        else if (x->loudness == 2)
+        else if(x->loudness == 2)
             amp[i] = db2gain(phon(freq_i,gain2db(x->amps[i]), x->phonsteps));
-        else if (x->loudness == 3)
+        else if(x->loudness == 3)
             amp[i] = phon(freq_i,gain2db(x->amps[i]), x->phonsteps) ;
-        else if (x->loudness == 4)
+        else if(x->loudness == 4)
             amp[i] = ph2sn(phon(freq_i,gain2db(x->amps[i]), x->phonsteps));
         else
             post("loudness mode options: 0, 1, 2, 3 & 4");
@@ -305,7 +304,8 @@ static void roughness(t_roughness *x){
     if(froughness != 0 && !isnormal(froughness)){
         post("warning: froughness was %f : zeroing", froughness);
         startpost("x->amps[i] were :");
-        for (i=0; i<size; i++) startpost(" %f", x->amps[i]);
+        for(i = 0; i < size; i++)
+            startpost(" %f", x->amps[i]);
         post("");
         startpost("amp[i] were :");
         for (i=0; i<size; i++) startpost(" %f", amp[i]);
@@ -320,7 +320,7 @@ static void roughness_freqs(t_roughness *x, t_symbol *s, int ac, t_atom *av){
     // LATER see if resizebytes gets any faster
     t_symbol *dummy = s;
     dummy = NULL;
-    if (x->freqs)
+    if(x->freqs)
         freebytes(x->freqs,x->ac*sizeof(t_atom));
     x->freqs = (t_atom *)getbytes(ac * sizeof(t_atom));
     for(int i = 0; i < ac; i++)
@@ -342,31 +342,28 @@ static void roughness_amps(t_roughness *x, t_symbol *s, int ac, t_atom *av){
 		x->amps[i] = atom_getfloat(av+i);
 }
 
-static void roughness_phonsteps (t_roughness *x, t_float f) { x->phonsteps = f; }
+static void roughness_phonsteps(t_roughness *x, t_float f){
+    x->phonsteps = f;
+}
 
 static void roughness_loudness (t_roughness *x, t_float f){
 	int n = (int)f;
-	if(n < 0 || n > 4){
-		pd_error(x,"loudness is supposed to be one of 0,1,2,3,4 but got %f",f);
-	} else x->loudness = f;
+	if(n < 0 || n > 4)
+        pd_error(x,"loudness options are: 0, 1, 2, 3 or 4; but got %f", f);
+    else
+        x->loudness = f;
 }
 
-static void roughness_mean (t_roughness *x, t_float f) {
-	if (f!=0 && f!=1) {
-		pd_error(x,"weight is supposed to be 0 or 1, but got %f",f);
-	} else x->mean = f;
+static void roughness_mean (t_roughness *x, t_float f){
+    x->mean = f != 0;
 }
 
-static void roughness_curve (t_roughness *x, t_float f) {
-	if (f!=0 && f!=1) {
-		pd_error(x,"curve is supposed to be 0 or 1, but got %f",f);
-	} else x->curve = f;
+static void roughness_curve (t_roughness *x, t_float f){
+    x->curve = f != 0;
 }
 
 static void roughness_masking (t_roughness *x, t_float f) {
-	if (f!=0 && f!=1) {
-		pd_error(x,"masking is supposed to be 0 or 1, but got %f",f);
-	} else x->masking = f;
+	x->masking = f != 0;
 }
 
 static void *roughness_new(t_symbol *s, int ac, t_atom *av){
@@ -377,7 +374,7 @@ static void *roughness_new(t_symbol *s, int ac, t_atom *av){
     x->x_outlet = outlet_new(&x->x_ob, gensym("float"));
     x->curve = 0;
     x->phonsteps = 20;
-	x->loudness = 1;
+	x->loudness = 4;
 	x->mean = 0;
 	x->masking = 0;
     if(ac)
@@ -386,10 +383,10 @@ static void *roughness_new(t_symbol *s, int ac, t_atom *av){
 }
 
 static void roughness_free (t_roughness *x){
-    if (x->freqs)
-        freebytes(x->freqs,x->ac*sizeof(t_atom));
-    if (x->amps )
-        freebytes(x->amps ,x->ac*sizeof(float));
+    if(x->freqs)
+        freebytes(x->freqs, x->ac*sizeof(t_atom));
+    if(x->amps)
+        freebytes(x->amps, x->ac*sizeof(float));
 }
 
 //************************ FLUNSON OBJECT ************************/
@@ -417,7 +414,7 @@ void flunson_freqs(t_flunson *x, t_symbol *s, int ac, t_atom *av){
         ac = x->ac; // too many args.
     t_atom outs[ac];
     int i;
-//  for (i=0; i<ac; i++) SETFLOAT(outs+i, phon(atom_getfloat(av+i),        x->amps[i] ) );
+//  for (i=0; i<ac; i++) SETFLOAT(outs+i, phon(atom_getfloat(av+i), x->amps[i] ) );
     for(i = 0; i < ac; i++)
         SETFLOAT(outs+i, db2gain(phon(atom_getfloat(av+i), gain2db(x->amps[i]), 20)));
 //  for (i=0; i<ac; i++) SETFLOAT(outs+i,db2gain( dbA(atom_getfloat(av+i),gain2db(x->amps[i]))));
@@ -482,7 +479,7 @@ static void function_right (t_func *x, float right){
 }
 
 static void phon_left (t_func *x, float left){
-    outlet_float(x->x_outlet,  phon(left,x->right,20));
+    outlet_float(x->x_outlet, phon(left, x->right, 20));
 }
 
 static void dbA_left (t_func *x, float left){
