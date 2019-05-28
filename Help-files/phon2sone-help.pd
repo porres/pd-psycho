@@ -1,0 +1,16 @@
+#N canvas 849 62 496 289 10;
+#X floatatom 105 83 5 0 0 0 - - -;
+#X floatatom 105 200 0 0 0 0 - - -;
+#X floatatom 236 224 0 0 0 0 - - -;
+#X obj 105 148 phon2sone;
+#X text 129 28 Convert phons 2 sones;
+#X obj 190 125 moses 40;
+#X obj 236 182 expr pow(10 \, log10(2)*($f1-40)/10);
+#X obj 190 152 expr if($f1 > 1 \, pow($f1/40 \, 2.86) \, 0);
+#X connect 0 0 3 0;
+#X connect 0 0 5 0;
+#X connect 3 0 1 0;
+#X connect 5 0 7 0;
+#X connect 5 1 6 0;
+#X connect 6 0 2 0;
+#X connect 7 0 2 0;

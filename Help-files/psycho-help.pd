@@ -1,0 +1,114 @@
+#N canvas 761 82 511 276 10;
+#X declare -lib psycho;
+#X obj 99 51 declare -lib psycho;
+#N canvas 345 42 714 361 flunson 0;
+#X obj 169 57 flunson;
+#X text 237 45 rescale amplitudes according to fletcher and munson
+\, it takes a list of frequencies in hz (left) and a list of amplitudes
+(right inlet), f 45;
+#X obj 188 205 flunson;
+#X obj 188 232 else/display;
+#X msg 188 144 100 200 300 400 500 5000;
+#X msg 227 170 1 1 1 1 1 1;
+#X connect 2 0 3 0;
+#X connect 4 0 2 0;
+#X connect 5 0 2 1;
+#X restore 107 164 pd flunson;
+#X text 247 46 A Pd library with some psychoacoustic functions, f
+19;
+#N canvas 456 137 487 399 phon2db 0;
+#X text 165 53 convert phons to dB \, it takes a Phon value (right
+inlet) and a value in hertz (left inlet), f 30;
+#X obj 202 198 hot;
+#X floatatom 217 175 5 0 0 0 - - -;
+#X floatatom 202 153 5 0 0 0 - - -;
+#X obj 202 264 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0 256;
+#X text 238 152 Hertz;
+#X text 254 175 phon;
+#X obj 202 229 phon2db;
+#X obj 108 63 phon2db;
+#X connect 1 0 7 0;
+#X connect 1 1 7 1;
+#X connect 2 0 1 1;
+#X connect 3 0 1 0;
+#X connect 7 0 4 0;
+#X restore 107 136 pd phon2db;
+#N canvas 799 341 435 361 db2phon 0;
+#X text 136 49 convert dB to loudness in phons \, it takes a dB value
+(right inlet) and a value in hertz (left inlet), f 33;
+#X obj 193 191 hot;
+#X floatatom 208 168 5 0 0 0 - - -;
+#X floatatom 193 146 5 0 0 0 - - -;
+#X obj 193 257 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 94.3269 256;
+#X text 229 145 Hertz;
+#X text 245 168 dB;
+#X obj 193 222 db2phon;
+#X obj 81 61 db2phon;
+#X connect 1 0 7 0;
+#X connect 1 1 7 1;
+#X connect 2 0 1 1;
+#X connect 3 0 1 0;
+#X connect 7 0 4 0;
+#X restore 107 112 pd db2phon;
+#N canvas 414 138 561 375 loudness-measures 0;
+#X text 102 61 The unit measure of loudess (perceived intensity) is
+phons. Two different frequencies at 60 decibel may have a different
+loudness because the human hearing sensitivity varies with frequency.
+, f 61;
+#X text 102 115 The loudness curves shows this variation and uses 1Khz
+as the reference value. Therefore \, 60 phons means "as loud as a 60
+dB \, 1000 Hz tone", f 61;
+#X text 102 35 Phons:;
+#X text 103 215 Sones:;
+#X text 107 243 The dB unit is logarithmic \, therefore so is loudness
+in phons. The sone scale was then created to provide a linear scale
+of loudness. In this way \, 2 sones is twice as loud as 1 sones \,
+4 sones is twice as loud as 2 sones and so on.;
+#X text 102 159 It is useful to plot equal loudness curves which show
+that variation for the average human ear. These can then be used to
+adjust the sound gain.;
+#X text 106 296 The loudness of N = 1 sone is equivalent to 40 phons
+\, which is the loudness of a 1KHz sine wave at 40 dB.;
+#X restore 242 174 pd loudness-measures;
+#N canvas 326 153 672 419 iso226 0;
+#X obj 142 103 iso226;
+#X floatatom 142 67 5 10 100 0 - - -;
+#X text 180 67 <= phon;
+#X obj 142 145 array set iso226;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array iso226 29 float 5;
+#A 0 104.237 98.6311 93.1496 87.9086 83.355 78.9644 74.6841 70.8963
+67.4217 63.8909 60.8991 58.1867 55.6596 53.3417 51.6402 50.1276 48.9918
+49.011 50.9719 51.8415 48.5812 45.869 45.0098 46.1007 49.4353 55.0859
+60.763 62.8369 59.2789;
+#X coords 0 125 28 0 250 140 1 0 0;
+#X restore 184 209 graph;
+#X text 271 86 spits a list of 29 values that equally divides the frequency
+spectrum. Each value represents the dB level of that frequency that
+corresponds to the input phon level. This can be used to generate equal
+loudness curves., f 47;
+#X connect 0 0 3 0;
+#X connect 1 0 0 0;
+#X restore 108 192 pd iso226;
+#N canvas 326 153 672 419 iso226b 0;
+#X obj 142 103 iso226;
+#X floatatom 142 67 5 10 100 0 - - -;
+#X text 180 67 <= phon;
+#X obj 142 145 array set iso226;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array iso226 29 float 5;
+#A 0 104.237 98.6311 93.1496 87.9086 83.355 78.9644 74.6841 70.8963
+67.4217 63.8909 60.8991 58.1867 55.6596 53.3417 51.6402 50.1276 48.9918
+49.011 50.9719 51.8415 48.5812 45.869 45.0098 46.1007 49.4353 55.0859
+60.763 62.8369 59.2789;
+#X coords 0 125 28 0 250 140 1 0 0;
+#X restore 184 209 graph;
+#X text 271 86 spits a list of 29 values that equally divides the frequency
+spectrum. Each value represents the dB level of that frequency that
+corresponds to the input phon level. This can be used to generate equal
+loudness curves., f 47;
+#X connect 0 0 3 0;
+#X connect 1 0 0 0;
+#X restore 108 222 pd iso226b;

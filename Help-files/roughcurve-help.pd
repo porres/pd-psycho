@@ -1,0 +1,19 @@
+#N canvas 849 62 509 307 10;
+#X floatatom 157 233 0 0 0 0 - - -;
+#X obj 157 200 roughcurve;
+#X obj 160 93 hsl 128 15 0 1.2 0 0 empty empty empty -2 -8 0 10 -228856
+-1 -1 0 1;
+#X obj 157 127 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0.25 256;
+#X msg 174 176 curve \$1;
+#X obj 174 156 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
+1;
+#X text 195 156 0 = parncutt / 1 = sethares;
+#X text 83 31 Convert a bark interval to roughness estimation according
+to the Plompt & Level's Data. Aproximations by Parncutt or Sethares
+\, set by argument or 'curve' message., f 57;
+#X connect 1 0 0 0;
+#X connect 2 0 3 0;
+#X connect 3 0 1 0;
+#X connect 4 0 1 0;
+#X connect 5 0 4 0;

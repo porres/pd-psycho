@@ -1,0 +1,20 @@
+#N canvas 849 62 509 307 10;
+#X obj 92 142 hz2bark;
+#X floatatom 92 77 5 0 0 0 - - -;
+#X floatatom 92 194 0 0 0 0 - - -;
+#X obj 177 119 moses 219.5;
+#X obj 177 146 expr 13.3 * atan(3*$f1/4000);
+#X obj 227 176 expr 26.81*hz/(1960 + $f1) - 0.53;
+#X obj 227 202 moses 20.1;
+#X floatatom 227 238 0 0 0 0 - - -;
+#X text 81 24 Convert frequency to barks as suggested by Clarence Barlow
+;
+#X connect 0 0 2 0;
+#X connect 1 0 0 0;
+#X connect 1 0 3 0;
+#X connect 3 0 4 0;
+#X connect 3 1 5 0;
+#X connect 4 0 7 0;
+#X connect 5 0 6 0;
+#X connect 6 0 7 0;
+#X connect 6 1 7 0;

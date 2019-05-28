@@ -24,9 +24,9 @@ PSYCHO relies on the build system called "pd-lib-builder" by Katja Vetter (check
 
 * Installing with pdlibbuilder
 
-go to the pd-else folder and use "objectsdir" to set a relative path for your build, something like:
+go to the pd-psycho folder and use "objectsdir" to set a relative path for your build, something like:
 
-<pre>make install objectsdir=../else-build</pre>
+<pre>make install objectsdir=../psycho-build</pre>
 
 Then move it to your preferred install folder for Pd and add it to the path.
 
@@ -34,18 +34,18 @@ Cross compiling is also possible with something like this
 
 <pre>make CC=arm-linux-gnueabihf-gcc target.arch=arm7l install objectsdir=../</pre>
 
-###Loading Psycho in Pure Data:
-
-This is a Pd library that needs to be loaded with the [declare] object as in:
-	[declare -lib psycho]
-
 --------------------------------------------------------------------------
 
 ##Objects:
 
+- [hz2bark]
+- phon2sone]
+- [roughcurve]
 - [roughness]
+
+- [db2phon]
+- [phon2db]
+
 - [flunson]
-- [phon]
-- [dbA]
 - [iso226]
 - [iso226b]
