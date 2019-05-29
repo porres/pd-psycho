@@ -42,9 +42,10 @@ Cross compiling is also possible with something like this
 
 - [db2phon]
 - [flunson]
+- [harmonicity]
 - [hz2bark]
+- [indigestibility]
 - [iso226]
-- [iso226b]
 - [phon2db]
 - phon2sone]
 - [roughcurve]
