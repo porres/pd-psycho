@@ -1,29 +1,12 @@
-#N canvas 582 23 573 447 10;
-#X obj 65 80 iso226;
-#X floatatom 65 44 5 10 90 0 - - -;
-#X text 103 44 <= phon;
-#X obj 65 122 array set iso226;
-#X obj 139 187 cnv 15 248 138 empty empty empty 20 12 0 14 -233017
--66577 0;
-#N canvas 0 22 450 278 (subpatch) 0;
-#X array iso226 29 float 5;
-#A 0 123.705 119.198 114.884 110.865 107.545 104.513 101.673 99.332
-97.2924 95.4301 93.8891 92.6462 91.6022 90.7591 90.244 89.837 89.5545
-90.0122 92.6466 93.9988 90.8847 88.1836 87.378 88.6594 91.9626 97.0207
-101.26 100.988 93.7455;
-#X coords 0 125 28 0 250 140 1 0 0;
-#X restore 138 186 graph;
-#X text 207 48 spits a list of 29 dB values for the frequency range.
-Each value represents the dB level of that frequency that corresponds
-to the input phon level. This can be used to generate equal loudness
-curves., f 47;
-#N canvas 313 23 853 618 a-prettier-example 1;
+#N canvas 427 157 853 613 10;
 #X obj 19 12 cnv 15 820 585 empty empty IS0226:2003 30 40 0 25 -228856
 -41803 0;
-#X obj 258 73 iso226;
-#X obj 380 42 loadbang;
-#X obj 258 48 nbx 4 14 0 90 0 1 empty Phon Phon 0 -8 0 10 -262144 -1
--1 80 256;
+#X obj 285 63 iso226;
+#X obj 285 85 list prepend 0;
+#X obj 391 56 loadbang;
+#X obj 285 42 nbx 4 14 0 90 0 1 empty \$0-kegdwgjhvjc Phon 0 -8 0 10
+-262144 -1 -1 79 256;
+#X obj 285 108 s db_80;
 #X obj 67 166 cnv 15 698 398 empty empty Phon-Curves 90 26 1 24 -158710
 -1281 0;
 #N canvas 0 22 450 300 (subpatch) 0;
@@ -48,12 +31,14 @@ curves., f 47;
 60.0116 62.1549 63.1894 59.9616 57.2551 56.4239 57.5699 60.8882 66.3613
 71.664 73.1551 68.6308;
 #X array db_80 29 float 5;
-#A 0 118.99 114.233 109.646 105.337 101.721 98.3618 95.1729 92.4797
-90.0892 87.8162 85.9165 84.308 82.8934 81.6786 80.8634 80.1736 79.6691
-80.0121 82.4834 83.7408 80.5867 77.8847 77.0749 78.3124 81.6182 86.8087
-91.4062 91.7361 85.4068;
+#A 0 118.518 113.735 109.121 104.783 101.138 97.7453 94.5215 91.7931
+89.3674 87.0534 85.118 83.4731 82.0215 80.7698 79.9248 79.2069 78.6804
+79.0121 81.467 82.7146 79.5566 76.8544 76.044 77.2771 80.5832 85.7872
+90.4204 90.81 84.5717;
 #X coords 0 125 28 -10 700 400 1;
 #X restore 66 165 graph;
+#X msg 391 84 \; db_0 yticks 0 5 5 \; db_0 ylabel -0.5 0 25 50 75 100
+125;
 #X text 773 503 0 Phon;
 #X text 769 429 20 Phon;
 #X text 771 376 40 Phon;
@@ -62,11 +47,11 @@ curves., f 47;
 #X text 756 565 16Khz;
 #X obj 626 44 expr ((log($f1/20)/log(2)) * 3);
 #X obj 626 23 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--262144 -1 -1 0 256;
+-262144 -1 -1 50 256;
 #X obj 626 67 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--262144 -1 -1 0 256;
+-262144 -1 -1 3.96578 256;
 #X obj 626 115 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--262144 -1 -1 0 256;
+-262144 -1 -1 101.256 256;
 #X obj 626 91 tabread4 db_80;
 #X text 476 565 1Khz;
 #X text 719 565 10Khz;
@@ -85,16 +70,11 @@ curves., f 47;
 #X text 684 21 Hz;
 #X text 683 113 Phons;
 #X text 681 66 Table index;
-#X msg 380 70 \; Phon 80 \; db_0 yticks 0 5 5 \; db_0 ylabel -0.5 0
-25 50 75 100 125;
-#X obj 258 99 array set db_80;
-#X connect 1 0 35 0;
-#X connect 2 0 34 0;
-#X connect 3 0 1 0;
-#X connect 12 0 14 0;
-#X connect 13 0 12 0;
-#X connect 14 0 16 0;
+#X connect 1 0 2 0;
+#X connect 2 0 5 0;
+#X connect 3 0 8 0;
+#X connect 4 0 1 0;
+#X connect 15 0 17 0;
 #X connect 16 0 15 0;
-#X restore 363 384 pd a-prettier-example;
-#X connect 0 0 3 0;
-#X connect 1 0 0 0;
+#X connect 17 0 19 0;
+#X connect 19 0 18 0;
