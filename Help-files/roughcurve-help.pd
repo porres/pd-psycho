@@ -1,17 +1,57 @@
-#N canvas 849 62 509 307 10;
-#X floatatom 157 233 0 0 0 0 - - -;
-#X obj 157 200 roughcurve;
-#X obj 160 93 hsl 128 15 0 1.2 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 0 1;
-#X obj 157 127 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#N canvas 666 49 489 372 10;
+#X floatatom 141 290 0 0 0 0 - - -;
+#X obj 141 257 roughcurve;
+#X obj 144 150 hsl 128 15 0 1.2 0 0 empty empty empty -2 -8 0 10 -228856
+-1 -1 2500 1;
+#X obj 141 184 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0.25 256;
-#X msg 174 176 curve \$1;
-#X obj 174 156 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
+#X msg 158 233 curve \$1;
+#X obj 158 213 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
 1;
-#X text 195 156 0 = parncutt / 1 = sethares;
-#X text 83 31 Convert a bark interval to roughness estimation according
+#X text 179 213 0 = parncutt / 1 = sethares;
+#X text 67 33 Convert a bark interval to roughness estimation according
 to the Plompt & Level's Data. Aproximations by Parncutt or Sethares
 \, set by argument or 'curve' message., f 57;
+#N canvas 832 197 593 300 vanilla 0;
+#X text 100 33 Here are the vanilla implementation of these approximations:
+;
+#X floatatom 139 207 0 0 0 0 - - -;
+#X obj 142 104 hsl 128 15 0 1.2 0 0 empty empty empty -2 -8 0 10 -228856
+-1 -1 0 1;
+#X obj 139 138 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0.41 256;
+#N canvas 584 96 546 258 parncutt 0;
+#X obj 147 46 inlet;
+#X obj 147 110 outlet;
+#X obj 147 75 expr pow(4*exp(1)*$f1 / exp(4*$f1) \, 2);
+#X text 113 166 note that the original code by Parncutt zeores out
+values for inputs above 1.2 \, but it was thought best to not do that.
+;
+#X connect 0 0 2 0;
+#X connect 2 0 1 0;
+#X restore 139 174 pd parncutt;
+#X floatatom 309 207 0 0 0 0 - - -;
+#X obj 312 104 hsl 128 15 0 1.2 0 0 empty empty empty -2 -8 0 10 -228856
+-1 -1 3400 1;
+#X obj 309 138 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0.25 256;
+#N canvas 584 96 546 181 sethares 0;
+#X obj 131 46 inlet;
+#X obj 131 110 outlet;
+#X obj 131 75 expr 5.56309 * (exp($f1 * -3.51) - exp($f1 * -5.75))
+;
+#X connect 0 0 2 0;
+#X connect 2 0 1 0;
+#X restore 309 174 pd sethares;
+#X connect 2 0 3 0;
+#X connect 3 0 4 0;
+#X connect 4 0 1 0;
+#X connect 6 0 7 0;
+#X connect 7 0 8 0;
+#X connect 8 0 5 0;
+#X restore 292 262 pd vanilla;
+#X text 68 87 The research found that the function by Parncutt is more
+accurate;
 #X connect 1 0 0 0;
 #X connect 2 0 3 0;
 #X connect 3 0 1 0;

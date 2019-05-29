@@ -1,0 +1,70 @@
+#N canvas 668 173 580 296 10;
+#X obj 116 188 indigestibility;
+#X floatatom 116 147 8 0 0 0 - - -;
+#X obj 116 227 nbx 10 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0
+10 -262144 -1 -1 0 256;
+#N canvas 719 169 476 486 indigestibility 0;
+#X obj 116 22 inlet;
+#X obj 242 178 v p;
+#X msg 242 153 2;
+#X obj 201 204 v n;
+#X obj 174 178 t b f;
+#X obj 174 235 until;
+#X obj 174 262 expr n % p == 0;
+#X obj 202 309 expr p = p + 1;
+#X obj 242 217 expr n = n/p;
+#X obj 242 237 sel 1;
+#X obj 174 286 select 1 0;
+#X obj 155 153 t b f b;
+#X obj 116 426 outlet;
+#X msg 178 72 2;
+#X obj 178 96 pow 24;
+#X obj 178 50 loadbang;
+#X obj 116 94 int;
+#X obj 116 128 moses 2;
+#X obj 241 128 v ind;
+#X msg 241 105 0;
+#X obj 155 361 v ind;
+#X obj 116 72 clip 1;
+#X msg 116 153 0;
+#X obj 174 331 expr ind + (2 * (p-1) * (p-1)/p);
+#X connect 0 0 21 0;
+#X connect 2 0 1 0;
+#X connect 4 0 5 0;
+#X connect 4 1 3 0;
+#X connect 5 0 6 0;
+#X connect 6 0 10 0;
+#X connect 8 0 9 0;
+#X connect 9 0 5 1;
+#X connect 10 0 8 0;
+#X connect 10 0 23 0;
+#X connect 10 1 7 0;
+#X connect 11 0 20 0;
+#X connect 11 1 4 0;
+#X connect 11 2 2 0;
+#X connect 11 2 19 0;
+#X connect 13 0 14 0;
+#X connect 14 0 21 2;
+#X connect 15 0 13 0;
+#X connect 16 0 17 0;
+#X connect 17 0 22 0;
+#X connect 17 1 11 0;
+#X connect 19 0 18 0;
+#X connect 20 0 12 0;
+#X connect 21 0 16 0;
+#X connect 22 0 12 0;
+#X connect 23 0 20 0;
+#X restore 242 189 pd indigestibility;
+#X obj 242 225 nbx 10 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0
+10 -262144 -1 -1 0 256;
+#X text 98 24 Clarence Barlow's indigestibility of an integer. A measure
+of how a number may be psychologically 'digestible' according to its
+prime factors. See Barlow \, C \, "Two Essays on Theory" \, Computer
+Music Journal \, 1987, f 63;
+#X text 98 74 It's not really supposed to be used on its own \, but
+it is the basis for Barlow's harmonicity function., f 63;
+#X text 362 189 <= vanilla implementation;
+#X connect 0 0 2 0;
+#X connect 1 0 0 0;
+#X connect 1 0 3 0;
+#X connect 3 0 4 0;

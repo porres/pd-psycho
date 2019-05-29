@@ -10,9 +10,11 @@ lib.name = psycho
 
 db2phon.class.sources := Classes/db2phon.c
 flunson.class.sources := Classes/flunson.c
+harmonicity.class.sources := Classes/harmonicity.c
 hz2bark.class.sources := Classes/hz2bark.c
+indigestibility.class.sources := Classes/indigestibility.c
 iso226.class.sources := Classes/iso226.c
-iso226b.class.sources := Classes/iso226b.c
+# iso226b.class.sources := Classes/iso226b.c
 phon2db.class.sources := Classes/phon2db.c
 phon2sone.class.sources := Classes/phon2sone.c
 roughcurve.class.sources := Classes/roughcurve.c

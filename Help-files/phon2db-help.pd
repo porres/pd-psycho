@@ -1,4 +1,4 @@
-#N canvas 359 23 444 624 10;
+#N canvas 492 23 440 542 10;
 #X floatatom 145 142 5 0 0 0 - - -;
 #X floatatom 208 145 5 0 0 0 - - -;
 #X obj 145 214 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
@@ -21,7 +21,7 @@ dB \, 1000 Hz tone", f 61;
 #X text 26 387 It is useful to plot equal loudness curves which show
 that variation for the average human ear. These can then be used to
 adjust the sound gain.;
-#N canvas 326 23 1066 624 equal-loudness-curves 1;
+#N canvas 326 23 1066 624 equal-loudness-curves 0;
 #X obj 9 16 cnv 15 1050 600 empty empty Robinson_&_Dadson(1956) 130
 60 0 25 -228856 -41803 0;
 #X obj 47 137 cnv 15 698 398 empty empty Phon-Curves 23 26 0 24 -146353
@@ -682,7 +682,7 @@ scale --;
 #X connect 27 1 29 0;
 #X connect 28 0 25 0;
 #X connect 29 0 25 1;
-#X restore 168 488 pd equal-loudness-curves;
+#X restore 217 459 pd equal-loudness-curves;
 #X connect 0 0 8 0;
 #X connect 1 0 8 1;
 #X connect 8 0 2 0;

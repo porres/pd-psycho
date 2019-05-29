@@ -14,6 +14,7 @@ of loudness. In this way \, 2 sones is twice as loud as 1 sones \,
 4 sones is twice as loud as 2 sones and so on.;
 #X text 70 344 The loudness of N = 1 sone is equivalent to 40 phons
 \, which is the loudness of a 1KHz sine wave at 40 dB.;
+#X text 208 101 Vanilla implementation:;
 #X connect 0 0 3 0;
 #X connect 0 0 5 0;
 #X connect 3 0 1 0;
