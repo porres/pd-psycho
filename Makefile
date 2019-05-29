@@ -8,9 +8,12 @@ lib.name = psycho
 
 # Sources:
 
-psycho.class.sources := Classes/psycho.c
-iso226.class.sources := Classes/iso226.c
+db2phon.class.sources := Classes/db2phon.c
+flunson.class.sources := Classes/flunson.c
 hz2bark.class.sources := Classes/hz2bark.c
+iso226.class.sources := Classes/iso226.c
+iso226b.class.sources := Classes/iso226b.c
+phon2db.class.sources := Classes/phon2db.c
 phon2sone.class.sources := Classes/phon2sone.c
 roughcurve.class.sources := Classes/roughcurve.c
 roughness.class.sources := Classes/roughness.c

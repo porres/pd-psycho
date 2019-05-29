@@ -18,7 +18,6 @@
  */
 // model derived from the work of Parncutt, Sethares, Vassilakis & Barlow.
 
-#include <string.h>
 #include <math.h>
 #include "m_pd.h"
 

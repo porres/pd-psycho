@@ -1,4 +1,4 @@
-#N canvas 849 62 496 289 10;
+#N canvas 849 62 489 438 10;
 #X floatatom 105 83 5 0 0 0 - - -;
 #X floatatom 105 200 0 0 0 0 - - -;
 #X floatatom 236 224 0 0 0 0 - - -;
@@ -7,6 +7,13 @@
 #X obj 190 125 moses 40;
 #X obj 236 182 expr pow(10 \, log10(2)*($f1-40)/10);
 #X obj 190 152 expr if($f1 > 1 \, pow($f1/40 \, 2.86) \, 0);
+#X text 67 263 Sones:;
+#X text 71 291 The dB unit is logarithmic \, therefore so is loudness
+in phons. The sone scale was then created to provide a linear scale
+of loudness. In this way \, 2 sones is twice as loud as 1 sones \,
+4 sones is twice as loud as 2 sones and so on.;
+#X text 70 344 The loudness of N = 1 sone is equivalent to 40 phons
+\, which is the loudness of a 1KHz sine wave at 40 dB.;
 #X connect 0 0 3 0;
 #X connect 0 0 5 0;
 #X connect 3 0 1 0;

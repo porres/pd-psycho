@@ -38,14 +38,12 @@ Cross compiling is also possible with something like this
 
 ##Objects:
 
+- [db2phon]
+- [flunson]
 - [hz2bark]
+- [iso226]
+- [iso226b]
+- [phon2db]
 - phon2sone]
 - [roughcurve]
 - [roughness]
-
-- [db2phon]
-- [phon2db]
-
-- [flunson]
-- [iso226]
-- [iso226b]

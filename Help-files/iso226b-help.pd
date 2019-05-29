@@ -1,0 +1,11 @@
+#N canvas 761 82 459 273 10;
+#X floatatom 185 158 5 0 0 0 - - -;
+#X floatatom 142 134 5 0 0 0 - - -;
+#X floatatom 146 214 5 0 0 0 - - -;
+#X text 220 158 db;
+#X text 140 114 freq;
+#X obj 146 183 iso226b 90;
+#X text 121 60 This is not working yet;
+#X connect 0 0 5 1;
+#X connect 1 0 5 0;
+#X connect 5 0 2 0;

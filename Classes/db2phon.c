@@ -2,7 +2,7 @@
 #include <math.h>
 #include "m_pd.h"
 
-// functions
+//***** Convert Phons/hz to dB (Barlow's function, Robson/Dadson's data)
 static float throfs(float hz){
     float khz, thr;
     khz = hz/1000;
@@ -55,33 +55,53 @@ float dd(float h, float p){
                   + trait(11, phx) * hypt(x-620, trait(10, phx))));
 }
 
-static float db(float hz, float ph){ // convert to db
-    return dd(hz, ph) + (throfs(hz) - dd(hz,3)) * (hz/250000);
+// phon/hz to dbA
+static float dbA(float hz, float ph){
+    return dd (hz, ph) + (throfs(hz) - dd(hz,3)) * (hz/250000);
+}
+
+//**** Convert dBA and Hz to Phons (function by Clarence Barlow, data from Robson & Dadson)
+
+static float phon(float hz, float db){
+/* NB: 1 dbA (the minimum workable value)
+ gives -123.3 Ph @ 20 Hz, -30.0 Ph @ 20000 Hz */
+    int phonsteps = 20;
+	float ph,phbt,phtp,lphbt,lphtp; int i;
+	float mb;
+	phbt = -125.95; phtp = 150.00; i = 0;
+	do{
+		lphbt = phbt; lphtp = phtp;
+		ph = (phbt+phtp)/2; mb = dbA(hz,ph);
+		if (mb<db) { phbt = ph; phtp = lphtp; }
+		else       { phbt = lphbt; phtp = ph; }
+		i++;
+	} while (i < phonsteps);
+	return ph;
 }
 
 // object
-typedef struct phon2db{
+typedef struct db2phon{
     t_object    x_obj;
     t_outlet   *x_outlet;
     float       x_hz;
-}t_phon2db;
+}t_db2phon;
 
-static t_class *phon2db_class;
+static t_class *db2phon_class;
 
-static void phon2db_float(t_phon2db *x, float phon){
-    outlet_float(x->x_outlet, db(x->x_hz, phon));
-}
-
-static void *phon2db_new(t_float hz){
-    t_phon2db *x = (t_phon2db *)pd_new(phon2db_class);
+static void *db2phon_new(t_float hz){
+    t_db2phon *x = (t_db2phon *)pd_new(db2phon_class);
     x->x_hz = hz;
     floatinlet_new(&x->x_obj, &x->x_hz);
     x->x_outlet = outlet_new(&x->x_obj, gensym("float"));
     return (void *)x;
 }
 
-void phon2db_setup(void){
-    phon2db_class = class_new(gensym("phon2db"), (t_newmethod)phon2db_new, 0,
-                    sizeof(t_phon2db), 0, A_DEFFLOAT, 0);
-    class_addfloat(phon2db_class, (t_method)phon2db_float);
+static void db2phon_float(t_db2phon *x, float db){
+    outlet_float(x->x_outlet, phon(x->x_hz, db));
+}
+
+void db2phon_setup(void){
+    db2phon_class = class_new(gensym("db2phon"), (t_newmethod)db2phon_new, 0,
+                              sizeof(t_db2phon), 0, A_DEFFLOAT, 0);
+    class_addfloat(db2phon_class, (t_method)db2phon_float);
 }
