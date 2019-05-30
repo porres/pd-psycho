@@ -1,0 +1,286 @@
+#N canvas 362 23 543 550 10;
+#X obj 158 46 inlet~;
+#X obj 118 477 outlet;
+#X obj 158 180 tabsend~ one\$0;
+#X obj 158 128 *~;
+#X obj 118 293 tabread \$0bark;
+#X obj 118 318 tabread one\$0;
+#X obj 158 157 rpole~ 1;
+#X msg 106 129 clear;
+#X obj 91 85 bang~;
+#X obj 229 293 tabread \$0bark;
+#X obj 229 318 tabread one\$0;
+#X obj 214 352 -;
+#X obj 118 266 + 1;
+#X obj 317 42 inlet;
+#N canvas 705 302 415 365 set 0;
+#X msg 150 149 resize \$1;
+#X obj 121 30 inlet;
+#N canvas 334 224 446 215 mask 0;
+#N canvas 0 0 450 300 (subpatch) 0;
+#X array mask_\$0 2048 float 3;
+#A 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1;
+#A 1000 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1;
+#A 2000 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1;
+#X coords 0 1 2048 -1 200 140 1 0 0;
+#X restore 218 42 graph;
+#X obj 27 59 inlet;
+#X msg 27 95 resize \$1 \, const 1 \, 0 0;
+#X obj 27 122 s mask_\$0;
+#X connect 1 0 2 0;
+#X connect 2 0 3 0;
+#X restore 121 270 pd mask;
+#X obj 121 125 f \$1;
+#X obj 229 149 v sr_\$0;
+#X msg 309 86 1;
+#X obj 309 109 atan;
+#X obj 309 133 * 8;
+#X obj 309 155 v twopi;
+#N canvas 745 23 450 300 hann 0;
+#X msg 248 137 resize \$1;
+#X obj 248 158 array define hann_\$0;
+#X obj 93 150 expr hann_\$0[$f1] = cos(twopi*$f1/$f2) * -0.5 + 0.5
+, f 20;
+#X obj 93 93 trigger float float;
+#N canvas 750 289 307 233 loop 0;
+#X obj 73 44 inlet;
+#X obj 73 113 until;
+#X obj 73 83 t f b;
+#X obj 112 144 f;
+#X obj 112 169 outlet;
+#X msg 127 115 0;
+#X obj 143 144 + 1;
+#X connect 0 0 2 0;
+#X connect 1 0 3 0;
+#X connect 2 0 1 0;
+#X connect 2 1 5 0;
+#X connect 3 0 4 0;
+#X connect 3 0 6 0;
+#X connect 5 0 3 1;
+#X connect 6 0 3 1;
+#X restore 93 123 pd loop;
+#X obj 93 66 inlet;
+#X connect 0 0 1 0;
+#X connect 3 0 4 0;
+#X connect 3 1 0 0;
+#X connect 3 1 2 1;
+#X connect 4 0 2 0;
+#X connect 5 0 3 0;
+#X restore 100 294 pd hann;
+#X obj 130 78 loadbang;
+#X obj 229 125 samplerate~;
+#X obj 150 205 array define weighted_f_\$0;
+#X obj 130 100 trigger bang bang;
+#X obj 54 328 v size_\$0;
+#X obj 160 184 array define one\$0;
+#N canvas 401 271 848 413 barks 0;
+#X obj 135 245 change;
+#X obj 135 192 i;
+#X obj 165 288 i;
+#N canvas 0 0 450 300 (subpatch) 0;
+#X array \$0bark 25 float 3;
+#A 0 0 5 10 15 20 25 31 37 43 51 59 68 79 92 107 126 150 178 212 252
+298 354 426 531 1023;
+#X coords 0 1024 25 0 200 140 1;
+#X restore 437 217 graph;
+#X obj 185 336 tabwrite \$0bark;
+#X obj 318 206 expr ($f1/2)-1;
+#X obj 153 38 inlet;
+#X obj 135 265 b;
+#X obj 185 312 min;
+#N canvas 750 289 307 233 loop 0;
+#X obj 73 44 inlet;
+#X obj 73 113 until;
+#X obj 73 83 t f b;
+#X obj 112 144 f;
+#X obj 112 169 outlet;
+#X msg 127 115 0;
+#X obj 143 144 + 1;
+#X connect 0 0 2 0;
+#X connect 1 0 3 0;
+#X connect 2 0 1 0;
+#X connect 2 1 5 0;
+#X connect 3 0 4 0;
+#X connect 3 0 6 0;
+#X connect 5 0 3 1;
+#X connect 6 0 3 1;
+#X restore 153 87 pd loop;
+#X obj 153 112 t f f;
+#X obj 153 144 expr $f1 * sr_\$0/$f2;
+#X obj 153 61 trigger float float;
+#X obj 153 167 expr 13*atan($f1*0.00076) + 3.5*atan(pow($f1/7500 \,
+2));
+#X obj 135 215 t f f;
+#X connect 0 0 7 0;
+#X connect 1 0 14 0;
+#X connect 2 0 8 0;
+#X connect 5 0 8 1;
+#X connect 6 0 12 0;
+#X connect 7 0 2 0;
+#X connect 8 0 4 0;
+#X connect 9 0 10 0;
+#X connect 10 0 11 0;
+#X connect 10 1 2 1;
+#X connect 11 0 13 0;
+#X connect 12 0 9 0;
+#X connect 12 1 5 0;
+#X connect 12 1 11 1;
+#X connect 13 0 1 0;
+#X connect 14 0 0 0;
+#X connect 14 1 4 1;
+#X restore 136 246 pd barks;
+#X connect 0 0 12 0;
+#X connect 0 0 15 0;
+#X connect 1 0 3 0;
+#X connect 3 0 2 0;
+#X connect 3 0 0 0;
+#X connect 3 0 9 0;
+#X connect 3 0 14 0;
+#X connect 3 0 16 0;
+#X connect 5 0 6 0;
+#X connect 6 0 7 0;
+#X connect 7 0 8 0;
+#X connect 10 0 13 0;
+#X connect 11 0 4 0;
+#X connect 13 0 3 0;
+#X connect 13 1 11 0;
+#X connect 13 1 5 0;
+#X restore 333 90 pd set \; init;
+#X obj 317 176 block~ \$1 \$2;
+#X obj 317 135 list prepend set;
+#X obj 317 156 list trim;
+#X obj 214 379 expr $f1 / size_\$0;
+#N canvas 748 504 327 282 fft 0;
+#X obj 113 107 rfft~;
+#X obj 140 137 *~;
+#X obj 125 165 +~;
+#X obj 125 191 sqrt~;
+#X obj 125 218 outlet~;
+#X obj 113 137 *~;
+#X obj 113 44 inlet~;
+#X obj 113 78 *~;
+#X obj 145 78 tabreceive~ hann_\$0;
+#X connect 0 0 5 0;
+#X connect 0 0 5 1;
+#X connect 0 1 1 0;
+#X connect 0 1 1 1;
+#X connect 1 0 2 1;
+#X connect 2 0 3 0;
+#X connect 3 0 4 0;
+#X connect 5 0 2 0;
+#X connect 6 0 7 0;
+#X connect 7 0 0 0;
+#X connect 8 0 7 1;
+#X restore 158 82 pd fft;
+#N canvas 750 289 307 233 loop 0;
+#X obj 73 44 inlet;
+#X obj 73 113 until;
+#X obj 73 83 t f b;
+#X obj 112 144 f;
+#X obj 112 169 outlet;
+#X msg 127 115 0;
+#X obj 143 144 + 1;
+#X connect 0 0 2 0;
+#X connect 1 0 3 0;
+#X connect 2 0 1 0;
+#X connect 2 1 5 0;
+#X connect 3 0 4 0;
+#X connect 3 0 6 0;
+#X connect 5 0 3 1;
+#X connect 6 0 3 1;
+#X restore 118 213 pd loop;
+#X msg 91 162 24;
+#X obj 118 240 trigger float float;
+#X obj 118 438 list store;
+#X msg 214 403 append \$1;
+#X obj 91 379 t b b;
+#X obj 91 188 t b f;
+#X obj 173 108 tabreceive~ mask_\$0;
+#X connect 0 0 19 0;
+#X connect 3 0 6 0;
+#X connect 4 0 5 0;
+#X connect 5 0 11 0;
+#X connect 6 0 2 0;
+#X connect 7 0 6 0;
+#X connect 8 0 7 0;
+#X connect 8 0 21 0;
+#X connect 9 0 10 0;
+#X connect 10 0 11 1;
+#X connect 11 0 18 0;
+#X connect 12 0 4 0;
+#X connect 13 0 14 0;
+#X connect 13 0 16 0;
+#X connect 16 0 17 0;
+#X connect 17 0 15 0;
+#X connect 18 0 24 0;
+#X connect 19 0 3 0;
+#X connect 20 0 22 0;
+#X connect 21 0 26 0;
+#X connect 22 0 12 0;
+#X connect 22 1 9 0;
+#X connect 23 0 1 0;
+#X connect 24 0 23 0;
+#X connect 25 0 23 1;
+#X connect 25 1 23 0;
+#X connect 26 0 25 0;
+#X connect 26 1 20 0;
+#X connect 27 0 3 1;

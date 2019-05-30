@@ -40,6 +40,8 @@ Cross compiling is also possible with something like this
 
 ##Objects:
 
+- [barks~]
+- [centroid~]
 - [db2phon]
 - [flunson]
 - [harmonicity]
@@ -50,3 +52,4 @@ Cross compiling is also possible with something like this
 - phon2sone]
 - [roughcurve]
 - [roughness]
+- [sharpness~]
