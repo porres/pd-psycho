@@ -14,7 +14,7 @@ The work I'm bringing back to life here had been presented as a "Psychoacoustic/
 
 ### Acknowldegdements
 
-This work started in my master's research in 2005. I need to thank people that got me started with coding in Pure Data at that time at NICS/Unicamp: Jônatas Manzolli, Fábio Furlanete. Later, in my PhD, André Pires helped me write a roughness external and we wrote a paper together. Marcelo Queiroz, my PhD supervisor from the computer department a USP was also very helpful. During my research internship at CIRMMT/McGill in 2010, I took coding lessons with Mathieu Bouchard who helped me code most of this.
+This work started in my master's research in 2005. I need to thank people that got me started with coding in Pure Data at that time at NICS/Unicamp: Jônatas Manzolli, Fábio Furlanete. Later, in my PhD, André Pires helped me write a roughness external and we wrote a paper together. Marcelo Queiroz, my PhD supervisor from the computer department a USP was also very helpful. During my research internship at CIRMMT/McGill in 2010, I took coding lessons with Mathieu Bouchard who helped me code many of these.
 
 --------------------------------------------------------------------------
 
