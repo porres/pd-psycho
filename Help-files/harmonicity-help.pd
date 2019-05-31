@@ -1,8 +1,8 @@
-#N canvas 470 91 617 386 10;
-#X obj 128 280 harmonicity;
-#X floatatom 128 245 5 0 0 0 - - -;
-#X floatatom 128 312 8 0 0 0 - - -;
-#X floatatom 191 245 5 0 0 0 - - -;
+#N canvas 105 125 617 386 10;
+#X obj 104 274 harmonicity;
+#X floatatom 104 239 5 0 0 0 - - -;
+#X floatatom 104 306 8 0 0 0 - - -;
+#X floatatom 167 239 5 0 0 0 - - -;
 #N canvas 733 306 335 348 harmonicity 0;
 #X obj 89 45 inlet;
 #X obj 107 278 outlet;
@@ -148,24 +148,30 @@ Computer Music Journal \, 1987, f 63;
 #X connect 11 0 5 0;
 #X connect 11 1 7 1;
 #X connect 11 1 10 0;
-#X restore 278 266 pd harmonicity;
-#X floatatom 278 305 8 0 0 0 - - -;
-#X text 375 266 <= vanilla implementation;
-#X text 114 244 p;
-#X text 227 244 q;
-#X text 116 43 Barlow's harmonicity measure for an interval p/q. It
+#X restore 254 260 pd harmonicity;
+#X floatatom 254 299 8 0 0 0 - - -;
+#X text 351 260 <= vanilla implementation;
+#X text 90 238 p;
+#X text 203 238 q;
+#X text 106 37 Barlow's harmonicity measure for an interval p/q. It
 is defined as the reciprocal of the sum of the indigestibilties of
 p and q \, with its sign indicating the interval's polarity., f 65
 ;
-#X text 116 96 Negative polarity means that the interval is weighted
+#X text 106 90 Negative polarity means that the interval is weighted
 towards its upper tone and a positive number towards its lower tone.
 As an example \, a perfect fifth has its 'weight' on the lower tone
 \, while its a perfect fourth has its weight on the highest tone. The
 absolute value of a harmonicity is called harmonic intensity., f 65
 ;
-#X text 116 167 For more details \, see Barlow \, C \, "Two Essays
+#X text 106 161 For more details \, see Barlow \, C \, "Two Essays
 on Theory" \, Computer Music Journal \, 1987, f 65;
+#X floatatom 254 239 5 0 0 0 - - -;
+#X floatatom 335 239 5 0 0 0 - - -;
+#X text 240 238 p;
+#X text 371 238 q;
 #X connect 0 0 2 0;
 #X connect 1 0 0 0;
 #X connect 3 0 0 1;
 #X connect 4 0 5 0;
+#X connect 12 0 4 0;
+#X connect 13 0 4 1;

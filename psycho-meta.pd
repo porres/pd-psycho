@@ -1,0 +1,8 @@
+#N canvas 678 157 373 211 10;
+#X text 54 127 AUTHOR Alexandre Torres Porres, f 47;
+#X text 54 93 RELEASE_DATE: Unreleased, f 47;
+#X text 54 43 LIBRARY PSYCHO, f 47;
+#X text 54 59 DESCRIPTION psychoacoustic tools, f 47;
+#X text 54 76 VERSION 0.0.1-alpha-0, f 47;
+#X text 54 145 WEBSITE https://github.com/porres/pd-psycho, f 47;
+#X text 54 110 LICENSE Not sure yet, f 47;

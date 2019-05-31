@@ -1,9 +1,9 @@
-#N canvas 566 23 522 297 10;
-#X obj 133 173 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--262144 -1 -1 14.6902 256;
-#X obj 133 134 sharpness~ 2048 4;
-#X obj 281 106 setdsp~ 1;
-#X obj 133 96 noise~;
-#X text 140 34 Sharpness measure;
+#N canvas 715 23 490 272 10;
+#X obj 130 177 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-262144 -1 -1 14.6963 256;
+#X obj 130 138 sharpness~ 2048 4;
+#X obj 305 112 setdsp~ 1;
+#X obj 130 95 noise~;
+#X text 150 41 Sharpness measure;
 #X connect 1 0 0 0;
 #X connect 3 0 1 0;

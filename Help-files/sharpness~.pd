@@ -1,4 +1,4 @@
-#N canvas 566 23 602 430 10;
+#N canvas 101 215 602 430 10;
 #X obj 122 122 t b l;
 #X obj 122 41 inlet~;
 #N canvas 750 289 307 233 loop 0;
@@ -21,7 +21,7 @@
 #X msg 122 171 24;
 #X obj 159 152 array set bands_\$0;
 #X obj 222 119 array define bands_\$0 24;
-#X obj 335 214 v g_\$0;
+#X obj 335 216 v g_\$0;
 #X obj 212 216 v temp_\$0;
 #X obj 279 216 v sl_\$0;
 #X obj 141 247 expr temp_\$0 = temp_\$0 + $f1 * g_\$0 * sl_\$0 \; sl_\$0

@@ -43,6 +43,7 @@ Cross compiling is also possible with something like this
 - [barks~]
 - [centroid~]
 - [db2phon]
+- [dec2frac]
 - [flunson]
 - [harmonicity]
 - [hz2bark]

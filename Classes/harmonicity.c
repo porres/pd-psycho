@@ -42,17 +42,25 @@ int sgn(int v){
     return v < 0 ? -1 : v > 0 ? 1 : 0;
 }
 
-void harmonicity_float (t_harmonicity *x, t_floatarg f){
-	float g = x->x_g;
+void harmonicity_float (t_harmonicity *x, t_floatarg f1){
+    int f = (int)f1;
+	int g = (int)x->x_g;
+    int ret = 0;
 	if(f <= 0 || f > 16777216){
-        pd_error(x, "left inlet number %f out of range (1 ... 16777216)", f);
-        return;
+        pd_error(x, "[harmonicity]: left inlet number '%d' out of range (1 ... 16777216)", f);
+        ret = 1;
     }
 	if(g <= 0 || g > 16777216){
-        pd_error(x, "left inlet number %f out of range (1 ... 16777216)", g);
+        pd_error(x, "[harmonicity]: right inlet number '%d' out of range (1 ... 16777216)", g);
         return;
     }
-    outlet_float(x->x_obj.te_outlet, sgn(g-f)/(indigestibility(g)+indigestibility(f)));
+    if(ret)
+        return;
+    int sign = sgn(g-f);
+    if(sign == 0)
+        outlet_float(x->x_obj.te_outlet, 0);
+    else
+        outlet_float(x->x_obj.te_outlet, sign/(indigestibility(g)+indigestibility(f)));
 }
 
 void *harmonicity_new(t_float g){

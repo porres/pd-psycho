@@ -37,11 +37,12 @@ float indigestibility(int n){
 }
 
 void indigestibility_float (t_indigestibility *x, t_floatarg f){
-	if (f <= 0 || f > 16777216){
-		pd_error(x, "number %f out of range (0 ... 16777216)", f);
+    int n = (int)f;
+	if(n <= 0 || n > 16777216){
+        pd_error(x, "[indigestibility]: number %d out of range (1 - 16777216)", n);
 		return;
 	}
-    outlet_float(x->x_obj.te_outlet, indigestibility(f));
+    outlet_float(x->x_obj.te_outlet, indigestibility(i));
 }
 
 void *indigestibility_new(void){
