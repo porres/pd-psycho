@@ -51,7 +51,7 @@
 #X text 136 37 amp;
 #X obj 202 244 outlet;
 #X obj 202 57 inlet;
-#N canvas 467 23 635 720 curve 1;
+#N canvas 467 23 635 720 curve 0;
 #X obj 369 538 list append;
 #X obj 190 193 until;
 #X obj 504 540 list append;
