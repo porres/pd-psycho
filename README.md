@@ -42,6 +42,7 @@ Cross compiling is also possible with something like this
 
 - [barks~]
 - [centroid~]
+- [curve.gen]
 - [db2phon]
 - [dec2frac]
 - [flunson]
