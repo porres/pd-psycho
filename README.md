@@ -40,6 +40,7 @@ Cross compiling is also possible with something like this
 
 ##Objects:
 
+- [bark2hz]
 - [barks~]
 - [centroid~]
 - [curve.gen]

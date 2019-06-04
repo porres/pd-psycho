@@ -8,6 +8,7 @@ lib.name = psycho
 
 # Sources:
 
+bark2hz.class.sources := Classes/bark2hz.c
 db2phon.class.sources := Classes/db2phon.c
 flunson.class.sources := Classes/flunson.c
 harmonicity.class.sources := Classes/harmonicity.c
