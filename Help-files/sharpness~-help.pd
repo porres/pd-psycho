@@ -1,9 +1,11 @@
-#N canvas 715 23 490 272 10;
+#N canvas 629 77 490 272 10;
 #X obj 130 177 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--262144 -1 -1 14.6963 256;
+-262144 -1 -1 14.7581 256;
 #X obj 130 138 sharpness~ 2048 4;
-#X obj 305 112 setdsp~ 1;
 #X obj 130 95 noise~;
 #X text 150 41 Sharpness measure;
+#X obj 305 112 loadbang;
+#X msg 305 140 \; pd dsp 1;
 #X connect 1 0 0 0;
-#X connect 3 0 1 0;
+#X connect 2 0 1 0;
+#X connect 4 0 5 0;

@@ -1,4 +1,4 @@
-#N canvas 494 206 567 383 10;
+#N canvas 494 206 654 383 10;
 #X obj 53 45 inlet~;
 #X obj 140 45 inlet;
 #X obj 53 167 *~;
@@ -146,7 +146,9 @@
 #X text 81 168 remove DC;
 #X obj 210 153 bang~;
 #X obj 210 175 t b b;
-#X text 351 120 (c) Porres \; part of Psycho Library;
+#X text 359 111 Alexandre Torres Porres (2019);
+#X text 357 130 Part of PSYCHO \; https://github.com/porres/pd-psycho
+;
 #X connect 0 0 10 0;
 #X connect 1 0 8 0;
 #X connect 1 0 11 0;

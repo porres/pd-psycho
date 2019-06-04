@@ -1,4 +1,4 @@
-#N canvas 101 215 602 430 10;
+#N canvas 479 209 743 433 10;
 #X obj 122 122 t b l;
 #X obj 122 41 inlet~;
 #N canvas 750 289 307 233 loop 0;
@@ -33,6 +33,9 @@ exp(0.171 * $f1));
 #X obj 123 340 outlet;
 #X obj 203 42 inlet;
 #X obj 122 95 ./barks~ \$1 \$2;
+#X text 446 147 Alexandre Torres Porres (2019);
+#X text 444 166 Part of PSYCHO \; https://github.com/porres/pd-psycho
+;
 #X connect 0 0 3 0;
 #X connect 0 1 4 0;
 #X connect 1 0 15 0;

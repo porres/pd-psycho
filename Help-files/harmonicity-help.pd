@@ -1,4 +1,4 @@
-#N canvas 105 125 617 386 10;
+#N canvas 525 246 617 386 10;
 #X obj 104 274 harmonicity;
 #X floatatom 104 239 5 0 0 0 - - -;
 #X floatatom 104 306 8 0 0 0 - - -;

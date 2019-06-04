@@ -1,4 +1,4 @@
-#N canvas 494 145 401 315 10;
+#N canvas 494 145 601 311 10;
 #X obj 87 58 inlet;
 #X obj 132 58 inlet;
 #X obj 87 244 outlet;
@@ -191,6 +191,9 @@
 #X connect 4 1 1 1;
 #X restore 202 201 pd list;
 #X obj 202 156 psycho/roughness;
+#X text 351 127 Alexandre Torres Porres (2019);
+#X text 349 146 Part of PSYCHO \; https://github.com/porres/pd-psycho
+;
 #X connect 0 0 9 0;
 #X connect 1 0 9 1;
 #X connect 3 0 2 0;

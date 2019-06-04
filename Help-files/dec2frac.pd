@@ -1,4 +1,4 @@
-#N canvas 521 168 626 563 10;
+#N canvas 362 138 792 562 10;
 #X obj 76 38 inlet;
 #X obj 247 493 outlet;
 #X obj 247 434 list;
@@ -99,6 +99,9 @@
 #X restore 298 277 pd simple-fraction;
 #X obj 394 354 > 500;
 #X obj 145 171 expr f = pow(f-floor \, -1) \; floor(f);
+#X text 522 181 Alexandre Torres Porres (2019);
+#X text 520 200 Part of PSYCHO \; https://github.com/porres/pd-psycho
+;
 #X connect 0 0 6 0;
 #X connect 2 0 23 0;
 #X connect 3 0 4 0;
