@@ -10,6 +10,9 @@
 #X text 81 24 Convert frequency to barks as suggested by Clarence Barlow
 ;
 #X text 184 94 Vanilla implementation;
+#X text 96 59 Hz;
+#X text 90 256 barks;
+#X text 223 258 barks;
 #X connect 0 0 2 0;
 #X connect 1 0 0 0;
 #X connect 1 0 3 0;

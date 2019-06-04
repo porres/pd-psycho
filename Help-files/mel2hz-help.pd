@@ -1,0 +1,16 @@
+#N canvas 657 180 505 314 10;
+#X floatatom 92 77 5 0 0 0 - - -;
+#X floatatom 92 194 0 0 0 0 - - -;
+#X floatatom 209 156 0 0 0 0 - - -;
+#X text 309 189 see also:;
+#X obj 209 123 expr 700*(exp($f1/1127.01048)-1);
+#X obj 324 213 hz2mel;
+#X obj 92 142 mel2hz;
+#X text 177 36 Convert mel to hertz;
+#X text 184 156 Hz;
+#X text 72 194 Hz;
+#X text 64 77 Mel;
+#X connect 0 0 4 0;
+#X connect 0 0 6 0;
+#X connect 4 0 2 0;
+#X connect 6 0 1 0;
