@@ -19,6 +19,7 @@ mel2hz.class.sources := Classes/mel2hz.c
 # iso226b.class.sources := Classes/iso226b.c
 phon2db.class.sources := Classes/phon2db.c
 phon2sone.class.sources := Classes/phon2sone.c
+sone2phon.class.sources := Classes/sone2phon.c
 roughcurve.class.sources := Classes/roughcurve.c
 roughness.class.sources := Classes/roughness.c
 
