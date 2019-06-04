@@ -1,24 +1,29 @@
-#N canvas 849 62 489 438 10;
-#X floatatom 105 83 5 0 0 0 - - -;
-#X floatatom 105 200 0 0 0 0 - - -;
-#X floatatom 236 224 0 0 0 0 - - -;
-#X obj 105 148 phon2sone;
-#X text 129 28 Convert phons 2 sones;
-#X obj 190 125 moses 40;
-#X obj 236 182 expr pow(10 \, log10(2)*($f1-40)/10);
-#X obj 190 152 expr if($f1 > 1 \, pow($f1/40 \, 2.86) \, 0);
-#X text 67 263 Sones:;
-#X text 71 291 The dB unit is logarithmic \, therefore so is loudness
+#N canvas 683 62 489 517 10;
+#X floatatom 98 85 5 0 0 0 - - -;
+#X floatatom 98 202 0 0 0 0 - - -;
+#X floatatom 229 226 0 0 0 0 - - -;
+#X obj 98 150 phon2sone;
+#X obj 183 127 moses 40;
+#X obj 229 184 expr pow(10 \, log10(2)*($f1-40)/10);
+#X obj 183 154 expr if($f1 > 1 \, pow($f1/40 \, 2.86) \, 0);
+#X text 72 298 Sones:;
+#X text 76 326 The dB unit is logarithmic \, therefore so is loudness
 in phons. The sone scale was then created to provide a linear scale
 of loudness. In this way \, 2 sones is twice as loud as 1 sones \,
 4 sones is twice as loud as 2 sones and so on.;
-#X text 70 344 The loudness of N = 1 sone is equivalent to 40 phons
+#X text 75 379 The loudness of N = 1 sone is equivalent to 40 phons
 \, which is the loudness of a 1KHz sine wave at 40 dB.;
-#X text 208 101 Vanilla implementation:;
+#X text 201 103 Vanilla implementation:;
+#X text 194 37 Convert phons to sones;
+#X obj 248 467 sone2phon;
+#X text 219 443 see also:;
+#X text 96 62 phon;
+#X text 93 226 sones;
+#X text 223 246 sones;
 #X connect 0 0 3 0;
-#X connect 0 0 5 0;
+#X connect 0 0 4 0;
 #X connect 3 0 1 0;
-#X connect 5 0 7 0;
-#X connect 5 1 6 0;
+#X connect 4 0 6 0;
+#X connect 4 1 5 0;
+#X connect 5 0 2 0;
 #X connect 6 0 2 0;
-#X connect 7 0 2 0;

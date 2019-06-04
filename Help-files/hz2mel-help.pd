@@ -1,4 +1,4 @@
-#N canvas 738 55 505 314 10;
+#N canvas 579 121 505 314 10;
 #X floatatom 92 77 5 0 0 0 - - -;
 #X floatatom 92 194 0 0 0 0 - - -;
 #X obj 209 123 expr 1127.01048*log(1+($f1/700));

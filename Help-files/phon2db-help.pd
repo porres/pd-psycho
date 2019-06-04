@@ -1,30 +1,27 @@
-#N canvas 492 23 440 542 10;
-#X floatatom 145 142 5 0 0 0 - - -;
-#X floatatom 208 145 5 0 0 0 - - -;
-#X obj 145 214 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#N canvas 492 23 433 500 10;
+#X floatatom 151 129 5 0 0 0 - - -;
+#X floatatom 214 132 5 0 0 0 - - -;
+#X obj 151 201 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X text 208 127 Hertz;
-#X text 144 122 phon;
-#X obj 80 53 phon2db;
-#X text 226 177 argument (hz);
-#X text 137 43 convert phons to dB \, it takes a Hz value (right inlet
+#X text 214 114 Hertz;
+#X text 150 109 phon;
+#X obj 86 40 phon2db;
+#X text 232 164 argument (hz);
+#X text 143 30 convert phons to dB \, it takes a Hz value (right inlet
 or argument) and a value in Phons (left inlet), f 35;
-#X obj 145 179 phon2db 100;
-#X text 26 289 The unit measure of loudess (perceived intensity) is
+#X obj 151 166 phon2db 100;
+#X text 32 276 The unit measure of loudess (perceived intensity) is
 phons. Two different frequencies at 60 decibel may have a different
 loudness because the human hearing sensitivity varies with frequency.
 , f 61;
-#X text 26 343 The loudness curves shows this variation and uses 1Khz
-as the reference value. Therefore \, 60 phons means "as loud as a 60
-dB \, 1000 Hz tone", f 61;
-#X text 26 263 Phons:;
-#X text 26 387 It is useful to plot equal loudness curves which show
+#X text 32 250 Phons:;
+#X text 32 374 It is useful to plot equal loudness curves which show
 that variation for the average human ear. These can then be used to
 adjust the sound gain.;
-#N canvas 326 23 1066 624 equal-loudness-curves 0;
-#X obj 9 16 cnv 15 1050 600 empty empty Robinson_&_Dadson(1956) 130
+#N canvas 342 66 1063 613 equal-loudness-curves 0;
+#X obj 4 5 cnv 15 1050 600 empty empty Robinson_&_Dadson(1956) 130
 60 0 25 -228856 -41803 0;
-#X obj 47 137 cnv 15 698 398 empty empty Phon-Curves 23 26 0 24 -146353
+#X obj 42 126 cnv 15 698 398 empty empty Phon-Curves 23 26 0 24 -146353
 -1665 0;
 #N canvas 0 22 450 300 (subpatch) 0;
 #X array dbA-0 759 float 3;
@@ -634,55 +631,68 @@ adjust the sound gain.;
 157.864 158.366 158.873 159.385 159.906 160.436 160.978 161.533 162.103
 162.691 163.298 164.578;
 #X coords 0 175 758 -10 700 400 1;
-#X restore 46 136 graph;
-#X obj 857 75 nbx 5 14 0 120 0 0 empty empty empty 0 -8 0 10 -262144
+#X restore 41 125 graph;
+#X obj 852 64 nbx 5 14 0 120 0 0 empty empty empty 0 -8 0 10 -262144
 -1 -1 0 256;
-#X text 757 450 0 Phon;
-#X text 753 415 20 Phon;
-#X text 755 382 40 Phon;
-#X text 753 349 60 Phon;
-#X text 753 312 80 Phon;
-#X text 751 251 100 Phon;
-#X text 751 151 120 Phon;
-#X text 453 116 1Khz;
-#X text 453 538 1Khz;
-#X obj 857 241 tabwrite dbA-0;
-#X text 665 538 10Khz;
-#X text 665 117 10Khz;
-#X text 727 539 20Khz;
-#X text 727 116 20Khz;
-#X text 388 538 500Hz;
-#X text 388 115 500Hz;
-#X text 225 537 100Hz;
-#X text 225 116 100Hz;
-#X text 213 573 -- Frequencies from 30Hz to 20Khz on a logarithmic
+#X text 752 439 0 Phon;
+#X text 748 404 20 Phon;
+#X text 750 371 40 Phon;
+#X text 748 338 60 Phon;
+#X text 748 301 80 Phon;
+#X text 746 240 100 Phon;
+#X text 746 140 120 Phon;
+#X text 448 105 1Khz;
+#X text 448 527 1Khz;
+#X obj 872 284 tabwrite dbA-0;
+#X text 660 527 10Khz;
+#X text 660 106 10Khz;
+#X text 722 528 20Khz;
+#X text 722 105 20Khz;
+#X text 383 527 500Hz;
+#X text 383 104 500Hz;
+#X text 220 526 100Hz;
+#X text 220 105 100Hz;
+#X text 208 562 -- Frequencies from 30Hz to 20Khz on a logarithmic
 scale --;
-#X text 37 538 30Hz;
-#X obj 857 122 loop 760;
-#X obj 857 208 phon2db;
-#X obj 857 100 trigger bang float;
-#X obj 857 146 t b f;
-#X obj 857 179 f;
-#X obj 917 169 expr pow(10 \, 1 + $f1/230.2615) + 20, f 18;
+#X text 32 527 30Hz;
+#X obj 872 251 phon2db;
+#X obj 852 179 t b f;
+#X obj 872 222 f;
+#X obj 932 212 expr pow(10 \, 1 + $f1/230.2615) + 20, f 18;
 #N canvas 64 23 450 300 init 0;
 #X obj 77 93 loadbang;
 #X msg 77 120 \; dbA-0 yticks 0 5 5 \; dbA-0 ylabel -15 0 25 50 75
 100 125 150 175;
 #X connect 0 0 1 0;
-#X restore 893 435 pd init;
-#X text 856 56 Phon;
-#X text 578 54 Equal Loudness curves;
-#X connect 3 0 26 0;
-#X connect 24 0 27 0;
-#X connect 25 0 13 0;
+#X restore 888 424 pd init;
+#X text 851 45 Phon;
+#X text 573 43 Equal Loudness curves;
+#X msg 852 110 760;
+#X obj 852 131 until;
+#X obj 899 155 + 1;
+#X obj 852 89 trigger bang bang float;
+#X msg 919 126 0;
+#X obj 852 155 float;
+#X connect 3 0 34 0;
+#X connect 24 0 13 0;
+#X connect 25 0 26 0;
+#X connect 25 1 13 1;
+#X connect 25 1 27 0;
 #X connect 26 0 24 0;
-#X connect 26 1 28 1;
-#X connect 27 0 28 0;
-#X connect 27 1 13 1;
-#X connect 27 1 29 0;
-#X connect 28 0 25 0;
-#X connect 29 0 25 1;
-#X restore 217 459 pd equal-loudness-curves;
+#X connect 27 0 24 1;
+#X connect 31 0 32 0;
+#X connect 32 0 36 0;
+#X connect 33 0 36 1;
+#X connect 34 0 31 0;
+#X connect 34 1 35 0;
+#X connect 34 2 26 1;
+#X connect 35 0 36 1;
+#X connect 36 0 33 0;
+#X connect 36 0 25 0;
+#X restore 228 435 pd equal-loudness-curves;
+#X text 32 330 The loudness curves shows this variation and uses 1Khz
+as the reference value. Therefore \, 60 phons means "as loud as a 60
+dB \, 1000 Hz tone"., f 61;
 #X connect 0 0 8 0;
 #X connect 1 0 8 1;
 #X connect 8 0 2 0;

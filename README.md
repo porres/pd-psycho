@@ -54,7 +54,7 @@ Cross compiling is also possible with something like this
 - [mel2hz]
 - [phon2db]
 - [phon2sone]
-- [sone2phon]
 - [roughcurve]
 - [roughness]
 - [sharpness~]
+- [sone2phon]
