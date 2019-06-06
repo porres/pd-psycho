@@ -1,24 +1,28 @@
-// by porres, 2019, based on "Harmony: A Psychoacoustical Approach" (Parncutt, R. 1989).
+/*
+ By porres, 2010-2019, based on:
+ Parncutt, Richard & Strasburger, Hans. (1994).
+ Applying psychoacoustics in composition: Harmonic progressions of non-harmonic sonorities.
+ Perspectives of New Music. 32. 88-129. 10.2307/833600.
+*/
 
 #include "m_pd.h"
 #include <math.h>
 #include <stdlib.h>
 
 typedef struct floatlist{
-	int n;
-	t_float *v;
-}floatlist;
+	int         n;
+	t_float    *v;
+}t_floatlist;
 
-// proxy
-
+//// proxy
 typedef struct proxy_obj{
-	t_pd o;
-	floatlist list;
-}proxy_obj;
+	t_pd        x_obj;
+	t_floatlist list;
+}t_proxy_obj;
 
 t_class *proxy_obj_class;
 
-void proxy_obj_list(proxy_obj *x, t_symbol *s, int ac, t_atom *av){
+void proxy_obj_list(t_proxy_obj *x, t_symbol *s, int ac, t_atom *av){
     t_symbol *dummy = s;
     dummy = NULL;
     if(x->list.v)
@@ -29,12 +33,12 @@ void proxy_obj_list(proxy_obj *x, t_symbol *s, int ac, t_atom *av){
         x->list.v[i] = atom_getfloat(av+i);
 }
 
-void proxy_obj_free (proxy_obj *x){
+void proxy_obj_free(t_proxy_obj *x){
     freebytes(x->list.v, x->list.n*sizeof(float));
 }
 
 void *proxy_obj_new(void){
-    proxy_obj *x = (proxy_obj *)pd_new(proxy_obj_class);
+    t_proxy_obj *x = (t_proxy_obj *)pd_new(proxy_obj_class);
     x->list.n = 0;
     x->list.v = 0;
     return(x);
@@ -43,17 +47,16 @@ void *proxy_obj_new(void){
 // Pitch Commonality ---------------------------------------------------------------------------
 
 typedef struct commonality{
-	t_object o;
-	t_outlet *outlet0;
-	t_outlet *outlet1;
-	proxy_obj **proxies; // one spectrum per proxy
-	int n; // number of spectra (and of proxies)
-}commonality;
+	t_object        x_obj;
+	t_outlet       *outlet0;
+	t_outlet       *outlet1;
+	t_proxy_obj   **proxies;    // one spectrum per proxy
+	int             n;          // number of spectra (and of proxies)
+}t_commonality;
 
 t_class *commonality_class;
 
-// according to Pa89.
-// in matju's version, x and y are arrays with m elements, while corr and comm are single variables.
+// x and y are arrays with m elements, while corr and comm are single variables.
 void correlation_and_commonality(int m, float *x, float *y, float *corr, float *comm){
     float sumx = 0, sumy = 0, sumxx = 0, sumyy = 0, sumxy = 0, sumrootxy = 0;
     //float a1, a0; // regression constants
@@ -71,23 +74,24 @@ void correlation_and_commonality(int m, float *x, float *y, float *corr, float *
     float sxy =     (sumxy - sumx*sumy / m) / (m-1);  // covariance(x,y)
     *corr = sxy / (sx*sy); // correlation coefficient r */
     *comm = sumrootxy / sqrt(sumx*sumy); // pitch commonality in Pa89
-    // the two next lines were undocumented but according to matju they happen to look like linear regression
-    // a1=(sumxy-sumx*sumy/m)/(sumxx-sumx*sumx/m);
-    // a0=(sumy-a1*sumx)/m;
+    // the two next lines were undocumented but look like linear regression
+    // a1 = (sumxy - sumx*sumy/m) / (sumxx - sumx*sumx/m);
+    // a0 = (sumy - a1*sumx)/m;
 }
 
-void commonality_bang(commonality *x){
+void commonality_bang(t_commonality *x){
 	int n = x->n, m = x->proxies[0]->list.n;
 	int i, j;
 	for(i = 1; i < n; i++)
         if(m != x->proxies[i]->list.n){
-		pd_error(x,"list of inlet %d does not have the same size (%d) as list of inlet 0 (%d)", i, m, x->proxies[i]->list.n);
+        pd_error(x, "[commonality]: input lists need to have the same size (%d & %d are different)",
+                 i, m, x->proxies[i]->list.n);
 		return;
 	}
 	float pitCorr[10][10]; // pitch correlation
 	float pitComm[10][10]; // pitch commonality
 	// (d) initialize pitCom array
-	for(i = 0; i < 10; i++)
+	for(i = 0; i < 10; i++) // Pitch Correlation
         pitCorr[i][i] = pitComm[i][i] = 1;
 	// PART 3. CALCULATE PITCH RELATIONSHIPS BETWEEN SONORITIES.
 	for(i = 0; i < n; i++) { // symmetric matrix, so we do it for a triangular matrix and copy to the other half
@@ -100,8 +104,8 @@ void commonality_bang(commonality *x){
 		}
 	}
 	if(n == 2){
-		outlet_float(x->outlet1,pitComm[0][1]);
-		outlet_float(x->outlet0,pitCorr[0][1]);
+		outlet_float(x->outlet1, pitComm[0][1]);
+		outlet_float(x->outlet0, pitCorr[0][1]);
 	}
     else{
 		t_atom outlist[n*n];
@@ -116,22 +120,22 @@ void commonality_bang(commonality *x){
 	}
 }
 
-void commonality_list(commonality *x, t_symbol *s, int ac, t_atom *av){
+void commonality_list(t_commonality *x, t_symbol *s, int ac, t_atom *av){
     t_symbol *dummy = s;
     dummy = NULL;
 	proxy_obj_list(x->proxies[0], &s_list, ac, av);
 	commonality_bang(x);
 }
 
-void commonality_free(commonality *x){
+void commonality_free(t_commonality *x){
     for(int i = 0; i < x->n; i++)
         pd_free((t_pd *)x->proxies[i]);
 }
 
 void *commonality_new(t_floatarg f){
-    commonality *x = (commonality *)pd_new(commonality_class);
+    t_commonality *x = (t_commonality *)pd_new(commonality_class);
     x->n = f < 2 ? 2 : f > 10 ? 10 : f;
-    x->proxies = (proxy_obj **)getbytes(x->n*sizeof(proxy_obj *));
+    x->proxies = (t_proxy_obj **)getbytes(x->n*sizeof(t_proxy_obj *));
     for(int i = 0; i < x->n; i++){
         x->proxies[i] = proxy_obj_new();
         if(i)
@@ -144,9 +148,9 @@ void *commonality_new(t_floatarg f){
 
 void commonality_setup(void){
     commonality_class = class_new(gensym("commonality"), (t_newmethod)commonality_new,
-            (t_method)commonality_free, sizeof(commonality), 0, A_DEFFLOAT, 0);
+            (t_method)commonality_free, sizeof(t_commonality), 0, A_DEFFLOAT, 0);
     class_addlist(commonality_class, (t_method)commonality_list);
     proxy_obj_class = class_new(gensym("proxy_obj"), (t_newmethod)proxy_obj_new,
-            (t_method)proxy_obj_free, sizeof(proxy_obj), CLASS_PD, 0);
+            (t_method)proxy_obj_free, sizeof(t_proxy_obj), CLASS_PD, 0);
 	class_addlist(proxy_obj_class, (t_method)proxy_obj_list);
 }
