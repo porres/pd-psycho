@@ -62,7 +62,7 @@ static void weight_masking(t_weight *x, int ac, t_atom *av){
             }
         }
         // (Eq.5) Overall Masking Level (due to all maskers)
-        float ML = fmax(20.*log10(sum), 0); // due to all maskers
+        float ML = fmax(20.*log10(sum), 0);
         // (Eq.6) Audible Level (level above masked threshold)
         x->amps.v[i] = fmax(YL_i-ML, 0); // AL: level above masked threshold
     }
