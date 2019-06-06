@@ -38,7 +38,7 @@ Cross compiling is also possible with something like this
 
 --------------------------------------------------------------------------
 
-##Objects (26 in total):
+##Objects (25 in total):
 
 - [bark2hz]
 - [barks~]
@@ -64,5 +64,4 @@ Cross compiling is also possible with something like this
 - [sharpness~]
 - [sone2phon]
 - [tonalness]
-- [weigth]
 - [yl]

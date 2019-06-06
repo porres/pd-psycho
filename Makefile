@@ -27,7 +27,6 @@ roughness.class.sources := Classes/roughness.c
 salience.class.sources := Classes/salience.c
 sone2phon.class.sources := Classes/sone2phon.c
 tonalness.class.sources := Classes/tonalness.c
-weight.class.sources := Classes/weight.c
 yl.class.sources := Classes/yl.c
 
 # extra files
