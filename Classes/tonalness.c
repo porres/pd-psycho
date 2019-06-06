@@ -106,7 +106,6 @@ void tonalness_list(tonalness *x, t_symbol *s, int ac, t_atom *av){
     for(i = 0; i < ac; i++){
         float AL = x->amps.v[i];
         float thisPTA = 1.-exp(AL/-15.); // Audibility Ap(p) - Eq.7
-        post("Ap(p) = %f", f);
         x->pta.v[i] =  thisPTA;
         int cat = round((ftom(x->freqs.v[i])-12) * ncats/120.); // 120.???
         if(cat >= 0 && cat < ncats)
