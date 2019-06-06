@@ -1,22 +1,20 @@
-#N canvas 503 190 593 386 10;
-#X obj 128 112 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
-#X obj 143 243 print YL;
-#X obj 128 273 print Hz;
-#X obj 128 134 t b b;
-#X msg 143 190 1 0.9 0.8;
-#X msg 128 162 100 150 200;
-#X obj 273 122 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
-#X obj 306 253 print YL;
-#X obj 273 283 print Hz;
-#X obj 273 144 t b b;
-#X msg 306 197 1 0.9 0.8;
-#X msg 273 172 100 150 200;
-#X text 343 220 <= vanilla implementation;
-#X text 120 53 Get auditory levels (YL) \, Formula by Parncutt (89).
-, f 53;
-#X obj 128 213 yl;
+#N canvas 780 23 524 354 10;
+#X obj 98 102 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856 -1
+-1;
+#X obj 113 237 print YL;
+#X obj 98 267 print Hz;
+#X obj 98 124 t b b;
+#X msg 113 184 1 0.9 0.8;
+#X msg 98 152 100 150 200;
+#X obj 272 94 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856 -1
+-1;
+#X obj 299 225 print YL;
+#X obj 272 255 print Hz;
+#X obj 272 116 t b b, f 7;
+#X msg 318 168 1 0.9 0.8;
+#X msg 272 144 100 150 200;
+#X text 313 194 <= vanilla implementation;
+#X obj 98 207 yl;
 #N canvas 544 79 376 391 YL 0;
 #X obj 237 189 list store;
 #X obj 124 97 until;
@@ -86,18 +84,23 @@
 #X connect 14 3 5 0;
 #X connect 14 4 2 1;
 #X connect 15 0 9 0;
-#X restore 273 223 pd YL;
+#X restore 272 195 pd YL;
+#X text 56 28 Get auditory levels (YL) \, defined as dB over the partial’s
+Level Threshold L(TH) (according to Parncutt & Strasburger \, 1994).
+;
+#X text 175 152 Freq;
+#X text 175 179 Linear amplitude, f 9;
 #X connect 0 0 3 0;
 #X connect 3 0 5 0;
 #X connect 3 1 4 0;
-#X connect 4 0 14 1;
-#X connect 5 0 14 0;
+#X connect 4 0 13 1;
+#X connect 5 0 13 0;
 #X connect 6 0 9 0;
 #X connect 9 0 11 0;
 #X connect 9 1 10 0;
-#X connect 10 0 15 1;
-#X connect 11 0 15 0;
-#X connect 14 0 2 0;
-#X connect 14 1 1 0;
-#X connect 15 0 8 0;
-#X connect 15 1 7 0;
+#X connect 10 0 14 1;
+#X connect 11 0 14 0;
+#X connect 13 0 2 0;
+#X connect 13 1 1 0;
+#X connect 14 0 8 0;
+#X connect 14 1 7 0;

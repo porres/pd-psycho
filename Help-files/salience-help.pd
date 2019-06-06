@@ -1,32 +1,30 @@
-#N canvas 547 125 696 478 10;
-#X msg 192 129 1 1 1;
-#X obj 93 72 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856 -1
--1;
+#N canvas 654 83 696 581 10;
+#X msg 201 206 1 1 1;
+#X obj 102 149 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
 #N canvas 0 387 450 300 (subpatch) 0;
 #X array \$0-salience 120 float 1;
-#A 0 0 0 0 0 0 0 0 0 0 0 0.0144844 0 0.0160937 0 0.0181055 0.0114467
-0.020692 0.0127186 0 0.154376 0 0.0635906 0.0289687 0.0173804 0.0190779
-0.0198633 0.0362109 0.0228935 0.0231738 0 0 0.308752 0 0 0 0.0347607
-0.0381558 0 0.0724219 0 0.0463476 0 0 0.0572337 0 0 0 0.0695214 0 0
-0.434531 0 0 0 0 0.343402 0 0 0 0.417129 0 0 0 0 0 0 0 0 0 0 0 0 0
+#A 0 0 0 0 0 0 0 0 0 0 0 0.0141372 0 0.015708 0 0.0176715 0.0126563
+0.0201959 0.0140625 0 0.158057 0 0.0671572 0.0282743 0.0174893 0.0210938
+0.0199877 0.0353429 0.0253126 0.023319 0 0 0.316113 0 0 0 0.0349786
+0.0421876 0 0.0706858 0 0.0466381 0 0 0.0632814 0 0 0 0.0699571 0 0
+0.424115 0 0 0 0 0.379688 0 0 0 0.419743 0 0 0 0 0 0 0 0 0 0 0 0 0
 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
 0 0 0 0 0 0 0 0 0 0 0 0 0;
 #X coords 0 1 119 0 240 140 1 0 0;
-#X restore 235 293 graph;
-#X msg 93 129 300 400 500;
-#X obj 123 225 array set \$0-salience;
-#X obj 93 103 trigger bang bang;
-#X obj 123 161 salience;
-#X text 164 25 Get the Pitch Salience Profile of a spectrum \, model
-by PArncutt (89), f 45;
-#X floatatom 168 190 0 0 0 0 - - -;
-#X obj 378 74 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856 -1
--1;
-#X msg 378 129 300 400 500;
-#X msg 476 128 1 0.9 0.8;
-#X obj 378 96 trigger bang bang;
-#X text 496 162 <= vanilla;
-#N canvas 400 87 471 376 salience 0;
+#X restore 244 390 graph;
+#X msg 102 206 300 400 500;
+#X obj 132 322 array set \$0-salience;
+#X obj 102 180 trigger bang bang;
+#X obj 132 238 salience;
+#X floatatom 177 287 0 0 0 0 - - -;
+#X obj 387 151 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X msg 387 206 300 400 500;
+#X msg 485 205 1 0.9 0.8;
+#X obj 387 173 trigger bang bang;
+#X text 505 239 <= vanilla;
+#N canvas 407 23 471 376 salience 0;
 #X obj 143 29 inlet;
 #X obj 84 29 inlet;
 #N canvas 544 79 376 391 YL 0;
@@ -265,7 +263,15 @@ by PArncutt (89), f 45;
 #X connect 11 0 13 0;
 #X connect 11 0 17 0;
 #X restore 154 109 pd init;
-#N canvas 259 23 723 564 salience 0;
+#X obj 84 69 t b l b;
+#X obj 195 265 v mul_\$0;
+#X obj 84 265 array get SAL_\$0;
+#X obj 84 235 trigger bang bang;
+#X obj 195 289 outlet;
+#X obj 84 289 outlet;
+#X text 45 290 Eq.16;
+#X text 145 174 <= Pure Tone Audibilities (Spectral Pitch Weight);
+#N canvas 484 23 871 572 Tone_Salience 0;
 #X obj 202 141 until;
 #X obj 202 176 f;
 #X obj 235 176 + 1;
@@ -311,6 +317,11 @@ by PArncutt (89), f 45;
 #X obj 139 506 expr SAL_\$0[$f1] = (MAXTA_\$0[$f1] / maxta_\$0) * (mul_\$0/mulX_\$0)
 , f 64;
 #X obj 287 197 expr (n_\$0 = n_\$0 + 1) * $f2;
+#X text 519 271 <= Pitch Audibilities;
+#X text 520 285 <= Complex Tone Audibilities (Virtual Pitch Weight)
+;
+#X text 330 472 Pitch Multiplicity;
+#X text 533 505 <= Tone Salience;
 #X connect 0 0 1 0;
 #X connect 1 0 2 0;
 #X connect 1 0 9 0;
@@ -354,40 +365,43 @@ by PArncutt (89), f 45;
 #X connect 37 1 36 0;
 #X connect 38 0 37 0;
 #X connect 40 0 8 0;
-#X restore 103 202 pd salience;
-#X obj 84 69 t b l b;
-#X obj 195 265 v mul_\$0;
-#X obj 84 265 array get SAL_\$0;
-#X obj 84 235 trigger bang bang;
-#X obj 195 289 outlet;
-#X obj 84 289 outlet;
-#X text 45 290 Eq.16;
+#X restore 103 202 pd Tone_Salience;
+#X text 248 264 Pitch Multiplicity;
+#X text 240 290 Eq.15;
 #X connect 0 0 2 1;
-#X connect 1 0 7 0;
+#X connect 1 0 6 0;
 #X connect 2 0 4 0;
 #X connect 2 1 4 1;
-#X connect 4 0 6 0;
+#X connect 4 0 14 0;
+#X connect 6 0 9 0;
+#X connect 6 1 2 0;
+#X connect 6 2 5 0;
 #X connect 7 0 10 0;
-#X connect 7 1 2 0;
-#X connect 7 2 5 0;
 #X connect 8 0 11 0;
-#X connect 9 0 12 0;
-#X connect 10 0 9 0;
-#X connect 10 1 8 0;
-#X restore 413 164 pd salience;
-#X obj 413 217 array set \$0-salience;
-#X floatatom 476 185 0 0 0 0 - - -;
+#X connect 9 0 8 0;
+#X connect 9 1 7 0;
+#X restore 422 241 pd salience;
+#X obj 422 314 array set \$0-salience;
+#X floatatom 485 282 0 0 0 0 - - -;
+#X text 190 264 multiplicity;
+#X text 496 262 multiplicity;
+#X text 122 31 Get the Tone Salience and multiplicity of a Spectrum
+(according to Parncutt & Strasburger \, 1994)., f 63;
+#X text 123 63 The multiplicity is number of tones consciously perceived
+in a sonority. The Tone Salience is the probability of consciously
+perceiving a pitch and is given by an array of Pitch Categories.,
+f 63;
 #X connect 0 0 6 1;
 #X connect 1 0 5 0;
 #X connect 3 0 6 0;
 #X connect 5 0 3 0;
 #X connect 5 1 0 0;
 #X connect 6 0 4 0;
-#X connect 6 1 8 0;
-#X connect 9 0 12 0;
-#X connect 10 0 14 0;
-#X connect 11 0 14 1;
-#X connect 12 0 10 0;
-#X connect 12 1 11 0;
-#X connect 14 0 15 0;
-#X connect 14 1 16 0;
+#X connect 6 1 7 0;
+#X connect 8 0 11 0;
+#X connect 9 0 13 0;
+#X connect 10 0 13 1;
+#X connect 11 0 9 0;
+#X connect 11 1 10 0;
+#X connect 13 0 14 0;
+#X connect 13 1 15 0;
