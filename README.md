@@ -40,6 +40,7 @@ Cross compiling is also possible with something like this
 
 ##Objects (25 in total):
 
+- [al]
 - [bark2hz]
 - [barks~]
 - [centroid~]
@@ -54,7 +55,6 @@ Cross compiling is also possible with something like this
 - [hz2mel]
 - [indigestibility]
 - [iso226]
-- [masking]
 - [mel2hz]
 - [phon2db]
 - [phon2sone]
