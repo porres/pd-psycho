@@ -24,48 +24,13 @@ t_class *weight_class;
 
 float kT = 3;
 
-// Masking
-
 void weight_kM(t_weight *x, float f){
-    x->x_kM = f;
+    x->x_kM = f; // masking gradient
 }
 
 float erb(float Hz){
     float kHz = Hz/1000;
     return 11.17 * log((kHz + 0.312) / (kHz + 14.675)) + 43.0;
-}
-
-static void weight_masking(t_weight *x, int ac, t_atom *av){
-    int i, j;
-    for(i = 0; i < ac; i++){
-        float kHz = atom_getfloat(av+i)/1000;
-        float LTh = 3.64 * pow(kHz, -0.8) - 6.5 * exp(-0.6 * pow(kHz -3.3, 2))
-        + 0.001 * pow(kHz, 4); // Eq.2
-        float dB = rmstodb(x->amps.v[i]);
-        x->amps.v[i] = dB-LTh; // YL
-    }
-    for(i = 0; i < ac; i++){
-        float YL_i = x->amps.v[i];
-        float sum = 0;
-        for(j = 0; j < ac; j++){
-            if(i != j){ // masker (which doesn't mask itself)
-                float YL_j = x->amps.v[j];
-                float dif = fabs(erb(atom_getfloat(av+j)) - erb(atom_getfloat(av+i)));
-                // pitch difference in critical bandwidths
-                if(dif < 3.){ // otherwise masking is negligible
-                    // (Eq.4) Partial Masking Level (masking due to one masker)
-                    float PML = YL_j - x->x_kM * dif;
-                    // The masking gradient kM is typically about 12 dB per cb
-                    // Assumption: "Typical" complex tones in reg 4 have 10 audible harmonics.
-                    sum += pow(10, PML/20.); // add amplitudes
-                }
-            }
-        }
-        // (Eq.5) Overall Masking Level (due to all maskers)
-        float ML = fmax(20.*log10(sum), 0);
-        // (Eq.6) Audible Level (level above masked threshold)
-        x->amps.v[i] = fmax(YL_i-ML, 0);
-    }
 }
 
 void weight_list(t_weight *x, t_symbol *s, int ac, t_atom *av){
@@ -75,7 +40,13 @@ void weight_list(t_weight *x, t_symbol *s, int ac, t_atom *av){
         pd_error(x, "[weight]: input lists don't have the same length");
         return;
     }
-    weight_masking(x, ac, av);
+    for(int i = 0; i < ac; i++){ // YL
+        float kHz = atom_getfloat(av+i)/1000;
+        float LTh = 3.64 * pow(kHz, -0.8) - 6.5 * exp(-0.6 * pow(kHz -3.3, 2))
+        + 0.001 * pow(kHz, 4); // Eq.2
+        float dB = rmstodb(x->amps.v[i]);
+        x->amps.v[i] = dB-LTh; // YL
+    }
 	t_atom PTAout[ac];
 	int ncats = x->x_ncats;
 	float PTA[ncats], CTA[ncats], MAXTA[ncats];
@@ -86,10 +57,24 @@ void weight_list(t_weight *x, t_symbol *s, int ac, t_atom *av){
 		MAXTA[i] = 0;
 	}
 	for(i = 0; i < ac; i++){
-		float AL = x->amps.v[i];
-//        post("AL = %f", AL);
-		float thisPTA = 1.-exp(AL/-15.);
-//        post("thisPTA = %f", thisPTA);
+        float YL_i = x->amps.v[i];
+        float sum = 0;
+        for(j = 0; j < ac; j++){ // MASKING
+            if(i != j){
+                float YL_j = x->amps.v[j];
+                float dif = fabs(erb(atom_getfloat(av+j)) - erb(atom_getfloat(av+i)));
+                // pitch difference in critical bandwidths
+                if(dif < 3.){ // otherwise masking is negligible
+                    float PML = YL_j - x->x_kM * dif; // (Eq.4) Partial Masking Level
+                    // The masking gradient kM is typically about 12 dB per cb
+                    // Assumption: "Typical" complex tones in reg 4 have 10 audible harmonics.
+                    sum += pow(10, PML/20.);
+                }
+            }
+        }
+        float ML = fmax(20.*log10(sum), 0); // (Eq.5) Masking Level
+		float AL = fmax(YL_i-ML, 0); // (Eq.6) Audible Level (above masked threshold)
+		float thisPTA = 1.-exp(-AL/15.); // (Eq.7) Audibility Ap(P)
 		SETFLOAT(&PTAout[i], thisPTA);
 		int cat = round((ftom(atom_getfloat(av+i))-12)); // -12???
 		if(cat >= 0 && cat < ncats) // why?
@@ -97,7 +82,7 @@ void weight_list(t_weight *x, t_symbol *s, int ac, t_atom *av){
 	}
 	for(i = 0; i < ncats; i++){
 		float sum = 0;
-		float Hz_orig = mtof(12+i*120/(float)ncats);
+		float Hz_orig = mtof(12+i); // + 12???
 		for(n = 1; n <= 10; n++){ // "pseudo-harmonics"
 			float Hz_harm = Hz_orig * n;
 			j = round((ftom(Hz_harm)-12)); // -12???

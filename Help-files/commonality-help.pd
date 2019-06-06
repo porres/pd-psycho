@@ -1,0 +1,62 @@
+#N canvas 517 115 553 442 10;
+#X msg 316 144 1 1 1;
+#X msg 230 144 300 400 600;
+#X obj 145 93 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856 -1
+-1;
+#X msg 145 144 140 280 560;
+#X text 89 33 Calculate Pitch Commonality. This object needs Pitch
+Salience Profiles as the input for the pitches. By default \, it calculates
+the Pitch Commonality of two input pitches.;
+#X obj 190 296 nbx 10 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0
+10 -228856 -1 -1 0 256;
+#X obj 253 266 nbx 10 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0
+10 -228856 -1 -1 0 256;
+#X obj 190 237 commonality;
+#X obj 145 201 salience;
+#X obj 253 201 salience;
+#X obj 145 118 trigger bang bang bang, f 29;
+#N canvas 519 150 464 369 3-or-more 0;
+#X msg 316 137 1 1 1;
+#X msg 236 137 200 300 500;
+#X msg 157 137 300 400 600;
+#X obj 79 79 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856 -1
+-1;
+#X msg 79 137 140 280 560;
+#X obj 116 203 salience;
+#X obj 206 203 salience;
+#X obj 271 203 salience;
+#X obj 79 105 trigger bang bang bang, f 40;
+#X text 75 31 The argument can specify 3 or more pitches. The output
+is then a matrix of all the pitch combinations.;
+#X obj 169 238 commonality 3;
+#X obj 244 265 print commonality-right;
+#X obj 169 295 print commonality-left;
+#X connect 0 0 5 1;
+#X connect 0 0 6 1;
+#X connect 0 0 7 1;
+#X connect 1 0 7 0;
+#X connect 2 0 6 0;
+#X connect 3 0 8 0;
+#X connect 4 0 5 0;
+#X connect 5 0 10 0;
+#X connect 6 0 10 1;
+#X connect 7 0 10 2;
+#X connect 8 0 4 0;
+#X connect 8 1 1 0;
+#X connect 8 1 2 0;
+#X connect 8 2 0 0;
+#X connect 10 0 12 0;
+#X connect 10 1 11 0;
+#X restore 204 348 pd 3-or-more;
+#X connect 0 0 8 1;
+#X connect 0 0 9 1;
+#X connect 1 0 9 0;
+#X connect 2 0 10 0;
+#X connect 3 0 8 0;
+#X connect 7 0 5 0;
+#X connect 7 1 6 0;
+#X connect 8 0 7 0;
+#X connect 9 0 7 1;
+#X connect 10 0 3 0;
+#X connect 10 1 1 0;
+#X connect 10 2 0 0;

@@ -38,24 +38,31 @@ Cross compiling is also possible with something like this
 
 --------------------------------------------------------------------------
 
-##Objects:
+##Objects (26 in total):
 
 - [bark2hz]
 - [barks~]
 - [centroid~]
+- [commonality]
 - [curve.gen]
 - [db2phon]
 - [dec2frac]
+- [distance]
 - [flunson]
 - [harmonicity]
 - [hz2bark]
 - [hz2mel]
 - [indigestibility]
 - [iso226]
+- [masking]
 - [mel2hz]
 - [phon2db]
 - [phon2sone]
 - [roughcurve]
 - [roughness]
+- [salience]
 - [sharpness~]
 - [sone2phon]
+- [tonalness]
+- [weigth]
+- [yl]
