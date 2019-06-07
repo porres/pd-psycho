@@ -8,19 +8,19 @@ About:
 
 This project is being released under the GNU GENERAL PUBLIC LICENSE, see LICENSE.
 
-This is a library of Pd externals that includes some objects that deals with psychoacoustic measures and conversions. This was part of my masters and phd research. I'm now finally revisiting it and getting it more presentable and out there. 
+This is a library of Pd externals that includes some objects that deal with psychoacoustic measures and conversions. This was part of my masters and phd research. I'm now finally revisiting it and getting it more presentable and out there. 
 
-The work I'm bringing back to life here had been presented as a "Psychoacoustic/Dissonance Toolbox for Pure Data", but now I'm just calling it the "PSYCHO" library! The work has been deeply revised and rewritten from scratch since last I touched it in 2012 (when I finished my PhD). I learned a lot in how to program externals since then, and Pd also changed a lot. Most of my patches were based on Pd-Extended, which is now long gone and abandoned. Hence, please cope with me and hang in there. 
+The work I'm bringing back to life here had been presented as a "Psychoacoustic/Dissonance Toolbox for Pure Data", but now I'm just calling it the "PSYCHO" library! The work has been deeply revised and rewritten from scratch since last I touched it in 2012 (when I finished my PhD). I learned a lot in how to program externals since then, and Pd also changed a lot. Most of my patches were based on Pd-Extended, which is now long gone and abandoned. Hence, please cope with me and hang in there when I revise the code and rewrite the patches as pure vanilla. 
 
 There are just a few abstractions in the library. I have mostly compiled objects, but even so the code has also been  implemented as Pd Vanilla patches and presented as such in the help file!
 
-This work is still in a very experimental/initial alpha phase. I'm still putting other objetcs and tools up until the final release. Sta tuned for tools that implements techniques such as the spectral mapping (change a sound's spectrum to match a given scale) and more.  
+This work is still in a very experimental/initial alpha phase. I'm still putting other objetcs and tools up until the final release. Stay tuned for tools that implements techniques such as the spectral mapping (change a sound's spectrum to match a given scale) and more.  
 
 --------------------------------------------------------------------------
 
 ### Acknowldegdements
 
-This work started in my master's research in 2005. I need to thank people that got me started with coding in Pure Data at that time at NICS/Unicamp: Jônatas Manzolli, Fábio Furlanete. Later, in my PhD, Marcelo Queiroz, my PhD supervisor from the computer department at USP was also very helpful. André Pires helped me write a roughness external and we wrote a paper together in 2009.  During my research internship at CIRMMT/McGill in 2010, I took coding lessons with Mathieu Bouchard who helped me get started with most of these. 
+This work started in my master's research in 2005. I need to thank people that got me started with coding in Pure Data at that time at NICS/Unicamp: Jônatas Manzolli, Fábio Furlanete. Later, in my PhD, Marcelo Queiroz, my PhD supervisor from the computer department at USP was also very helpful, although I could barely follow his courses in the computer depsartment. André Pires helped me write a roughness external and we wrote a paper together in 2009.  During my research internship at CIRMMT/McGill in 2010, I took coding lessons with Mathieu Bouchard who helped me get started with coding most of these. 
 
 --------------------------------------------------------------------------
 
