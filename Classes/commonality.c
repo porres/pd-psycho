@@ -49,34 +49,33 @@ void *proxy_obj_new(void){
 typedef struct commonality{
 	t_object        x_obj;
 	t_outlet       *outlet0;
-	t_outlet       *outlet1;
 	t_proxy_obj   **proxies;    // one spectrum per proxy
 	int             n;          // number of spectra (and of proxies)
 }t_commonality;
 
 t_class *commonality_class;
 
-// x and y are arrays with m elements, while corr and comm are single variables.
-void correlation_and_commonality(int m, float *x, float *y, float *corr, float *comm){
+// x and y are arrays with m elements / corr is a single variable.
+void pearson(int m, float *x, float *y, float *corr){
     float sumx = 0, sumy = 0, sumxx = 0, sumyy = 0, sumxy = 0, sumrootxy = 0;
-    //float a1, a0; // regression constants
     // omits bottom and top half octaves of range of hearing, otherwise as i=0 gives infinite values (bug!)
-    for(int i = 6; i <= m-6; i++) {
-        sumx += x[i]; if (x[i] < 0) error("negative value: i=%d x=%5.0f", i, y[i]);
-        sumy += y[i]; if (y[i] < 0) error("negative value: i=%d y=%5.0f", i, y[i]);
+//    for(int i = 6; i <= m-6; i++){
+    for(int i = 0; i < m; i++){
+        sumx += x[i];
+        if(x[i] < 0)
+            error("negative value: i=%d x=%5.0f", i, x[i]);
+        sumy += y[i];
+        if(y[i] < 0)
+            error("negative value: i=%d y=%5.0f", i, y[i]);
         sumxx += x[i]*x[i];
         sumyy += y[i]*y[i];
         sumxy += x[i]*y[i];
-        sumrootxy += pow(x[i]*y[i],0.5);
+        sumrootxy += pow(x[i]*y[i], 0.5);
     }
     float sx = sqrt((sumxx - sumx*sumx / m) / (m-1)); // stdev(x)
     float sy = sqrt((sumyy - sumy*sumy / m) / (m-1)); // stdev(y)
-    float sxy =     (sumxy - sumx*sumy / m) / (m-1);  // covariance(x,y)
-    *corr = sxy / (sx*sy); // correlation coefficient r */
-    *comm = sumrootxy / sqrt(sumx*sumy); // pitch commonality in Pa89
-    // the two next lines were undocumented but look like linear regression
-    // a1 = (sumxy - sumx*sumy/m) / (sumxx - sumx*sumx/m);
-    // a0 = (sumy - a1*sumx)/m;
+    float sxy =     (sumxy - sumx*sumy / m) / (m-1);  // covariance(x, y)
+    *corr = sxy / (sx*sy); // pearson correlation coefficient r */
 }
 
 void commonality_bang(t_commonality *x){
@@ -88,30 +87,22 @@ void commonality_bang(t_commonality *x){
 		return;
 	}
 	float pitCorr[10][10]; // pitch correlation
-	float pitComm[10][10]; // pitch commonality
-	// (d) initialize pitCom array
-	for(i = 0; i < 10; i++) // Pitch Correlation
-        pitCorr[i][i] = pitComm[i][i] = 1;
+	for(i = 0; i < 10; i++)
+        pitCorr[i][i] = 1;
 	// PART 3. CALCULATE PITCH RELATIONSHIPS BETWEEN SONORITIES.
 	for(i = 0; i < n; i++) { // symmetric matrix, so we do it for a triangular matrix and copy to the other half
 		for(j = i+1; j < n; j++){
-			float corr, comm;
-			correlation_and_commonality(m, x->proxies[i]->list.v,
-                        x->proxies[j]->list.v, &corr, &comm);
+			float corr;
+			pearson(m, x->proxies[i]->list.v,
+                        x->proxies[j]->list.v, &corr);
 			pitCorr[i][j] = pitCorr[j][i] = corr;
-			pitComm[i][j] = pitComm[j][i] = comm;
 		}
 	}
 	if(n == 2){
-		outlet_float(x->outlet1, pitComm[0][1]);
 		outlet_float(x->outlet0, pitCorr[0][1]);
 	}
     else{
 		t_atom outlist[n*n];
-		for(i = 0; i < n; i++)
-            for(j = 0; j < n; j++)
-                SETFLOAT(outlist+i*n+j, pitComm[i][j]);
-		outlet_list(x->outlet1, &s_list, n*n, outlist);
 		for(i = 0; i < n; i++)
             for(j = 0; j < n; j++)
                 SETFLOAT(outlist+i*n+j, pitCorr[i][j]);
@@ -141,7 +132,6 @@ void *commonality_new(t_floatarg f){
             inlet_new((t_object *)x, (t_pd *)x->proxies[i], &s_list, &s_list);
     }
     x->outlet0 = outlet_new((t_object *)x, &s_float);
-    x->outlet1 = outlet_new((t_object *)x, &s_float);
     return (void *)x;
 }
 
