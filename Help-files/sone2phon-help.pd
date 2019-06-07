@@ -1,4 +1,5 @@
-#N canvas 634 204 486 483 10;
+#N canvas 537 173 486 483 10;
+#X declare -path psycho;
 #X floatatom 108 86 5 0 0 0 - - -;
 #X floatatom 108 203 0 0 0 0 - - -;
 #X floatatom 194 187 0 0 0 0 - - -;
@@ -12,12 +13,13 @@ of loudness. In this way \, 2 sones is twice as loud as 1 sones \,
 #X text 211 104 Vanilla implementation:;
 #X obj 193 155 expr 40 + 33.22*log10($f1);
 #X obj 108 151 sone2phon;
-#X text 132 31 Convert sones to phons;
+#X text 85 31 Convert sones to phons;
 #X text 233 397 see also:;
 #X obj 250 424 phon2sone;
 #X text 107 67 sone;
 #X text 102 226 phons;
 #X text 190 206 phons;
+#X obj 315 45 declare -path psycho;
 #X connect 0 0 7 0;
 #X connect 0 0 8 0;
 #X connect 7 0 2 0;

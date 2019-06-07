@@ -1,4 +1,5 @@
 #N canvas 654 83 696 581 10;
+#X declare -path psycho;
 #X msg 201 206 1 1 1;
 #X obj 102 149 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
@@ -385,12 +386,13 @@
 #X floatatom 485 282 0 0 0 0 - - -;
 #X text 190 264 multiplicity;
 #X text 496 262 multiplicity;
-#X text 122 31 Get the Tone Salience and multiplicity of a Spectrum
+#X text 78 31 Get the Tone Salience and multiplicity of a Spectrum
 (according to Parncutt & Strasburger \, 1994)., f 63;
-#X text 123 63 The multiplicity is number of tones consciously perceived
+#X text 79 63 The multiplicity is number of tones consciously perceived
 in a sonority. The Tone Salience is the probability of consciously
 perceiving a pitch and is given by an array of Pitch Categories.,
 f 63;
+#X obj 515 57 declare -path psycho;
 #X connect 0 0 6 1;
 #X connect 1 0 5 0;
 #X connect 3 0 6 0;

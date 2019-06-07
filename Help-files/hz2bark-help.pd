@@ -1,4 +1,5 @@
 #N canvas 475 143 559 357 10;
+#X declare -path psycho;
 #X obj 97 142 hz2bark;
 #X floatatom 97 77 0 0 0 0 - - -;
 #X floatatom 97 234 0 0 0 0 - - -;
@@ -15,6 +16,7 @@
 #X obj 289 228 expr $f1 + 0.22 * ($f1 - 20.1);
 #X obj 232 176 expr 26.81*$f1/(1960 + $f1) - 0.53;
 #X floatatom 311 202 0 0 0 0 - - -;
+#X obj 387 77 declare -path psycho;
 #X connect 0 0 2 0;
 #X connect 1 0 0 0;
 #X connect 1 0 3 0;

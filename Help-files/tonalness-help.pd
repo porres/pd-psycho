@@ -1,4 +1,5 @@
 #N canvas 329 92 693 330 10;
+#X declare -path psycho;
 #X obj 114 100 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
 #X obj 377 100 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
@@ -387,8 +388,9 @@
 #X obj 114 125 trigger bang bang;
 #X text 279 148 linear amplitue, f 8;
 #X text 83 154 Freq;
-#X text 172 45 Get the Tonalness (pitch clarity) of a spectrum (according
+#X text 104 38 Get the Tonalness (pitch clarity) of a spectrum (according
 to Parncutt & Strasburger \, 1994).;
+#X obj 534 46 declare -path psycho;
 #X connect 0 0 18 0;
 #X connect 1 0 2 0;
 #X connect 2 0 9 0;

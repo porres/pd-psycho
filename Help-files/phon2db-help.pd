@@ -1,13 +1,13 @@
 #N canvas 492 23 433 500 10;
+#X declare -path psycho;
 #X floatatom 151 129 5 0 0 0 - - -;
 #X floatatom 214 132 5 0 0 0 - - -;
 #X obj 151 201 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
 #X text 214 114 Hertz;
 #X text 150 109 phon;
-#X obj 86 40 phon2db;
 #X text 232 164 argument (hz);
-#X text 143 30 convert phons to dB \, it takes a Hz value (right inlet
+#X text 39 32 convert phons to dB \, it takes a Hz value (right inlet
 or argument) and a value in Phons (left inlet), f 35;
 #X obj 151 166 phon2db 100;
 #X text 32 276 The unit measure of loudess (perceived intensity) is
@@ -693,6 +693,7 @@ scale --;
 #X text 32 330 The loudness curves shows this variation and uses 1Khz
 as the reference value. Therefore \, 60 phons means "as loud as a 60
 dB \, 1000 Hz tone"., f 61;
-#X connect 0 0 8 0;
-#X connect 1 0 8 1;
-#X connect 8 0 2 0;
+#X obj 280 41 declare -path psycho;
+#X connect 0 0 7 0;
+#X connect 1 0 7 1;
+#X connect 7 0 2 0;

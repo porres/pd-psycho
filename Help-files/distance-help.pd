@@ -1,4 +1,5 @@
 #N canvas 572 30 683 512 10;
+#X declare -path psycho;
 #X msg 298 235 1 1 1;
 #X msg 212 235 300 400 600;
 #X obj 127 184 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
@@ -9,7 +10,7 @@
 #X obj 127 292 salience;
 #X obj 235 292 salience;
 #X obj 127 209 trigger bang bang bang, f 29;
-#X text 158 31 Calculate Pitch Distance. This object needs Pitch Salience
+#X text 72 29 Calculate Pitch Distance. This object needs Pitch Salience
 Profiles as the input for the pitches. By default \, it calculates
 the Pitch Distance of two input pitches.;
 #X obj 190 328 distance;
@@ -291,11 +292,12 @@ is then a matrix of all the pitch combinations.;
 #X connect 55 3 47 0;
 #X restore 379 329 pd distance;
 #X text 457 328 <= vanilla;
-#X text 157 79 It considers the probability of noticing a pitch from
+#X text 71 77 It considers the probability of noticing a pitch from
 one sonority in another \, but takes into account all possible intervals
 between pitches perceived in two sonorities. In the case of identical
 sonorities \, the distance is zero \, otherwise it always exceeds zero.
 ;
+#X obj 478 60 declare -path psycho;
 #X connect 0 0 5 1;
 #X connect 0 0 6 1;
 #X connect 1 0 6 0;

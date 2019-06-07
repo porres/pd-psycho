@@ -1,9 +1,10 @@
 #N canvas 556 186 487 350 10;
+#X declare -path psycho;
 #X msg 109 130 500 1000 1500 2000;
 #X msg 160 167 0.9 0.8 0.4 0.3;
 #X msg 92 103 100 200 300 400;
 #X obj 109 191 roughness;
-#X text 131 39 Get the overall roughness of a spectrum \, defined by
+#X text 37 38 Get the overall roughness of a spectrum \, defined by
 a frequency and amplitude list, f 42;
 #X text 195 102 <= freq;
 #X text 262 166 <= amp;
@@ -14,7 +15,7 @@ a frequency and amplitude list, f 42;
 #X obj 165 57 osc~ 1090;
 #X floatatom 165 33 5 0 0 0 - - -;
 #X obj 165 234 nbx 10 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0
-10 -262144 -1 -1 1.03217 256;
+10 -262144 -1 -1 1.03215 256;
 #X obj 165 100 *~ 0.5;
 #X obj 165 130 sigmund~ -npts 2048 -hop 1024 -npeak 2 peaks;
 #N canvas 240 57 346 334 get-lists 0;
@@ -289,7 +290,8 @@ roughness calculation algorithm.;
 #X connect 7 0 4 0;
 #X restore 339 121 pd vanilla;
 #X obj 109 226 nbx 9 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0.20356 256;
+-228856 -1 -1 0 256;
+#X obj 332 47 declare -path psycho;
 #X connect 0 0 3 0;
 #X connect 1 0 3 1;
 #X connect 2 0 3 0;

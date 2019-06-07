@@ -1,4 +1,5 @@
 #N canvas 583 43 709 441 10;
+#X declare -path psycho;
 #X floatatom 214 256 5 0 0 0 - - -;
 #X obj 464 244 expr pow(2 \, ($f1/1200));
 #X floatatom 464 222 5 0 0 0 - - -;
@@ -27,12 +28,13 @@
 #X text 372 151 Example of usage in this library \, convert from cents
 to ratio \, then get the fractional form and use it to get a harmonicity
 value, f 44;
-#X text 158 83 * https://people.revoledu.com/kardi/tutorial/ContinuedFraction/Decimal-Fraction-Conversion.htm
+#X text 83 81 * https://people.revoledu.com/kardi/tutorial/ContinuedFraction/Decimal-Fraction-Conversion.htm
 , f 61;
-#X text 158 28 Convert a decimal number to a fractional form. The algorithm
+#X text 83 26 Convert a decimal number to a fractional form. The algorithm
 approximates via continued fractions*. The argument/2nd inlet determines
 the accuracy as the maximum denominator value (500 by default)., f
 61;
+#X obj 506 55 declare -path psycho;
 #X connect 0 0 11 1;
 #X connect 1 0 6 0;
 #X connect 2 0 1 0;

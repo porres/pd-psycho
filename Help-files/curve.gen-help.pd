@@ -1,4 +1,5 @@
 #N canvas 327 23 1020 668 10;
+#X declare -path psycho;
 #X obj 482 24 cnv 15 511 598 empty empty empty 20 12 0 14 -228856 -66577
 0;
 #N canvas 0 22 1387 856 (subpatch) 0;
@@ -117,6 +118,7 @@
 #X msg 250 219 \; pd dsp 1;
 #X text 100 68 This is an abstraction that uses the [roughness] external.
 , f 48;
+#X obj 226 130 declare -path psycho;
 #X connect 2 0 31 0;
 #X connect 3 0 31 1;
 #X connect 4 0 31 0;

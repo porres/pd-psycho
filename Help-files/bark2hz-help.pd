@@ -1,4 +1,5 @@
 #N canvas 610 54 648 435 10;
+#X declare -path psycho;
 #X floatatom 107 84 0 0 0 0 - - -;
 #X floatatom 107 281 0 0 0 0 - - -;
 #X text 319 159 Vanilla implementation;
@@ -13,6 +14,7 @@
 #X text 111 66 barks;
 #X text 105 303 hz;
 #X text 280 334 hz;
+#X obj 400 66 declare -path psycho;
 #X connect 0 0 4 0;
 #X connect 0 0 10 0;
 #X connect 3 0 8 0;

@@ -1,9 +1,10 @@
 #N canvas 457 118 708 520 10;
+#X declare -path psycho;
 #X msg 282 220 1 1 1;
 #X obj 111 169 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
 #X obj 156 352 nbx 10 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0
-10 -228856 -1 -1 0.573523 256;
+10 -228856 -1 -1 0 256;
 #X obj 156 313 commonality;
 #X obj 111 277 salience;
 #X obj 219 277 salience;
@@ -43,10 +44,10 @@ is then a matrix of all the pitch combinations.;
 #X text 137 311 A;
 #X text 231 313 B;
 #X msg 196 219 200 400 600;
-#X text 182 37 Calculate Pitch Commonality. This object needs Pitch
+#X text 87 31 Calculate Pitch Commonality. This object needs Pitch
 Salience Profiles as the input for the pitches. By default \, it calculates
 the Pitch Commonality of two input pitches.;
-#X text 182 80 The Pitch Commonality is a Pearson correlation coefficient
+#X text 87 74 The Pitch Commonality is a Pearson correlation coefficient
 between Tone Salience profiles. The relationship increases according
 to common Tone Saliences. It is equal to 1 in the case of equal spectra
 and -1 in the case of complementary sonorities.;
@@ -59,7 +60,7 @@ and -1 in the case of complementary sonorities.;
 #X msg 381 220 100 200 300;
 #X msg 466 219 200 400 600;
 #X obj 426 355 nbx 10 18 -1e+37 1e+37 0 0 empty empty empty 0 -8 0
-14 -228856 -1 -1 0.573521 256;
+14 -228856 -1 -1 0 256;
 #N canvas 156 94 602 579 commonality 0;
 #X obj 110 267 -;
 #X obj 84 372 *;
@@ -190,6 +191,7 @@ and -1 in the case of complementary sonorities.;
 #X text 521 314 <= vanilla;
 #X text 154 372 Pearson Correlation between Tone Salience arrays of
 A & B, f 29;
+#X obj 519 59 declare -path psycho;
 #X connect 0 0 4 1;
 #X connect 0 0 5 1;
 #X connect 1 0 6 0;

@@ -1,14 +1,15 @@
 #N canvas 666 49 489 372 10;
-#X floatatom 141 290 0 0 0 0 - - -;
-#X obj 141 257 roughcurve;
-#X obj 144 150 hsl 128 15 0 1.2 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 2500 1;
-#X obj 141 184 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0.25 256;
-#X msg 158 233 curve \$1;
-#X obj 158 213 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
+#X declare -path psycho;
+#X floatatom 99 291 0 0 0 0 - - -;
+#X obj 99 258 roughcurve;
+#X obj 102 151 hsl 128 15 0 1.2 0 0 empty empty empty -2 -8 0 10 -228856
+-1 -1 0 1;
+#X obj 99 185 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0 256;
+#X msg 116 234 curve \$1;
+#X obj 116 214 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
-#X text 179 213 0 = parncutt / 1 = sethares;
+#X text 137 214 0 = parncutt / 1 = sethares;
 #X text 67 33 Convert a bark interval to roughness estimation according
 to the Plompt & Level's Data. Aproximations by Parncutt or Sethares
 \, set by argument or 'curve' message., f 57;
@@ -19,7 +20,7 @@ to the Plompt & Level's Data. Aproximations by Parncutt or Sethares
 #X obj 142 104 hsl 128 15 0 1.2 0 0 empty empty empty -2 -8 0 10 -228856
 -1 -1 0 1;
 #X obj 139 138 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0.41 256;
+-228856 -1 -1 0 256;
 #N canvas 584 96 546 258 parncutt 0;
 #X obj 147 46 inlet;
 #X obj 147 110 outlet;
@@ -32,9 +33,9 @@ values for inputs above 1.2 \, but it was thought best to not do that.
 #X restore 139 174 pd parncutt;
 #X floatatom 309 207 0 0 0 0 - - -;
 #X obj 312 104 hsl 128 15 0 1.2 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 3400 1;
+-1 -1 0 1;
 #X obj 309 138 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0.25 256;
+-228856 -1 -1 0 256;
 #N canvas 584 96 546 181 sethares 0;
 #X obj 131 46 inlet;
 #X obj 131 110 outlet;
@@ -49,9 +50,10 @@ values for inputs above 1.2 \, but it was thought best to not do that.
 #X connect 6 0 7 0;
 #X connect 7 0 8 0;
 #X connect 8 0 5 0;
-#X restore 292 262 pd vanilla;
+#X restore 250 263 pd vanilla;
 #X text 68 87 The research found that the function by Parncutt is more
 accurate;
+#X obj 292 163 declare -path psycho;
 #X connect 1 0 0 0;
 #X connect 2 0 3 0;
 #X connect 3 0 1 0;

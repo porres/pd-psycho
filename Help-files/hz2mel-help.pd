@@ -1,15 +1,17 @@
 #N canvas 579 121 505 314 10;
+#X declare -path psycho;
 #X floatatom 92 77 5 0 0 0 - - -;
 #X floatatom 92 194 0 0 0 0 - - -;
 #X obj 209 123 expr 1127.01048*log(1+($f1/700));
 #X floatatom 209 156 0 0 0 0 - - -;
 #X text 186 157 Mel;
 #X obj 92 142 hz2mel;
-#X text 177 36 Convert frequency in hertz to mel;
+#X text 157 32 Convert frequency in hertz to mel;
 #X text 309 189 see also:;
 #X obj 324 213 mel2hz;
 #X text 90 55 Hz;
 #X text 91 215 Mel;
+#X obj 308 73 declare -path psycho;
 #X connect 0 0 5 0;
 #X connect 0 0 2 0;
 #X connect 2 0 3 0;

@@ -1,4 +1,5 @@
 #N canvas 683 62 489 517 10;
+#X declare -path psycho;
 #X floatatom 98 85 5 0 0 0 - - -;
 #X floatatom 98 202 0 0 0 0 - - -;
 #X floatatom 229 226 0 0 0 0 - - -;
@@ -14,12 +15,13 @@ of loudness. In this way \, 2 sones is twice as loud as 1 sones \,
 #X text 75 379 The loudness of N = 1 sone is equivalent to 40 phons
 \, which is the loudness of a 1KHz sine wave at 40 dB.;
 #X text 201 103 Vanilla implementation:;
-#X text 194 37 Convert phons to sones;
+#X text 91 25 Convert phons to sones;
 #X obj 248 467 sone2phon;
 #X text 219 443 see also:;
 #X text 96 62 phon;
 #X text 93 226 sones;
 #X text 223 246 sones;
+#X obj 288 59 declare -path psycho;
 #X connect 0 0 3 0;
 #X connect 0 0 4 0;
 #X connect 3 0 1 0;

@@ -1,4 +1,5 @@
 #N canvas 582 23 573 447 10;
+#X declare -path psycho;
 #X obj 65 80 iso226;
 #X floatatom 65 44 5 10 90 0 - - -;
 #X text 103 44 <= phon;
@@ -13,7 +14,7 @@
 101.26 100.988 93.7455;
 #X coords 0 125 28 0 250 140 1 0 0;
 #X restore 138 186 graph;
-#X text 207 48 spits a list of 29 dB values for the frequency range.
+#X text 207 41 spits a list of 29 dB values for the frequency range.
 Each value represents the dB level of that frequency that corresponds
 to the input phon level. This can be used to generate equal loudness
 curves., f 47;
@@ -96,5 +97,6 @@ curves., f 47;
 #X connect 14 0 16 0;
 #X connect 16 0 15 0;
 #X restore 363 384 pd a-prettier-example;
+#X obj 363 112 declare -path psycho;
 #X connect 0 0 3 0;
 #X connect 1 0 0 0;
