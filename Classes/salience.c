@@ -1,8 +1,12 @@
-// by porres, 2019, based on "Harmony: A Psychoacoustical Approach" (Parncutt, R. 1989).
+/*
+ By porres, 2010-2019, based on:
+ Parncutt, Richard & Strasburger, Hans. (1994).
+ Applying psychoacoustics in composition: Harmonic progressions of non-harmonic sonorities.
+ Perspectives of New Music. 32. 88-129. 10.2307/833600.
+ */
 
 #include "m_pd.h"
 #include <math.h>
-#include <stdlib.h>
 
 typedef struct floatlist{
 	int n;

@@ -7,7 +7,6 @@
 
 #include "m_pd.h"
 #include <math.h>
-#include <stdlib.h>
 
 typedef struct floatlist{
 	int         n;
