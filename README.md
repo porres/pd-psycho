@@ -74,6 +74,18 @@ Cross compiling is also possible with something like this
 
 --------------------------------------------------------------------------
 
+### Main objetcs and models:
+
+Roughness:
+
+Most of my resaearch work was in the revision of roughness models. Roughness curves can be used to derive musical scales based on a spectrum and to measure dissonance (I'm yet to put up objects that can perform spectral changes to match a musical scale).
+
+The main reference for my Roughness model is the work by Clarence Barlow.
+
+Indigestibility / Harmonicity
+
+These are two concepts developed by Clarence Barlow in: Barlow, Clarence & Lohner, Henning. (1988). Two Essays on Theory. Computer Music Journal. 11. 44. 10.2307/3680177. 
+
 About: Tonalness / Tone Salience  /Multiplicity / Pitch Commonality / Pitch Distance: 
 
 These are from a Pitch Model by Parncutt & Strasburger (1994), based on the theoretical work of Ernst Terhardt in Pitch & Consonance, specially Pure/Complex tone Sensation and Sonorousness (a measure of Pitch clarity). The main outputs of the model are: Tonalness (same as sonorousness), Pitch Commonality and Pitch Distance. The Pitch Commonality is a measure of the degree in which two sonorities evoke common pitches. The Pitch Distance is a similar concept, but more pertinent in the melodic context. As the model considers an input spectrum so is not purely theoretical. It is also not generalized in octaves.
