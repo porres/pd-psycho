@@ -84,8 +84,7 @@ void commonality_bang(t_commonality *x){
 	int i, j;
 	for(i = 1; i < n; i++)
         if(m != x->proxies[i]->list.n){
-        pd_error(x, "[commonality]: input lists need to have the same size (%d & %d are different)",
-                 i, m, x->proxies[i]->list.n);
+        pd_error(x, "[commonality]: input lists need to have the same");
 		return;
 	}
 	float pitCorr[10][10]; // pitch correlation

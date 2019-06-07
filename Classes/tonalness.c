@@ -54,7 +54,7 @@ void tonalness_list(t_tonalness *x, t_symbol *s, int ac, t_atom *av){
         PTA[i] = 0;
         CTA[i] = 0;
     }
-    for(int i = 0; i < ac; i++){ // YL
+    for(i = 0; i < ac; i++){ // YL
         float kHz = atom_getfloat(av+i)/1000;
         float LTh = 3.64 * pow(kHz, -0.8) - 6.5 * exp(-0.6 * pow(kHz -3.3, 2))
         + 0.001 * pow(kHz, 4); // Eq.2
