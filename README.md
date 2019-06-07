@@ -8,13 +8,13 @@ About:
 
 This project is being released under the GNU GENERAL PUBLIC LICENSE, see LICENSE.
 
-This work is still in a very experimental/initial phase, with no relese yet.
-
 This is a library of Pd externals that includes some objects that deals with psychoacoustic measures and conversions. This was part of my masters and phd research. I'm now finally revisiting it and getting it more presentable and out there. 
 
-The work I'm bringing back to life here had been presented as a "Psychoacoustic/Dissonance Toolbox for Pure Data", but now I'm just calling it the "PSYCHO" library! The work has been deeply revised and rewritten from scratch since last I touched it in 2012 (when I finished my PhD). I learned a lot in how to program externals since then, and Pd also changed a lot. Most of my patches were based on Pd-Extended, which is now long gone and abandoned. 
+The work I'm bringing back to life here had been presented as a "Psychoacoustic/Dissonance Toolbox for Pure Data", but now I'm just calling it the "PSYCHO" library! The work has been deeply revised and rewritten from scratch since last I touched it in 2012 (when I finished my PhD). I learned a lot in how to program externals since then, and Pd also changed a lot. Most of my patches were based on Pd-Extended, which is now long gone and abandoned. Hence, please cope with me and hang in there. 
 
-There are just a few abstractions in the library. Most of the externals are compiled code, but even so the code has also been  implemented as Pd Vanilla patches and presented as such in the help file!
+There are just a few abstractions in the library. I have mostly compiled objects, but even so the code has also been  implemented as Pd Vanilla patches and presented as such in the help file!
+
+This work is still in a very experimental/initial alpha phase. I'm still putting other objetcs and tools up until the final release. Sta tuned for tools that implements techniques such as the spectral mapping (change a sound's spectrum to match a given scale) and more.  
 
 --------------------------------------------------------------------------
 
@@ -111,5 +111,3 @@ Pitch Multiplicity is the number of tones consciously perceived in a sonority. I
 Successive Pitch Relationships are given by Pitch Commonality and Pitch Distance, both dependant on the Tone Salience output. The Pitch Commonality is a Pearson correlation coefficient between the Tone Salience's pitch categories. The relationship increases according to common Tone Saliences and is equal to 1 in the case of equal spectra and -1 in the case of complementary sonorities. 
 
 The Pitch Distance considers the probability of noticing a pitch from one sonority in another, but takes into account all possible intervals between perceived pitches in two sonorities.  The distance is zero in the case of identical sonorities, and exceeds zero otherwise. In the case of Pure Tones, the Pitch Distance is equal to the interval between them in semitones.
-
-
