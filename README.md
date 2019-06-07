@@ -78,11 +78,11 @@ Cross compiling is also possible with something like this
 
 - The main references I have for this work are:
 
-• Porres, A. T. (2012). Modelos psicoacústicos de dissonância para eletrônica ao vivo. Tese de Doutorado, Escola de Comunicações e Artes, Universidade de São Paulo, São Paulo. 
+-Porres, A. T. (2012). Modelos psicoacústicos de dissonância para eletrônica ao vivo. Tese de Doutorado, Escola de Comunicações e Artes, Universidade de São Paulo, São Paulo. 
 
-• Porres, A.T. “A Dissonance Model for Live Electronics” Proceedings of the 4th International Conference of Students of Systematic Musicology (SysMus11), Cologne, Germany, 2011 
+-Porres, A.T. “A Dissonance Model for Live Electronics” Proceedings of the 4th International Conference of Students of Systematic Musicology (SysMus11), Cologne, Germany, 2011 
 
-• Porres, A.T. “Dissonance Model Toolbox in Pure Data” Proceedings of the 4th Pure Data International Convention (PdCon11), Berlin, Germany, 2011  
+-Porres, A.T. “Dissonance Model Toolbox in Pure Data” Proceedings of the 4th Pure Data International Convention (PdCon11), Berlin, Germany, 2011  
 
 - Roughness:
 
