@@ -1,7 +1,7 @@
-#N canvas 629 77 490 272 10;
+#N canvas 521 163 490 272 10;
 #X declare -path psycho;
 #X obj 130 177 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--262144 -1 -1 14.6957 256;
+-262144 -1 -1 14.6478 256;
 #X obj 130 138 sharpness~ 2048 4;
 #X obj 130 95 noise~;
 #X text 116 41 Sharpness measure;

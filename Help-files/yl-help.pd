@@ -1,4 +1,5 @@
 #N canvas 780 23 524 354 10;
+#X declare -path psycho;
 #X obj 98 102 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856 -1
 -1;
 #X obj 113 237 print YL;
@@ -6,14 +7,14 @@
 #X obj 98 124 t b b;
 #X msg 113 184 1 0.9 0.8;
 #X msg 98 152 100 150 200;
-#X obj 272 94 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856 -1
+#X obj 290 94 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856 -1
 -1;
-#X obj 299 225 print YL;
-#X obj 272 255 print Hz;
-#X obj 272 116 t b b, f 7;
-#X msg 318 168 1 0.9 0.8;
-#X msg 272 144 100 150 200;
-#X text 313 194 <= vanilla implementation;
+#X obj 317 225 print YL;
+#X obj 290 255 print Hz;
+#X obj 290 116 t b b, f 7;
+#X msg 336 168 1 0.9 0.8;
+#X msg 290 144 100 150 200;
+#X text 331 194 <= vanilla implementation;
 #X obj 98 207 yl;
 #N canvas 544 79 376 391 YL 0;
 #X obj 237 189 list store;
@@ -84,12 +85,13 @@
 #X connect 14 3 5 0;
 #X connect 14 4 2 1;
 #X connect 15 0 9 0;
-#X restore 272 195 pd YL;
-#X text 56 28 Get auditory levels (YL) \, defined as dB over the partial’s
+#X restore 290 195 pd YL;
+#X text 32 28 Get auditory levels (YL) \, defined as dB over the partial’s
 Level Threshold L(TH) (according to Parncutt & Strasburger \, 1994).
-;
+, f 46;
 #X text 175 152 Freq;
 #X text 175 179 Linear amplitude, f 9;
+#X obj 346 43 declare -path psycho;
 #X connect 0 0 3 0;
 #X connect 3 0 5 0;
 #X connect 3 1 4 0;

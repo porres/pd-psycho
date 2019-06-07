@@ -1,4 +1,5 @@
 #N canvas 580 53 611 325 10;
+#X declare -path psycho;
 #X obj 110 114 t b b;
 #X obj 110 83 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856 -1
 -1;
@@ -232,12 +233,13 @@
 #X connect 9 0 0 1;
 #X connect 10 0 6 0;
 #X restore 414 188 pd AL;
+#X obj 433 66 declare -path psycho;
 #X obj 110 198 al;
 #X connect 0 0 2 0;
 #X connect 0 1 3 0;
 #X connect 1 0 0 0;
-#X connect 2 0 17 0;
-#X connect 3 0 17 1;
+#X connect 2 0 18 0;
+#X connect 3 0 18 1;
 #X connect 4 0 7 0;
 #X connect 5 0 16 0;
 #X connect 6 0 16 1;
@@ -245,5 +247,5 @@
 #X connect 7 1 6 0;
 #X connect 16 0 9 0;
 #X connect 16 1 8 0;
-#X connect 17 0 11 0;
-#X connect 17 1 10 0;
+#X connect 18 0 11 0;
+#X connect 18 1 10 0;
