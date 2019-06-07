@@ -1,6 +1,6 @@
 # PSYCHO - Pure Data Library
 
-### Version 0.0.1 alpha-0 (Unreleased)
+### Version 1.0 alpha-1
 
 --------------------------------------------------------------------------
 
