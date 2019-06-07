@@ -96,6 +96,9 @@ These are two concepts developed by Clarence Barlow in: Barlow, Clarence & Lohne
 
 - Tonalness / Tone Salience  /Multiplicity / Pitch Commonality / Pitch Distance: 
 
+Reference: 
+-Parncutt, Richard & Strasburger, Hans. (1994). Applying psychoacoustics in composition: Harmonic progressions of non-harmonic sonorities. Perspectives of New Music. 32. 88-129. 10.2307/833600. 
+
 These are from a Pitch Model by Parncutt & Strasburger (1994), based on the theoretical work of Ernst Terhardt in Pitch & Consonance, specially Pure/Complex tone Sensation and Sonorousness (a measure of Pitch clarity). The main outputs of the model are: Tonalness (same as sonorousness), Pitch Commonality and Pitch Distance. The Pitch Commonality is a measure of the degree in which two sonorities evoke common pitches. The Pitch Distance is a similar concept, but more pertinent in the melodic context. As the model considers an input spectrum so is not purely theoretical. It is also not generalized in octaves.
 
 The input spectrum are lists of frequency values and linear amplitudes.  The frequency list needs to be converted to Pitch Category (which is basically a logarythmic MIDI scale). The amplitude lists needs to fist be converted to Auditory Levels Y(L) - defined as dB over the partial’s Level Threshold L(TH). The next stage converts to Audible Level AL(P), which is the Audible level after a masking stage. This is the used to calculate Pure Tone Audibilities Ap(P) also defined as the Spectral Pitch Weigth.
@@ -110,5 +113,4 @@ Successive Pitch Relationships are given by Pitch Commonality and Pitch Distance
 
 The Pitch Distance considers the probability of noticing a pitch from one sonority in another, but takes into account all possible intervals between pitches perceived in two sonorities. In the case of identical sonorities, the distance is zero, otherwise it always exceeds zero. In the case of Pure Tones, the Pitch Distance is equal to the interval between them in semitones.
 
-Reference: 
-- Parncutt, Richard & Strasburger, Hans. (1994). Applying psychoacoustics in composition: Harmonic progressions of non-harmonic sonorities. Perspectives of New Music. 32. 88-129. 10.2307/833600. 
+
