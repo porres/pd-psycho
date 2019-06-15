@@ -44,14 +44,13 @@ Cross compiling is also possible with something like this
 
 --------------------------------------------------------------------------
 
-##Objects (25 in total):
+##Objects (24 in total):
 
 - [al]
 - [bark2hz]
 - [barks~]
 - [centroid~]
 - [commonality]
-- [curve.gen]
 - [db2phon]
 - [dec2frac]
 - [distance]

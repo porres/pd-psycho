@@ -23,7 +23,6 @@ iso226.class.sources := Classes/iso226.c
 mel2hz.class.sources := Classes/mel2hz.c
 phon2db.class.sources := Classes/phon2db.c
 phon2sone.class.sources := Classes/phon2sone.c
-roughcurve.class.sources := Classes/roughcurve.c
 roughness.class.sources := Classes/roughness.c
 salience.class.sources := Classes/salience.c
 sone2phon.class.sources := Classes/sone2phon.c
