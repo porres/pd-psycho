@@ -1,13 +1,13 @@
-#N canvas 556 186 487 350 10;
+#N canvas 489 87 531 352 10;
 #X declare -path psycho;
-#X msg 109 130 500 1000 1500 2000;
-#X msg 160 167 0.9 0.8 0.4 0.3;
-#X msg 92 103 100 200 300 400;
-#X obj 109 191 roughness;
-#X text 37 38 Get the overall roughness of a spectrum \, defined by
+#X msg 113 130 500 1000 1500 2000;
+#X msg 164 167 0.9 0.8 0.4 0.3;
+#X msg 96 103 100 200 300 400;
+#X obj 113 191 roughness;
+#X text 41 38 Get the overall roughness of a spectrum \, defined by
 a frequency and amplitude list, f 42;
-#X text 195 102 <= freq;
-#X text 262 166 <= amp;
+#X text 199 102 <= freq;
+#X text 266 166 <= amp;
 #N canvas 693 213 522 442 realtime 0;
 #X obj 165 199 roughness;
 #X floatatom 91 33 5 0 0 0 - - -;
@@ -15,7 +15,7 @@ a frequency and amplitude list, f 42;
 #X obj 165 57 osc~ 1090;
 #X floatatom 165 33 5 0 0 0 - - -;
 #X obj 165 234 nbx 10 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0
-10 -262144 -1 -1 1.03215 256;
+10 -262144 -1 -1 1.03213 256;
 #X obj 165 100 *~ 0.5;
 #X obj 165 130 sigmund~ -npts 2048 -hop 1024 -npeak 2 peaks;
 #N canvas 240 57 346 334 get-lists 0;
@@ -64,11 +64,11 @@ a frequency and amplitude list, f 42;
 #X connect 8 0 0 0;
 #X connect 8 1 0 1;
 #X connect 11 0 12 0;
-#X restore 335 199 pd realtime;
-#X obj 258 282 curve.gen;
-#X text 190 282 see also:;
-#N canvas 472 23 570 335 vanilla 0;
-#X floatatom 154 228 0 0 0 0 - - -;
+#X restore 353 196 pd realtime;
+#X obj 358 276 curve.gen;
+#X text 290 276 see also:;
+#N canvas 571 137 582 320 vanilla 0;
+#X floatatom 102 226 0 0 0 0 - - -;
 #N canvas 733 434 415 309 Roughness 0;
 #X text 193 50 amp-list;
 #X text 71 50 freq-list;
@@ -271,27 +271,73 @@ Curve (1965).;
 #X connect 10 1 8 0;
 #X connect 11 0 9 1;
 #X connect 12 0 11 1;
-#X restore 154 198 pd Roughness;
-#X obj 260 200 roughness;
-#X floatatom 260 230 0 0 0 0 - - -;
-#X msg 314 160 curve 0 \, weight 0 \, loudness 0;
-#X msg 154 111 100 200 300 400;
-#X msg 260 111 1 0.5 0.25 0.1;
-#X obj 314 137 loadbang;
-#X text 135 35 Here's an example of a vanilla implementation of ther
-roughness calculation algorithm.;
+#X restore 102 196 pd Roughness;
+#X obj 208 198 roughness;
+#X floatatom 208 228 0 0 0 0 - - -;
+#X msg 102 109 100 200 300 400;
+#X msg 208 109 1 0.5 0.25 0.1;
+#X obj 262 135 loadbang;
+#X msg 262 158 curve 0 \, weight 0 \, loudness 0 \, masking 0;
+#X text 127 33 Here's an example of a vanilla implementation of the
+roughness calculation algorithm. Note the specific parameters used.
+;
 #X connect 1 0 0 0;
 #X connect 2 0 3 0;
+#X connect 4 0 1 0;
 #X connect 4 0 2 0;
-#X connect 5 0 1 0;
-#X connect 5 0 2 0;
-#X connect 6 0 1 1;
-#X connect 6 0 2 1;
-#X connect 7 0 4 0;
-#X restore 339 121 pd vanilla;
-#X obj 109 226 nbx 9 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X connect 5 0 1 1;
+#X connect 5 0 2 1;
+#X connect 6 0 7 0;
+#X connect 7 0 2 0;
+#X restore 349 137 pd vanilla;
+#X obj 113 226 nbx 9 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X obj 332 47 declare -path psycho;
+#X obj 336 47 declare -path psycho;
+#N canvas 663 188 685 424 parameters 0;
+#X msg 214 196 loudness \$1;
+#X msg 241 282 curve \$1;
+#X obj 241 262 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X msg 232 239 weight \$1;
+#X obj 251 302 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X msg 251 322 masking \$1;
+#X obj 76 386 s \$0-roughness;
+#X obj 214 175 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X text 333 251 loudness \; 0) linear amplitude (used by Sethares and
+Vassilakis) \; 1) Sones (Used by Barlow and Porres);
+#X obj 232 219 hradio 15 1 0 3 empty empty empty 0 -8 0 10 -262144
+-1 -1 0;
+#X text 333 294 weight \; 0) Vassilakis (Amplitude fluctuation degree)
+\; 1) Barlow (quadratic mean)) \; 2) Setahres (minimum amplitude value)
+;
+#X text 333 165 curve \; 0) Parncutt (used by Barlow and Porres) \;
+1) Sethares (used by Sethares and Vassilakis);
+#X text 332 208 Masking \; 0) off (used by Sethares and Vassilakis
+\; 1) on (used by Barlow and Porres);
+#X msg 83 143 barlow;
+#X msg 102 211 vassilakis;
+#X msg 96 189 sethares;
+#X msg 90 164 porres;
+#X text 61 98 Set the model as proposed by these authors:, f 16;
+#X text 220 125 Combine the parameters at will (for tests);
+#X text 197 36 The default model is proposed by Porres as a revision
+of Clarence Barlow's model. You can set the model as proposed by the
+other reference authors or combine parameters at will)., f 62;
+#X connect 0 0 6 0;
+#X connect 1 0 6 0;
+#X connect 2 0 1 0;
+#X connect 3 0 6 0;
+#X connect 4 0 5 0;
+#X connect 5 0 6 0;
+#X connect 7 0 0 0;
+#X connect 9 0 3 0;
+#X connect 13 0 6 0;
+#X connect 14 0 6 0;
+#X connect 15 0 6 0;
+#X connect 16 0 6 0;
+#X restore 348 107 pd parameters;
 #X connect 0 0 3 0;
 #X connect 1 0 3 1;
 #X connect 2 0 3 0;

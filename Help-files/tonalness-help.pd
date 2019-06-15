@@ -396,7 +396,7 @@ to Parncutt & Strasburger \, 1994).;
 26;
 #X floatatom 179 75 5 0 0 0 - - -;
 #X obj 136 251 nbx 10 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0
-10 -262144 -1 -1 0.936749 256;
+10 -262144 -1 -1 0.93676 256;
 #N canvas 240 57 346 334 get-lists 0;
 #X obj 202 95 sel 0;
 #X obj 91 228 list store;
@@ -432,7 +432,7 @@ to Parncutt & Strasburger \, 1994).;
 #X msg 372 343 \; pd dsp 1;
 #X obj 179 202 tonalness;
 #X obj 252 251 nbx 10 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0
-10 -262144 -1 -1 0.942536 256;
+10 -262144 -1 -1 0.942517 256;
 #X obj 252 290 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 -228856
 -1 -1 11970 1;
 #N canvas 325 44 671 390 saw 0;

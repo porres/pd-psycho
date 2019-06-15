@@ -41,16 +41,25 @@ typedef struct roughness{
 
 //======================= Amplitude/Loudness functions ====================================/
 
+/*
+ static float YL(float Hz, float amp){ // ?????
+ float kHz = Hz/1000;
+ float LTh = 3.64 * pow(kHz,-0.8) - 6.5*exp(-0.6*pow(kHz-3.3, 2)) + 0.001*pow(kHz, 4);
+ float dB = rmstodb(amp);
+ return dB-LTh;
+ }
+ 
+ // ******* [dbtorms] - Converts dB to Linear Amplitude
+ static float db2gain(float db){
+ return pow(10, (db-100)/20);
+ }
+ */
+
 // ******* [rmstodb] - Converts Linear Amplitude to dB
 static float gain2db(float amp){
     if(amp > 0.00001)
         return 100+20*log10f(amp);
     return 0;
-}
-
-// ******* [dbtorms] - Converts dB to Linear Amplitude
-static float db2gain(float db){
-    return pow(10, (db-100)/20);
 }
 
 //***** Convert Phons and Hz to dBA (function by Clarence Barlow, data from Robson & Dadson)
@@ -149,17 +158,10 @@ static float ph2sn(float ph){
         return 0;
 }
 
-// *************** Masking
+// *************** Masking // Used by Barlow (Masking model from Parncutt's Pitch Commonality model)
 float erb (float Hz){ // equal rectangular bandwidth
 	float kHz = Hz/1000;
 	return 11.17 * log((kHz + 0.312) / (kHz + 14.675)) + 43.0;
-}
-
-static float YL(float Hz, float amp){ // ?????
-	float kHz = Hz/1000;
-	float LTh = 3.64 * pow(kHz,-0.8) - 6.5*exp(-0.6*pow(kHz-3.3, 2)) + 0.001*pow(kHz, 4);
-	float dB = rmstodb(amp);
-	return dB-LTh;
 }
 
 static void do_the_masking(int ac, t_atom *freqs, float *amps){
@@ -240,17 +242,19 @@ static void roughness(t_roughness *x){
         do_the_masking(size, x->x_freqs, amp);
     for(i = 0; i < size; i++){
         if(x->x_loudness == 0){ // linear amplitude (do nothing)
-        }
-        else if(x->x_loudness == 1) // dbtorms(dB-LTh)
-            amp[i] = db2gain(  YL(freq_i, gain2db(amp[i])));
-        else if(x->x_loudness == 2) // dbtorms(Phon)
-            amp[i] = db2gain(phon(freq_i,gain2db(x->x_amps[i]), x->x_phonsteps));
-        else if(x->x_loudness == 3) // Phon
-            amp[i] = phon(freq_i,gain2db(x->x_amps[i]), x->x_phonsteps) ;
-        else if(x->x_loudness == 4) // Sones
+        } // used by Setahres and Vassilakis
+        else if(x->x_loudness == 1) // Sones (used by Porres & Barlow)
             amp[i] = ph2sn(phon(freq_i, gain2db(x->x_amps[i]), x->x_phonsteps));
+/*      else if(x->x_loudness == 2) // Phon
+            amp[i] = phon(freq_i,gain2db(x->x_amps[i]), x->x_phonsteps);
+        else if(x->x_loudness == 3) // dbtorms(dB-LTh)
+            amp[i] = db2gain(YL(freq_i, gain2db(amp[i])));
+        else if(x->x_loudness == 4) // dbtorms(Phon)
+            amp[i] = db2gain(phon(freq_i, gain2db(x->x_amps[i]), x->x_phonsteps));
         else
-            post("loudness mode options: 0, 1, 2, 3 & 4");
+            post("[roughness]: loudness mode options: 0, 1, 2, 3 & 4");*/
+        else
+            post("[roughness]: loudness mode options: <0> (linear) or <1> (Sones)");
     }
     for(i = 0; i < size; i++){
         for(j = i + 1; j < size; j++){
@@ -261,8 +265,10 @@ static void roughness(t_roughness *x){
             float ampweight;
             if(x->x_weight == 0) // Ampweight = Vassilakis
                 ampweight = vassilakis(amp_i, amp_j);
-            else
+            else if(x->x_weight == 1)
                 ampweight = sqrt(amp_i * amp_j); // Ampweight = Barlow
+            else
+                ampweight = amp_i < amp_j ? amp_i : amp_j; // Ampweight = Sethares (min)
             float bark_dif = fabs(barks(freq_i) - barks(freq_j));
             if(x->x_curve == 0) // Parncutt
                 total_roughness += (parncutt(bark_dif) * ampweight);
@@ -314,20 +320,17 @@ static void roughness_amps(t_roughness *x, t_symbol *s, int ac, t_atom *av){
 		x->x_amps[i] = atom_getfloat(av+i);
 }
 
-static void roughness_phonsteps(t_roughness *x, t_float f){
+static void roughness_phonsteps(t_roughness *x, t_float f){ // undocumented, for tests only
     x->x_phonsteps = f;
 }
 
 static void roughness_loudness(t_roughness *x, t_float f){
-	int n = (int)f;
-	if(n < 0 || n > 4)
-        pd_error(x,"loudness options are: 0, 1, 2, 3 or 4; but got %f", f);
-    else
-        x->x_loudness = f;
+        x->x_loudness = (int)f != 0;
 }
 
 static void roughness_weight(t_roughness *x, t_float f){
-    x->x_weight = f != 0;
+    int i = (int)f;
+    x->x_weight = i < 0 ? 0 : i > 2 ? 2 : i;
 }
 
 static void roughness_curve(t_roughness *x, t_float f){
@@ -336,6 +339,35 @@ static void roughness_curve(t_roughness *x, t_float f){
 
 static void roughness_masking(t_roughness *x, t_float f){
 	x->x_masking = f != 0;
+}
+
+// Models
+static void roughness_barlow(t_roughness *x){ // Clarence Barlow
+    x->x_loudness = 1;
+    x->x_masking = 1;
+    x->x_curve = 0;
+    x->x_weight = 1;
+}
+
+static void roughness_porres(t_roughness *x){ // Alexandre Porres
+    x->x_loudness = 1;
+    x->x_masking = 1;
+    x->x_curve = 0;
+    x->x_weight = 0;
+}
+
+static void roughness_vass(t_roughness *x){ // Pantelis Vassilakis
+    x->x_loudness = 0;
+    x->x_masking = 0;
+    x->x_curve = 1;
+    x->x_weight = 0;
+}
+
+static void roughness_seth(t_roughness *x){ // William Sethares
+    x->x_loudness = 0;
+    x->x_masking = 0;
+    x->x_curve = 1;
+    x->x_weight = 2;
 }
 
 // Free
@@ -347,29 +379,22 @@ static void roughness_free (t_roughness *x){
 }
 
 // New
-static void *roughness_new(t_symbol *s, int ac, t_atom *av){
+static void *roughness_new(void){
     t_roughness *x = (t_roughness *)pd_new(roughness_class);
-    t_symbol *dummy = s;
-    dummy = NULL;
     inlet_new(&x->x_ob, &x->x_ob.ob_pd, gensym("list"), gensym("amps"));
     x->x_outlet = outlet_new(&x->x_ob, gensym("float"));
-    x->x_curve = 0;
-    x->x_phonsteps = 20;
-	x->x_loudness = 4;
-	x->x_weight = 0;
-	x->x_masking = 0;
-    if(ac)
-        x->x_curve = av[0].a_w.w_float != 0;
-    return (void *)x;
+    x->x_phonsteps = 20; // hardcoded, can be changed, but it's undocumented
+    roughness_porres(x); // default
+    return(void *)x;
 }
 
 void roughness_setup(void){
-    roughness_class = class_new(gensym("roughness"), (t_newmethod)roughness_new, (t_method)roughness_free, sizeof(t_roughness), 0, A_GIMME, 0);
+    roughness_class = class_new(gensym("roughness"), (t_newmethod)roughness_new, (t_method)roughness_free, sizeof(t_roughness), 0, 0);
 	class_addlist(roughness_class, roughness_freqs);
 	class_addmethod(roughness_class, (t_method)roughness_amps,
                     gensym("amps"), A_GIMME, 0);
     class_addmethod(roughness_class, (t_method)roughness_phonsteps,
-                    gensym("phonsteps"), A_FLOAT, 0);
+                    gensym("phonsteps"), A_FLOAT, 0); // undocumented
     class_addmethod(roughness_class, (t_method)roughness_loudness,
                     gensym("loudness"), A_FLOAT, 0);
     class_addmethod(roughness_class, (t_method)roughness_weight,
@@ -378,4 +403,12 @@ void roughness_setup(void){
                     gensym("curve"), A_FLOAT, 0);
     class_addmethod(roughness_class, (t_method)roughness_masking,
                     gensym("masking"), A_FLOAT, 0);
+    class_addmethod(roughness_class, (t_method)roughness_seth,
+                    gensym("sethares"), 0);
+    class_addmethod(roughness_class, (t_method)roughness_vass,
+                    gensym("vassilakis"), 0);
+    class_addmethod(roughness_class, (t_method)roughness_barlow,
+                    gensym("barlow"), 0);
+    class_addmethod(roughness_class, (t_method)roughness_porres,
+                    gensym("porres"), 0);
 }
