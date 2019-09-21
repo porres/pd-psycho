@@ -34,6 +34,8 @@ yl.class.sources := Classes/yl.c
 datafiles = \
 $(wildcard Help-files/*.pd) \
 psycho-meta.pd \
+LICENSE.txt \
+README.pdf \
 README.md
 
 # include Makefile.pdlibbuilder from submodule directory 'pd-lib-builder'
