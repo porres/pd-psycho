@@ -18,7 +18,7 @@
 Each value represents the dB level of that frequency that corresponds
 to the input phon level. This can be used to generate equal loudness
 curves., f 47;
-#N canvas 313 23 853 618 a-prettier-example 0;
+#N canvas 727 126 853 618 a-prettier-example 0;
 #X obj 19 12 cnv 15 820 585 empty empty IS0226:2003 30 40 0 25 -228856
 -41803 0;
 #X obj 258 73 iso226;
@@ -84,13 +84,13 @@ curves., f 47;
 #X text 220 145 100Hz;
 #X text 151 144 50Hz;
 #X text 684 21 Hz;
-#X text 683 113 Phons;
 #X text 681 66 Table index;
 #X msg 380 70 \; Phon 80 \; db_0 yticks 0 5 5 \; db_0 ylabel -0.5 0
 25 50 75 100 125;
 #X obj 258 99 array set db_80;
-#X connect 1 0 35 0;
-#X connect 2 0 34 0;
+#X text 683 114 dB;
+#X connect 1 0 34 0;
+#X connect 2 0 33 0;
 #X connect 3 0 1 0;
 #X connect 12 0 14 0;
 #X connect 13 0 12 0;
