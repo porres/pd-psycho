@@ -62,10 +62,10 @@ void pearson(int m, float *x, float *y, float *corr){
     for(int i = 0; i < m; i++){
         sumx += x[i];
         if(x[i] < 0)
-            error("negative value: i=%d x=%5.0f", i, x[i]);
+            post("[commonality]: negative value: i=%d x=%5.0f", i, x[i]);
         sumy += y[i];
         if(y[i] < 0)
-            error("negative value: i=%d y=%5.0f", i, y[i]);
+            post("[commonality]: negative value: i=%d y=%5.0f", i, y[i]);
         sumxx += x[i]*x[i];
         sumyy += y[i]*y[i];
         sumxy += x[i]*y[i];
